@@ -28,18 +28,24 @@ Railway is a good fit for this project. You can host the app and Postgres togeth
 
 1. Create a new Railway project.
 2. Add the PostgreSQL plugin to your project.
-3. Railway will generate a `DATABASE_URL` for the Postgres database. Copy this value.
-4. In your Railway project settings, add an environment variable:
+3. Railway will generate two connection strings:
+   - **Internal URL** (for connections within Railway): `postgresql://postgres:PASSWORD@postgres.railway.internal:5432/railway`
+   - **Public URL** (for external connections): `postgresql://postgres:PASSWORD@yamanote.proxy.rlwy.net:PORT/railway`
+4. In your Railway project **environment variables**, set:
    - **Key:** `DATABASE_URL`
-   - **Value:** *(paste the Postgres connection string from Railway)*
-5. Connect your GitHub repository to Railway (or push to GitHub and link the repo).
-6. Deploy the app.
+   - **Value:** *(use the Internal URL for best performance)*
+5. Connect your GitHub repository to Railway and deploy.
+
+#### Which URL to use?
+
+- **Internal URL** (`.railway.internal`): Use this when your app is deployed on Railway. It's faster and doesn't go through the internet.
+- **Public URL** (`.proxy.rlwy.net`): Use this if you're testing the app locally or connecting from outside Railway.
 
 #### Important
 
-- The app **requires** `DATABASE_URL` to be set in production. If it's missing, the app will fail to start.
-- Railway's Postgres plugin automatically provides this variable; make sure it's visible in your environment variables.
-- The SQL schema will be created automatically on first connection if it doesn't exist.
+- The app **requires** `DATABASE_URL` in production. If it's missing, the app will fail to start with a clear error.
+- Railway's Postgres plugin will handle database provisioning and URL generation automatically.
+- The SQL schema will be created on first connection if it doesn't exist.
 
 ### Local development
 
