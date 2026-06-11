@@ -29,3 +29,23 @@ create table if not exists reactions (
   type text not null,
   created_at timestamptz default now()
 );
+
+create table if not exists questions (
+  id uuid primary key default gen_random_uuid(),
+  author_id uuid not null references accounts(id) on delete cascade,
+  author_name text,
+  title text not null,
+  content text not null,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists answers (
+  id uuid primary key default gen_random_uuid(),
+  question_id uuid not null references questions(id) on delete cascade,
+  author_id uuid not null references accounts(id) on delete cascade,
+  author_name text,
+  content text not null,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
