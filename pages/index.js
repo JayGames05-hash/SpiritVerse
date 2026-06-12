@@ -8,11 +8,15 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Get reading based on 6-hour rotation
+    // Get reading based on 2-hour rotation with random selection
     const now = new Date()
     const hours = now.getHours()
-    const cycleNumber = Math.floor(hours / 6) // 0, 1, 2, or 3
-    const readingIndex = cycleNumber % readings.length
+    const cycleNumber = Math.floor(hours / 2) // 0-11 (12 cycles per day)
+    
+    // Use cycle number as seed for consistent random selection
+    const seededRandom = Math.abs(Math.sin(cycleNumber * 12.9898) * 43758.5453) % 1
+    const readingIndex = Math.floor(seededRandom * readings.length)
+    
     setCurrentReading(readings[readingIndex])
     setLoading(false)
   }, [])

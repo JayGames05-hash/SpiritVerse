@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Header from '../components/Header'
+import readings from '../data/readings'
 
 export default function Profile() {
   const router = useRouter()
   const [user, setUser] = useState(null)
   const [myQuestions, setMyQuestions] = useState([])
+  const [likedQuotes, setLikedQuotes] = useState([])
   const [myAnswers, setMyAnswers] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('questions')
@@ -22,13 +24,26 @@ export default function Profile() {
         setUser(data.user)
 
         // Fetch user's questions
-        fetch('/api/questions')
+        fetch('/api/questions', { credentials: 'include' })
           .then(res => res.json())
           .then(data => {
             const userQuestions = (data.questions || []).filter(q => q.author_id === data.user?.id)
             setMyQuestions(userQuestions)
           })
           .catch(err => console.error('Failed to fetch questions:', err))
+
+        // Fetch user's liked quotes
+        fetch('/api/reactions/user', { credentials: 'include' })
+          .then(res => res.json())
+          .then(data => {
+            const reactions = data.reactions || []
+            // Map post_ids to actual readings
+            const liked = reactions
+              .map(r => readings.find(reading => reading.id === r.post_id))
+              .filter(Boolean)
+            setLikedQuotes(liked)
+          })
+          .catch(err => console.error('Failed to fetch liked quotes:', err))
 
         setLoading(false)
       })
@@ -78,7 +93,7 @@ export default function Profile() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-8">
+        <div className="flex gap-4 mb-8 flex-wrap">
           <button
             onClick={() => setActiveTab('questions')}
             className={`px-6 py-2 rounded-lg font-semibold transition ${
@@ -88,6 +103,16 @@ export default function Profile() {
             }`}
           >
             My Questions ({myQuestions.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('liked')}
+            className={`px-6 py-2 rounded-lg font-semibold transition ${
+              activeTab === 'liked'
+                ? 'bg-white text-purple-900'
+                : 'bg-purple-700 text-white hover:bg-purple-600'
+            }`}
+          >
+            Liked Quotes ({likedQuotes.length})
           </button>
           <button
             onClick={() => setActiveTab('answers')}
@@ -131,6 +156,35 @@ export default function Profile() {
                         View & Manage →
                       </button>
                     </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'liked' && (
+          <div>
+            {likedQuotes.length === 0 ? (
+              <div className="bg-purple-700 rounded-lg p-8 text-white text-center">
+                <p className="mb-4">You haven't liked any quotes yet.</p>
+                <button
+                  onClick={() => router.push('/')}
+                  className="bg-white text-purple-900 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100"
+                >
+                  Browse Quotes
+                </button>
+              </div>
+            ) : (
+              <div className="grid gap-6">
+                {likedQuotes.map(quote => (
+                  <div key={quote.id} className="bg-white rounded-lg shadow-lg p-6">
+                    <p className="text-gray-600 text-sm mb-2">{quote.date}</p>
+                    <h3 className="text-xl font-bold text-purple-900 mb-3">{quote.title || quote.scripture_ref}</h3>
+                    <p className="text-gray-800 mb-4 italic">{quote.reading_text}</p>
+                    {quote.reflection && (
+                      <p className="text-gray-600 text-sm border-t pt-4">{quote.reflection}</p>
+                    )}
                   </div>
                 ))}
               </div>
