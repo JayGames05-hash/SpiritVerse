@@ -1,3 +1,53 @@
+const saints = [
+  'Abraham',
+  'Sarah',
+  'Isaac',
+  'Jacob',
+  'Moses',
+  'Aaron',
+  'Joshua',
+  'Deborah',
+  'Samuel',
+  'David',
+  'Solomon',
+  'Elijah',
+  'Elisha',
+  'Isaiah',
+  'Jeremiah',
+  'Ezekiel',
+  'Daniel',
+  'Hosea',
+  'Joel',
+  'Amos',
+  'Jonah',
+  'Micah',
+  'Nahum',
+  'Habakkuk',
+  'Zephaniah',
+  'Haggai',
+  'Zechariah',
+  'Malachi',
+  'Mary',
+  'Joseph',
+  'John the Baptist',
+  'Peter',
+  'James',
+  'John',
+  'Paul',
+  'Philip',
+  'Stephen',
+  'Barnabas',
+  'Timothy',
+  'Lydia',
+  'Priscilla',
+  'Aquila',
+  'Mary Magdalene',
+  'Martha',
+  'Lazarus',
+  'Ruth',
+  'Esther',
+]
+
 const readings = [
   {
     id: 'post-0001',
@@ -249,4 +299,7 @@ const readings = [
   },
 ]
 
-export default readings
+export default readings.map((r, i) => ({
+  ...r,
+  saint: saints[(i * 37) % saints.length],
+}))
