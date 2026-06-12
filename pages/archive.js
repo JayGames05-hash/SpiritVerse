@@ -27,11 +27,19 @@ export default function Archive() {
           <div className="grid gap-6">
             {readings.map(reading => (
               <div key={reading.id} className="bg-white rounded-lg shadow-lg p-6">
-                <h2 className="text-2xl font-bold text-purple-900 mb-2">{reading.title}</h2>
-                <p className="text-gray-600 mb-4 text-sm">{reading.date}</p>
-                <p className="text-gray-800 mb-4 whitespace-pre-wrap">{reading.content}</p>
-                {reading.saint && (
-                  <p className="text-sm text-purple-700 font-semibold">Saint: {reading.saint}</p>
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-4">
+                  <div>
+                    <h2 className="text-2xl font-bold text-purple-900">{reading.title || reading.scripture_ref}</h2>
+                    <p className="text-sm text-gray-500">{reading.scripture_ref}</p>
+                  </div>
+                  <p className="text-sm text-gray-600">{reading.date}</p>
+                </div>
+                <div className="text-gray-800 mb-4 whitespace-pre-wrap leading-relaxed">{reading.reading_text}</div>
+                {reading.reflection && (
+                  <div className="bg-purple-50 border border-purple-100 rounded-lg p-4">
+                    <h3 className="text-sm font-semibold text-purple-900 mb-2">Reflection</h3>
+                    <p className="text-gray-700 italic whitespace-pre-wrap">{reading.reflection}</p>
+                  </div>
                 )}
               </div>
             ))}
