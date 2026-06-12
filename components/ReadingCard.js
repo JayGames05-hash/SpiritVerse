@@ -48,25 +48,36 @@ export default function ReadingCard({post}){
   }
 
   return (
-    <article className="border p-5 rounded bg-white">
-      <div className="flex justify-between items-baseline">
-        <div>
-          <div className="text-sm text-gray-600">{post.date}</div>
-          <h1 className="mt-1 mb-3 text-2xl">{post.title || post.scripture_ref}</h1>
+  return (
+    <article className="bg-white rounded-lg shadow-lg p-8">
+      <div className="flex justify-between items-start mb-6">
+        <div className="flex-1">
+          <p className="text-sm text-gray-500 font-semibold">{post.date}</p>
+          <h1 className="mt-2 text-4xl font-bold text-purple-900">{post.title || post.scripture_ref}</h1>
         </div>
-        <div>
-          <button onClick={toggleLike} className={`px-3 py-2 rounded ${liked ? 'bg-amber-200' : 'bg-gray-100'}`}>
-            ❤️ {likes}
-          </button>
-        </div>
+        <button 
+          onClick={toggleLike} 
+          className={`px-4 py-2 rounded-lg font-semibold transition ml-4 whitespace-nowrap ${liked ? 'bg-amber-200 text-amber-900' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+        >
+          ♥ {likes}
+        </button>
       </div>
 
-      <div className="whitespace-pre-wrap mb-3">{post.reading_text}</div>
-      <div className="italic text-gray-800 mb-3">{post.reflection}</div>
+      <div className="text-lg leading-relaxed text-gray-800 mb-6 whitespace-pre-wrap border-l-4 border-purple-600 pl-6 py-4 bg-purple-50 rounded">
+        {post.reading_text}
+      </div>
+      
+      {post.reflection && (
+        <div className="bg-purple-100 rounded-lg p-6 mb-8 border border-purple-200">
+          <h3 className="text-sm font-semibold text-purple-900 mb-2">Reflection</h3>
+          <p className="text-gray-800 italic">{post.reflection}</p>
+        </div>
+      )}
 
-      <div className="mt-3">
+      <div className="border-t pt-8">
         <Comments postId={post.id} />
       </div>
     </article>
+  )
   )
 }
