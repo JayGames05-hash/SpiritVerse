@@ -5,7 +5,6 @@ import { auth } from '../lib/apiClient'
 
 export default function SignInPage() {
   const [mode, setMode] = useState('register')
-  const [saintName, setSaintName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
@@ -26,16 +25,13 @@ export default function SignInPage() {
     setError('')
     setMessage('')
 
-    if (!saintName.trim() || !email.trim() || !password) {
-      setError('Saint name, email, and password are required.')
+    if (!email.trim() || !password) {
+      setError('Email and password are required.')
       return
     }
 
     setLoading(true)
-    const { error } = await auth.signUp(
-      { email: email.trim(), password },
-      { options: { data: { saint_name: saintName.trim() } } },
-    )
+    const { error } = await auth.signUp({ email: email.trim(), password })
     setLoading(false)
 
     if (error) {
@@ -98,17 +94,7 @@ export default function SignInPage() {
           </div>
 
           <form onSubmit={mode === 'register' ? handleRegister : handleLogin}>
-            {mode === 'register' && (
-              <label className="block mb-4">
-                <div className="text-sm font-semibold text-gray-700 mb-2">Saint username</div>
-                <input
-                  value={saintName}
-                  onChange={(e) => setSaintName(e.target.value)}
-                  placeholder="Saint Antony, Saint Mary, etc."
-                  className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:border-purple-500"
-                />
-              </label>
-            )}
+            {/* saint is auto-assigned on account creation */}
             <label className="block mb-4">
               <div className="text-sm font-semibold text-gray-700 mb-2">Email</div>
               <input
