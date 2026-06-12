@@ -51,7 +51,7 @@ export default function Ask() {
 
       if (!res.ok) {
         const data = await res.json()
-        throw new Error(data.error || 'Failed to create question')
+        throw new Error(data.error || `Failed to create question (${res.status})`)
       }
 
       // Refresh questions list

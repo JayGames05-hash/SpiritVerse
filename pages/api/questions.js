@@ -16,23 +16,27 @@ export default async function handler(req, res) {
     try {
       const user = await getUserFromRequest(req)
       if (!user) {
-        return res.status(401).json({ error: 'Unauthorized' })
+        console.error('No user found in request')
+        return res.status(401).json({ error: 'Unauthorized - please sign in' })
       }
 
       const { title, content } = req.body
       if (!title || !content) {
+        console.error('Missing title or content:', { title, content })
         return res.status(400).json({ error: 'Title and content are required' })
       }
 
+      console.log('Creating question for user:', user.id, user.email)
       const result = await query(
         'INSERT INTO questions (author_id, author_name, title, content) VALUES ($1, $2, $3, $4) RETURNING *',
         [user.id, user.full_name || user.email, title, content]
       )
 
+      console.log('Question created successfully:', result.rows[0].id)
       return res.status(201).json({ question: result.rows[0] })
     } catch (err) {
-      console.error('Failed to create question:', err)
-      return res.status(500).json({ error: 'Failed to create question' })
+      console.error('Failed to create question:', err.message || err)
+      return res.status(500).json({ error: 'Failed to create question: ' + (err.message || 'Unknown error') })
     }
   }
 
