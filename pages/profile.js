@@ -75,9 +75,20 @@ export default function Profile() {
       <main className="max-w-4xl mx-auto px-4 py-12">
         {/* Profile Header */}
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-          <h1 className="text-4xl font-bold text-purple-900 mb-2">
-            {user.full_name || user.email}
-          </h1>
+          <div className="flex items-center justify-between gap-4">
+            <h1 className="text-4xl font-bold text-purple-900 mb-2">{user.full_name || user.email}</h1>
+            {user.is_admin && (
+              <div className="flex items-center gap-3">
+                <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold">Admin</span>
+                <button
+                  onClick={() => router.push('/admin')}
+                  className="bg-purple-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-purple-700"
+                >
+                  Admin Dashboard
+                </button>
+              </div>
+            )}
+          </div>
           {user.saint_name && (
             <p className="text-gray-600 mb-4">
               <span className="font-semibold">Saint Name:</span> {user.saint_name}
