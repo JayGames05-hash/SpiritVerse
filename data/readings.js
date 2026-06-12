@@ -131,14 +131,14 @@ for (const book of books) {
   for (let chapter = 1; chapter <= book.chapters; chapter += 1) {
     for (let verse = 1; verse <= 30; verse += 1) {
       references.push({ book: book.name, chapter, verse })
-      if (references.length === 3000) break
     }
-    if (references.length === 3000) break
   }
-  if (references.length === 3000) break
 }
 
-const readings = references.map((ref, index) => {
+const spacing = Math.ceil(references.length / 3000)
+const selectedReferences = references.filter((_, index) => index % spacing === 0).slice(0, 3000)
+
+const readings = selectedReferences.map((ref, index) => {
   const scripture_ref = `${ref.book} ${ref.chapter}:${ref.verse}`
   const theme = themes[index % themes.length]
   const action = actions[index % actions.length]
