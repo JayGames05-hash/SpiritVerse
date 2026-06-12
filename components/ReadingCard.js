@@ -48,7 +48,6 @@ export default function ReadingCard({post}){
   }
 
   return (
-  return (
     <article className="bg-white rounded-lg shadow-lg p-8">
       <div className="flex justify-between items-start mb-6">
         <div className="flex-1">
@@ -78,6 +77,5 @@ export default function ReadingCard({post}){
         <Comments postId={post.id} />
       </div>
     </article>
-  )
   )
 }

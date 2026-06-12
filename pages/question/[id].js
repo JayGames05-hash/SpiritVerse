@@ -50,6 +50,7 @@ export default function QuestionDetail() {
       const res = await fetch(`/api/answers?questionId=${id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ content: answerContent }),
       })
 
