@@ -3,6 +3,7 @@
 create table if not exists accounts (
   id uuid primary key default gen_random_uuid(),
   email text unique not null,
+  is_admin boolean default false,
   saint_name text,
   full_name text,
   password_hash text not null,
