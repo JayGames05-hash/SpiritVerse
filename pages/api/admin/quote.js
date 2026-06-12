@@ -1,5 +1,5 @@
-import { getUserFromRequest } from '../../lib/auth'
-import readings from '../../data/readings'
+import { getUserFromRequest } from '../../../lib/auth'
+import readings from '../../../data/readings'
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
