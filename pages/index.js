@@ -202,6 +202,23 @@ export default function Home() {
               Next verse in <span className="font-semibold text-white">{formatDuration(remainingSeconds)}</span>
             </div>
             <ReadingCard post={currentReading} />
+            {/* Calendar preview inserted between the verse and Ask button */}
+            <div className="mt-6">
+              <Link href="/calendar" className="block bg-white/5 backdrop-blur-sm rounded-2xl p-4 hover:bg-white/10 transition border border-white/10">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-[#f4e5d7]">Liturgical Calendar</p>
+                    <h3 className="mt-1 text-white font-semibold">{todayLiturgical ? todayLiturgical.name : (nextLiturgical ? `Next: ${nextLiturgical.name}` : 'View calendar')}</h3>
+                    <p className="text-sm text-[#f4e5d7] mt-1">{todayLiturgical ? todayLiturgical.feast_date : (nextLiturgical ? nextLiturgical.feast_date : '')}</p>
+                  </div>
+                  <div>
+                    <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ml-4 ${getBadgeClasses(todayLiturgical || nextLiturgical)}`}>
+                      {getEntryType(todayLiturgical || nextLiturgical) === 'fast' ? 'Fast' : 'Feast'}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            </div>
             <div className="flex justify-center mt-8">
               <Link href="/ask" className="bg-white text-[#8b1e1e] px-6 py-2 rounded-2xl font-semibold hover:opacity-90 transition">
                 Ask a Question
