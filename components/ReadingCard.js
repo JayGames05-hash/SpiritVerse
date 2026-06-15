@@ -1,57 +1,24 @@
 import React, {useEffect, useState} from 'react'
 import Comments from './Comments'
-import { auth, getReactions, addReaction, removeReaction, getFavorite, addFavorite, removeFavorite } from '../lib/apiClient'
+import { auth, getFavorite, addFavorite, removeFavorite } from '../lib/apiClient'
 
 export default function ReadingCard({post}){
-  const [likes, setLikes] = useState(0)
-  const [liked, setLiked] = useState(false)
   const [favorite, setFavorite] = useState(false)
 
   useEffect(()=>{
     let mounted = true
     async function load(){
       try{
-        const [{ data: reactionData, error: reactionError }, { data: favoriteData, error: favoriteError }] = await Promise.all([
-          getReactions(post.id),
-          getFavorite(post.id),
-        ])
-        if(reactionError) throw reactionError
+        const { data: favoriteData, error: favoriteError } = await getFavorite(post.id)
         if(favoriteError) throw favoriteError
-        if(mounted) {
-          setLikes(reactionData.count)
-          setLiked(reactionData.liked)
-          setFavorite(favoriteData)
-        }
-      }catch(e){ console.error('load reactions/favorite', e) }
+        if(mounted) setFavorite(favoriteData)
+      }catch(e){ console.error('load favorite', e) }
     }
     load()
     return ()=> { mounted = false }
   },[post.id])
 
-  async function toggleLike(){
-    try{
-        const { data: userRes } = await auth.getUser()
-        const user = userRes.user
-        if(!user){
-          alert('Please sign in to like posts.')
-          return
-        }
-        if(liked){
-          const { error } = await removeReaction(post.id)
-          if(error) throw error
-          setLiked(false)
-          setLikes(Math.max(0, likes-1))
-        }else{
-          const { error } = await addReaction(post.id)
-          if(error) throw error
-          setLiked(true)
-          setLikes(likes+1)
-        }
-    }catch(e){
-      console.error('toggleLike', e)
-      alert('Could not update like — try again.')
-    }
-  }
+  // Favorites are used instead of separate likes; users can save posts.
 
   return (
     <article className="bg-white rounded-3xl shadow-xl p-6 sm:p-8">
@@ -64,12 +31,6 @@ export default function ReadingCard({post}){
           )}
         </div>
         <div className="flex flex-wrap gap-3">
-          <button 
-            onClick={toggleLike} 
-            className={`px-4 py-2 rounded-2xl font-semibold transition whitespace-nowrap ${liked ? 'bg-amber-200 text-amber-900' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
-          >
-            ♥ {likes}
-          </button>
           <button
             onClick={async () => {
               try {
