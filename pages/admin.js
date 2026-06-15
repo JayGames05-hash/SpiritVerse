@@ -1,35 +1,65 @@
-import React, {useEffect, useState} from 'react'
-import { getAdminComments, updateCommentStatus } from '../lib/apiClient'
+import React, { useEffect, useState } from 'react'
+import { getAdminComments, updateCommentStatus, getVerseSuggestions, updateVerseSuggestionStatus } from '../lib/apiClient'
 import Header from '../components/Header'
 
-export default function AdminPage(){
+export default function AdminPage() {
   const [comments, setComments] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loadingComments, setLoadingComments] = useState(true)
+  const [pendingSuggestions, setPendingSuggestions] = useState([])
+  const [loadingSuggestions, setLoadingSuggestions] = useState(true)
   const [testQuote, setTestQuote] = useState(null)
   const [loadingQuote, setLoadingQuote] = useState(false)
 
-  useEffect(()=>{
+  useEffect(() => {
     let mounted = true
-    async function load(){
-      setLoading(true)
-      const { data, error } = await getAdminComments()
-      if(error) console.error(error)
-      if(mounted) setComments(data || [])
-      setLoading(false)
-    }
-    load()
-    return ()=> mounted = false
-  },[])
 
-  async function updateStatus(id, status){
-    try{
+    async function loadComments() {
+      setLoadingComments(true)
+      const { data, error } = await getAdminComments()
+      if (error) console.error(error)
+      if (mounted) setComments(data || [])
+      setLoadingComments(false)
+    }
+
+    async function loadSuggestions() {
+      setLoadingSuggestions(true)
+      const { data, error } = await getVerseSuggestions('pending')
+      if (error) console.error(error)
+      if (mounted) setPendingSuggestions(data || [])
+      setLoadingSuggestions(false)
+    }
+
+    loadComments()
+    loadSuggestions()
+
+    return () => {
+      mounted = false
+    }
+  }, [])
+
+  async function updateStatus(id, status) {
+    try {
       const { error } = await updateCommentStatus(id, status)
-      if(error) throw error
-      setComments(comments.map(c => c.id===id ? { ...c, status } : c))
-    }catch(e){ console.error(e); alert('Update failed') }
+      if (error) throw error
+      setComments(comments.map(c => (c.id === id ? { ...c, status } : c)))
+    } catch (e) {
+      console.error(e)
+      alert('Update failed')
+    }
   }
 
-  async function handleRandomQuote(){
+  async function updateSuggestionStatus(id, status) {
+    try {
+      const { error } = await updateVerseSuggestionStatus(id, status)
+      if (error) throw error
+      setPendingSuggestions(pendingSuggestions.filter(s => s.id !== id))
+    } catch (err) {
+      console.error(err)
+      alert('Could not update suggestion status')
+    }
+  }
+
+  async function handleRandomQuote() {
     setLoadingQuote(true)
     try {
       const res = await fetch('/api/admin/quote', { credentials: 'include' })
@@ -51,9 +81,8 @@ export default function AdminPage(){
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
       <Header />
-      <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {/* Quote Testing Section */}
-        <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 mb-8">
+      <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+        <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8">
           <h2 className="text-2xl font-bold text-purple-900 mb-4">Quote Testing</h2>
           <p className="text-gray-600 mb-6">Click below to force a new random quote (for testing purposes)</p>
           <button
@@ -66,7 +95,7 @@ export default function AdminPage(){
 
           {testQuote && (
             <div className="bg-purple-50 rounded-lg p-6 border-l-4 border-purple-600">
-              <p className="text-sm text-gray-500 font-semibold mb-2">{testQuote.date}</p>
+              {testQuote.date && <p className="text-sm text-gray-500 font-semibold mb-2">{testQuote.date}</p>}
               <h3 className="text-xl font-bold text-purple-900 mb-3">{testQuote.title || testQuote.scripture_ref}</h3>
               <p className="text-gray-800 mb-4 italic">{testQuote.reading_text}</p>
               {testQuote.reflection && (
@@ -76,48 +105,93 @@ export default function AdminPage(){
           )}
         </div>
 
-        {/* Moderation Dashboard */}
-        <div>
-          <h2 className="text-4xl font-bold text-white mb-8">Moderation Dashboard</h2>
-          {loading && (
-            <div className="text-center text-white text-lg">Loading...</div>
-          )}
-          {!loading && comments.length === 0 && (
-            <div className="bg-purple-700 rounded-3xl p-6 sm:p-8 text-white text-center">
-              No comments found.
-            </div>
-          )}
-          <div className="space-y-4">
-            {comments.map(c => (
-              <div key={c.id} className="bg-white rounded-3xl shadow-xl p-6">
-                <div className="flex flex-col sm:flex-row justify-between mb-4 gap-2 sm:gap-0">
-                  <div className="font-semibold text-purple-900">{c.author_name || 'Anonymous'}</div>
-                  <div className="text-sm text-gray-500">{new Date(c.created_at).toLocaleString()}</div>
-                </div>
-                <div className="mt-2 whitespace-pre-wrap text-gray-800 mb-4">{c.text}</div>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <button 
-                    className="px-4 py-2 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition"
-                    onClick={() => updateStatus(c.id, 'visible')}
-                  >
-                    Visible
-                  </button>
-                  <button 
-                    className="px-4 py-2 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition"
-                    onClick={() => updateStatus(c.id, 'flagged')}
-                  >
-                    Flagged
-                  </button>
-                  <button 
-                    className="px-4 py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition"
-                    onClick={() => updateStatus(c.id, 'hidden')}
-                  >
-                    Hide
-                  </button>
-                </div>
+        <div className="grid gap-8">
+          <section className="bg-white rounded-3xl shadow-xl p-6 sm:p-8">
+            <h2 className="text-3xl font-bold text-purple-900 mb-6">Pending Verse Suggestions</h2>
+            {loadingSuggestions ? (
+              <div className="text-gray-700">Loading suggestions...</div>
+            ) : pendingSuggestions.length === 0 ? (
+              <div className="rounded-3xl bg-purple-50 border border-purple-200 p-6 text-gray-700">
+                No pending verse suggestions at the moment.
               </div>
-            ))}
-          </div>
+            ) : (
+              <div className="space-y-4">
+                {pendingSuggestions.map((suggestion) => (
+                  <div key={suggestion.id} className="rounded-3xl border border-gray-200 p-5">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                      <div>
+                        <p className="text-sm text-gray-500">{suggestion.scripture_ref}</p>
+                        <h3 className="text-xl font-semibold text-purple-900">{suggestion.title}</h3>
+                        <p className="text-sm text-gray-500">Suggested by {suggestion.author_name || 'Anonymous'}</p>
+                      </div>
+                      <span className="inline-flex rounded-full bg-yellow-100 px-3 py-1 text-sm font-semibold text-yellow-800">
+                        {suggestion.status}
+                      </span>
+                    </div>
+                    <p className="text-gray-800 whitespace-pre-wrap mb-4">{suggestion.reading_text}</p>
+                    {suggestion.reflection && <p className="text-gray-600 mb-4">{suggestion.reflection}</p>}
+                    <div className="flex flex-wrap gap-3">
+                      <button
+                        onClick={() => updateSuggestionStatus(suggestion.id, 'approved')}
+                        className="px-4 py-2 bg-green-600 text-white rounded-2xl font-semibold hover:bg-green-700 transition"
+                      >
+                        Approve
+                      </button>
+                      <button
+                        onClick={() => updateSuggestionStatus(suggestion.id, 'denied')}
+                        className="px-4 py-2 bg-red-600 text-white rounded-2xl font-semibold hover:bg-red-700 transition"
+                      >
+                        Deny
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          <section>
+            <h2 className="text-4xl font-bold text-white">Moderation Dashboard</h2>
+            {loadingComments ? (
+              <div className="text-center text-white text-lg mt-6">Loading comments...</div>
+            ) : comments.length === 0 ? (
+              <div className="bg-purple-700 rounded-3xl p-6 sm:p-8 text-white text-center mt-6">
+                No comments found.
+              </div>
+            ) : (
+              <div className="space-y-4 mt-6">
+                {comments.map(c => (
+                  <div key={c.id} className="bg-white rounded-3xl shadow-xl p-6">
+                    <div className="flex flex-col sm:flex-row justify-between mb-4 gap-2 sm:gap-0">
+                      <div className="font-semibold text-purple-900">{c.author_name || 'Anonymous'}</div>
+                      <div className="text-sm text-gray-500">{new Date(c.created_at).toLocaleString()}</div>
+                    </div>
+                    <div className="mt-2 whitespace-pre-wrap text-gray-800 mb-4">{c.text}</div>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <button
+                        className="px-4 py-2 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition"
+                        onClick={() => updateStatus(c.id, 'visible')}
+                      >
+                        Visible
+                      </button>
+                      <button
+                        className="px-4 py-2 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition"
+                        onClick={() => updateStatus(c.id, 'flagged')}
+                      >
+                        Flagged
+                      </button>
+                      <button
+                        className="px-4 py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition"
+                        onClick={() => updateStatus(c.id, 'hidden')}
+                      >
+                        Hide
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
         </div>
       </main>
     </div>

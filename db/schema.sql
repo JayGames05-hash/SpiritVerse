@@ -50,3 +50,16 @@ create table if not exists answers (
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
+
+create table if not exists verse_suggestions (
+  id uuid primary key default gen_random_uuid(),
+  author_id uuid not null references accounts(id) on delete cascade,
+  author_name text,
+  scripture_ref text not null,
+  title text not null,
+  reading_text text not null,
+  reflection text,
+  status text not null default 'pending',
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);

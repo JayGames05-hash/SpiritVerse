@@ -51,7 +51,7 @@ export default function ReadingCard({post}){
     <article className="bg-white rounded-3xl shadow-xl p-6 sm:p-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div className="flex-1">
-          <p className="text-sm text-gray-500 font-semibold">{post.date}</p>
+          {post.date && <p className="text-sm text-gray-500 font-semibold">{post.date}</p>}
           <h1 className="mt-2 text-3xl sm:text-4xl font-bold text-purple-900">{post.title || post.scripture_ref}</h1>
         </div>
         <button 
