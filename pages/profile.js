@@ -7,7 +7,6 @@ export default function Profile() {
   const router = useRouter()
   const [user, setUser] = useState(null)
   const [myQuestions, setMyQuestions] = useState([])
-  const [likedQuotes, setLikedQuotes] = useState([])
   const [myAnswers, setMyAnswers] = useState([])
   const [historyEntries, setHistoryEntries] = useState([])
   const [favoriteItems, setFavoriteItems] = useState([])
@@ -25,27 +24,20 @@ export default function Profile() {
         }
         setUser(userData.user)
 
-        const [questionsRes, reactionsRes, answersRes, historyRes, favoritesRes] = await Promise.all([
+        const [questionsRes, answersRes, historyRes, favoritesRes] = await Promise.all([
           fetch('/api/questions', { credentials: 'include' }),
-          fetch('/api/reactions/user', { credentials: 'include' }),
           fetch('/api/answers/user', { credentials: 'include' }),
           fetch('/api/history', { credentials: 'include' }),
           fetch('/api/favorites', { credentials: 'include' }),
         ])
 
         const questionsData = await questionsRes.json()
-        const reactionsData = await reactionsRes.json()
         const answersData = await answersRes.json()
         const historyData = await historyRes.json()
         const favoritesData = await favoritesRes.json()
 
         setMyQuestions((questionsData.questions || []).filter(q => q.author_id === userData.user?.id))
         setMyAnswers(answersData.answers || [])
-
-        const liked = (reactionsData.reactions || [])
-          .map(r => readings.find(reading => reading.id === r.post_id))
-          .filter(Boolean)
-        setLikedQuotes(liked)
 
         const favoriteIds = (favoritesData.favorites || []).map(f => f.post_id)
         const favoritePosts = favoriteIds
@@ -131,16 +123,6 @@ export default function Profile() {
             My Questions ({myQuestions.length})
           </button>
           <button
-            onClick={() => setActiveTab('liked')}
-            className={`px-6 py-2 rounded-lg font-semibold transition ${
-              activeTab === 'liked'
-                ? 'bg-white text-[#4b2d23]'
-                : 'bg-[#5a211f] text-white hover:bg-[#7a1c1c]'
-            }`}
-          >
-            Liked Quotes ({likedQuotes.length})
-          </button>
-          <button
             onClick={() => setActiveTab('answers')}
             className={`px-6 py-2 rounded-lg font-semibold transition ${
               activeTab === 'answers'
@@ -209,34 +191,6 @@ export default function Profile() {
           </div>
         )}
 
-        {activeTab === 'liked' && (
-          <div>
-            {likedQuotes.length === 0 ? (
-              <div className="bg-[#5a211f] rounded-3xl p-6 sm:p-8 text-white text-center">
-                <p className="mb-4">You haven't liked any quotes yet.</p>
-                <button
-                  onClick={() => router.push('/')}
-                  className="bg-white text-[#4b2d23] px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100 transition"
-                >
-                  Browse Quotes
-                </button>
-              </div>
-            ) : (
-              <div className="grid gap-6">
-                {likedQuotes.map(quote => (
-                  <div key={quote.id} className="bg-white rounded-3xl shadow-xl p-6">
-                    <p className="text-gray-600 text-sm mb-2">{quote.date}</p>
-                    <h3 className="text-xl font-bold text-[#4b2d23] mb-3">{quote.title || quote.scripture_ref}</h3>
-                    <p className="text-gray-800 mb-4 italic">{quote.reading_text}</p>
-                    {quote.reflection && (
-                      <p className="text-gray-600 text-sm border-t pt-4">{quote.reflection}</p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
 
         {activeTab === 'history' && (
           <div>
