@@ -178,26 +178,6 @@ export default function Home() {
       <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {currentReading && (
           <div className="space-y-6">
-            {(todayLiturgical || nextLiturgical) && (
-              <div className="rounded-3xl border border-white/10 bg-white/10 p-5 text-white backdrop-blur-lg">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                  <div>
-                    <p className="text-sm uppercase tracking-[0.2em] text-[#f4e5d7]">
-                      {todayLiturgical ? 'Today in the liturgical calendar' : 'Next liturgical observance'}
-                    </p>
-                    <h2 className="mt-2 text-2xl font-semibold text-white">
-                      {todayLiturgical ? todayLiturgical.name : nextLiturgical.name}
-                    </h2>
-                    <p className="mt-2 text-sm text-[#f4e5d7]">
-                      {todayLiturgical ? todayLiturgical.note : nextLiturgical.note}
-                    </p>
-                  </div>
-                  <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${getBadgeClasses(todayLiturgical || nextLiturgical)}`}>
-                    {getEntryType(todayLiturgical || nextLiturgical) === 'fast' ? 'Fast' : 'Feast'}
-                  </span>
-                </div>
-              </div>
-            )}
             <div className="text-right text-sm text-[#f4e5d7] sm:text-base">
               Next verse in <span className="font-semibold text-white">{formatDuration(remainingSeconds)}</span>
             </div>
