@@ -105,6 +105,10 @@ export default function AdminPage() {
         <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8">
           <h2 className="text-2xl font-bold text-[#4b2d23] mb-4">Quote Testing</h2>
           <p className="text-gray-600 mb-6">Click below to force a new random quote (for testing purposes)</p>
+          <div className="flex gap-3 mb-4">
+            <a href="/admin/saints" className="px-4 py-2 bg-[#8b1e1e] text-white rounded-lg font-semibold">Manage Calendar</a>
+            <a href="/admin/saints" className="px-4 py-2 border rounded-lg text-[#4b2d23] font-semibold">Edit Saints & Feasts</a>
+          </div>
           <button
             onClick={handleRandomQuote}
             disabled={loadingQuote}
