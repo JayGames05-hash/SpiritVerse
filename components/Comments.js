@@ -103,20 +103,18 @@ export default function Comments({ postId }) {
       <div>
         {comments.length === 0 && <div className="text-gray-600">No comments yet.</div>}
         {comments.map((c) => (
-          <div key={c.id} className="border-t pt-2 pb-2">
-            <div className="flex justify-between items-start">
-              <div>
-                <div className="font-semibold">
-                  {c.author_name}{' '}
-                  <span className="text-sm text-gray-500">
-                    {new Date(c.created_at).toLocaleString()}
-                  </span>
+          <div key={c.id} className="border-t pt-4 pb-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start">
+              <div className="flex-1">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3 gap-2">
+                  <span className="font-semibold text-gray-900">{c.author_name || 'Anonymous'}</span>
+                  <span className="text-sm text-gray-500">{new Date(c.created_at).toLocaleString()}</span>
                 </div>
-                <div className="whitespace-pre-wrap">{c.text}</div>
+                <div className="mt-3 whitespace-pre-wrap text-gray-800">{c.text}</div>
               </div>
-              <div className="ml-4 text-sm">
+              <div className="ml-0 sm:ml-4 text-sm">
                 {currentUser && currentUser.id === c.author_id && (
-                  <div className="flex flex-col gap-1">
+                  <div className="flex flex-row sm:flex-col gap-2">
                     <button
                       onClick={async () => {
                         const newText = window.prompt('Edit your comment', c.text)
@@ -125,7 +123,7 @@ export default function Comments({ postId }) {
                         if (error) return alert('Update failed')
                         setComments(comments.map((x) => (x.id === c.id ? { ...x, text: newText } : x)))
                       }}
-                      className="px-2 py-1 bg-gray-100"
+                      className="px-2 py-1 bg-gray-100 rounded-lg"
                     >
                       Edit
                     </button>
@@ -136,7 +134,7 @@ export default function Comments({ postId }) {
                         if (error) return alert('Delete failed')
                         setComments(comments.filter((x) => x.id !== c.id))
                       }}
-                      className="px-2 py-1 bg-red-100"
+                      className="px-2 py-1 bg-red-100 rounded-lg"
                     >
                       Delete
                     </button>

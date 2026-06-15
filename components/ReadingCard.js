@@ -59,6 +59,9 @@ export default function ReadingCard({post}){
         <div className="flex-1">
           {post.date && <p className="text-sm text-gray-500 font-semibold">{post.date}</p>}
           <h1 className="mt-2 text-3xl sm:text-4xl font-bold text-[#4b2d23]">{post.title || post.scripture_ref}</h1>
+          {post.scripture_ref && (
+            <p className="mt-2 text-sm text-[#8b1e1e] font-semibold">Scripture: {post.scripture_ref}</p>
+          )}
         </div>
         <div className="flex flex-wrap gap-3">
           <button 
