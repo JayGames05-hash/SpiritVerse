@@ -104,17 +104,15 @@ export default function Home() {
       <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {currentReading && (
           <div className="space-y-6">
+            <div className="flex justify-center mb-8">
+              <Link href="/ask" className="bg-white text-[#8b1e1e] px-6 py-2 rounded-2xl font-semibold hover:opacity-90 transition">
+                Ask a Question
+              </Link>
+            </div>
             <div className="text-right text-sm text-[#f4e5d7] sm:text-base">
               Next verse in <span className="font-semibold text-white">{formatDuration(remainingSeconds)}</span>
             </div>
             <ReadingCard post={currentReading} />
-            <div className="mt-12 bg-gradient-to-r from-[#8b1e1e] to-[#5a1313] rounded-3xl p-8 sm:p-10 text-center">
-              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">Have a Question?</h2>
-              <p className="text-[#f4e5d7] mb-6">Ask the community about scripture, faith, or daily readings.</p>
-              <Link href="/ask" className="inline-block bg-white text-[#8b1e1e] px-8 py-3 rounded-2xl font-bold text-lg hover:opacity-90 transition">
-                Ask a Question
-              </Link>
-            </div>
           </div>
         )}
       </main>
