@@ -1,19 +1,31 @@
 import fs from 'fs'
 import path from 'path'
 
-const dataFile = path.join(process.cwd(), 'data', 'saints.js')
+const dataFileJson = path.join(process.cwd(), 'data', 'saints.json')
+const dataFileJs = path.join(process.cwd(), 'data', 'saints.js')
 
-async function readSaints() {
-  // Use dynamic import to get the latest module
-  const modulePath = 'file://' + dataFile
-  delete require.cache[require.resolve(dataFile)]
-  const mod = await import(modulePath)
-  return mod.default || mod.saints || []
+function ensureDataDir() {
+  const dir = path.dirname(dataFileJson)
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+}
+
+function readSaints() {
+  if (fs.existsSync(dataFileJson)) {
+    const raw = fs.readFileSync(dataFileJson, 'utf8')
+    return JSON.parse(raw)
+  }
+
+  if (fs.existsSync(dataFileJs)) {
+    const mod = require(dataFileJs)
+    return mod.default || mod.saints || mod || []
+  }
+
+  return []
 }
 
 function writeSaints(arr) {
-  const content = `const saints = ${JSON.stringify(arr, null, 2)}\n\nexport default saints\n`
-  fs.writeFileSync(dataFile, content, 'utf8')
+  ensureDataDir()
+  fs.writeFileSync(dataFileJson, JSON.stringify(arr, null, 2), 'utf8')
 }
 
 export default async function handler(req, res) {

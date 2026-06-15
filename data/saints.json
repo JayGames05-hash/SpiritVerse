@@ -1,0 +1,546 @@
+[
+  {
+    "id": "saint-0001",
+    "name": "Abraham",
+    "feast_date": "January 9",
+    "scripture_ref": "Genesis 12:1-3",
+    "note": "The father of faith, called by God to leave home and trust His promise.",
+    "reflection": "Abraham answered God even when the path was unclear, offering a model of obedience and trust."
+  },
+  {
+    "id": "saint-0002",
+    "name": "Sarah",
+    "feast_date": "August 15",
+    "scripture_ref": "Genesis 21:1-2",
+    "note": "Sarah received God’s promise in her old age and laughed at the miracle of Isaac’s birth.",
+    "reflection": "Even in seasons of waiting, God can fulfill His word in surprising ways."
+  },
+  {
+    "id": "saint-0003",
+    "name": "Isaac",
+    "feast_date": "June 8",
+    "scripture_ref": "Genesis 22:1-14",
+    "note": "Isaac trusted his father Abraham and became the child of promise through whom blessings flowed.",
+    "reflection": "Isaac’s life reminds us that God keeps His promises across generations."
+  },
+  {
+    "id": "saint-0004",
+    "name": "Jacob",
+    "feast_date": "December 10",
+    "scripture_ref": "Genesis 32:28",
+    "note": "Jacob wrestled with God and was renamed Israel, showing how struggle can lead to blessing.",
+    "reflection": "God meets us in the middle of our journeys and transforms our identity through grace."
+  },
+  {
+    "id": "saint-0005",
+    "name": "Moses",
+    "feast_date": "September 4",
+    "scripture_ref": "Exodus 3:10-12",
+    "note": "Moses led Israel out of slavery and spoke with God from the burning bush.",
+    "reflection": "God equips the reluctant and uses humble people to do extraordinary things."
+  },
+  {
+    "id": "saint-0006",
+    "name": "Aaron",
+    "feast_date": "July 1",
+    "scripture_ref": "Exodus 4:14-16",
+    "note": "Aaron served as priest and spokesman for Moses, showing faithful support in ministry.",
+    "reflection": "God uses both leaders and helpers to accomplish His work together."
+  },
+  {
+    "id": "saint-0007",
+    "name": "Joshua",
+    "feast_date": "July 22",
+    "scripture_ref": "Joshua 1:9",
+    "note": "Joshua stepped into leadership after Moses and was commanded to be strong and courageous.",
+    "reflection": "Following God requires courage, but He promises to be with us always."
+  },
+  {
+    "id": "saint-0008",
+    "name": "Deborah",
+    "feast_date": "May 21",
+    "scripture_ref": "Judges 4:4-9",
+    "note": "Deborah served as judge and prophetess, leading Israel with wisdom and courage.",
+    "reflection": "God calls unlikely leaders and uses them to bring justice and peace."
+  },
+  {
+    "id": "saint-0009",
+    "name": "Samuel",
+    "feast_date": "August 20",
+    "scripture_ref": "1 Samuel 3:10",
+    "note": "Samuel heard God’s voice as a boy and grew into a faithful prophet for Israel.",
+    "reflection": "Listening to God’s voice starts with quiet hearts and a willingness to serve."
+  },
+  {
+    "id": "saint-0010",
+    "name": "David",
+    "feast_date": "December 29",
+    "scripture_ref": "1 Samuel 16:7",
+    "note": "David was chosen by God despite his youth, and his heart was described as a man after God’s own heart.",
+    "reflection": "God looks beyond outward appearance to the condition of our hearts."
+  },
+  {
+    "id": "saint-0011",
+    "name": "Solomon",
+    "feast_date": "June 21",
+    "scripture_ref": "1 Kings 3:9-12",
+    "note": "Solomon asked for wisdom and became renowned for his understanding and wise leadership.",
+    "reflection": "True wisdom begins with humility and a desire to govern with justice."
+  },
+  {
+    "id": "saint-0012",
+    "name": "Elijah",
+    "feast_date": "July 20",
+    "scripture_ref": "1 Kings 19:11-13",
+    "note": "Elijah served God powerfully but also learned that God’s voice may come as a gentle whisper.",
+    "reflection": "After dramatic events, God often meets us in quiet places with peace."
+  },
+  {
+    "id": "saint-0013",
+    "name": "Elisha",
+    "feast_date": "April 14",
+    "scripture_ref": "2 Kings 2:9",
+    "note": "Elisha received a double portion of Elijah’s spirit and continued God’s work in mighty ways.",
+    "reflection": "God’s grace can enlarge our calling and equip us for what lies ahead."
+  },
+  {
+    "id": "saint-0014",
+    "name": "Isaiah",
+    "feast_date": "May 24",
+    "scripture_ref": "Isaiah 6:8",
+    "note": "Isaiah responded to God’s call with the words, \"Here am I; send me.\"",
+    "reflection": "We can answer God’s call even when we feel unworthy because He purifies and sends us."
+  },
+  {
+    "id": "saint-0015",
+    "name": "Jeremiah",
+    "feast_date": "May 1",
+    "scripture_ref": "Jeremiah 1:5",
+    "note": "God knew Jeremiah before he was formed and set him apart for prophecy.",
+    "reflection": "Our purpose is known by God even before we understand it ourselves."
+  },
+  {
+    "id": "saint-0016",
+    "name": "Ezekiel",
+    "feast_date": "July 21",
+    "scripture_ref": "Ezekiel 37:1-14",
+    "note": "Ezekiel had a vision of dry bones coming to life, showing God’s power to restore.",
+    "reflection": "God brings life to places that seem dead by His Spirit and His word."
+  },
+  {
+    "id": "saint-0017",
+    "name": "Daniel",
+    "feast_date": "July 21",
+    "scripture_ref": "Daniel 6:10",
+    "note": "Daniel prayed faithfully even when his life was at risk in a foreign land.",
+    "reflection": "Consistency in prayer keeps us connected to God through every trial."
+  },
+  {
+    "id": "saint-0018",
+    "name": "Hosea",
+    "feast_date": "November 17",
+    "scripture_ref": "Hosea 3:1",
+    "note": "Hosea’s marriage pictured God’s faithful love for a wayward people.",
+    "reflection": "God’s love is steadfast even when we are unfaithful."
+  },
+  {
+    "id": "saint-0019",
+    "name": "Joel",
+    "feast_date": "October 19",
+    "scripture_ref": "Joel 2:28-29",
+    "note": "Joel spoke of the Spirit poured out on all flesh in the last days.",
+    "reflection": "God’s Spirit is available to everyone who seeks Him."
+  },
+  {
+    "id": "saint-0020",
+    "name": "Amos",
+    "feast_date": "August 16",
+    "scripture_ref": "Amos 5:24",
+    "note": "Amos called for justice, mercy, and righteousness to flow like a river.",
+    "reflection": "True worship includes justice and compassion for others."
+  },
+  {
+    "id": "saint-0021",
+    "name": "Jonah",
+    "feast_date": "September 12",
+    "scripture_ref": "Jonah 2:1-2",
+    "note": "Jonah fled from God but learned that God pursues those who are lost.",
+    "reflection": "God’s mercy reaches even the reluctant and those far from Him."
+  },
+  {
+    "id": "saint-0022",
+    "name": "Micah",
+    "feast_date": "August 3",
+    "scripture_ref": "Micah 6:8",
+    "note": "Micah taught that God requires us to do justice, love mercy, and walk humbly with Him.",
+    "reflection": "Simple obedience is the heart of what God desires from His people."
+  },
+  {
+    "id": "saint-0023",
+    "name": "Nahum",
+    "feast_date": "July 24",
+    "scripture_ref": "Nahum 1:7",
+    "note": "Nahum reminded us that the Lord is good and a stronghold in times of trouble.",
+    "reflection": "God is a refuge for those who trust in Him, even amid judgment and sorrow."
+  },
+  {
+    "id": "saint-0024",
+    "name": "Habakkuk",
+    "feast_date": "August 24",
+    "scripture_ref": "Habakkuk 2:4",
+    "note": "Habakkuk trusted that the righteous shall live by faith while waiting for God’s timing.",
+    "reflection": "Faith holds fast when answers are delayed and hope seems distant."
+  },
+  {
+    "id": "saint-0025",
+    "name": "Zephaniah",
+    "feast_date": "June 1",
+    "scripture_ref": "Zephaniah 3:17",
+    "note": "Zephaniah declared that the Lord rejoices over His people with singing.",
+    "reflection": "God’s joy is a powerful promise amid restoration and renewal."
+  },
+  {
+    "id": "saint-0026",
+    "name": "Haggai",
+    "feast_date": "December 16",
+    "scripture_ref": "Haggai 1:7",
+    "note": "Haggai encouraged the people to consider their ways and rebuild the temple.",
+    "reflection": "God calls us to align our priorities with His kingdom work."
+  },
+  {
+    "id": "saint-0027",
+    "name": "Zechariah",
+    "feast_date": "September 8",
+    "scripture_ref": "Zechariah 4:6",
+    "note": "Zechariah received prophetic visions that emphasized God’s Spirit over human strength.",
+    "reflection": "God accomplishes His plans by His Spirit, not by our effort alone."
+  },
+  {
+    "id": "saint-0028",
+    "name": "Malachi",
+    "feast_date": "November 29",
+    "scripture_ref": "Malachi 3:1",
+    "note": "Malachi foretold the coming messenger who would prepare the way for the Lord.",
+    "reflection": "God prepares the way for His presence and calls us to hearts of purity."
+  },
+  {
+    "id": "saint-0029",
+    "name": "Mary",
+    "feast_date": "August 7-22",
+    "scripture_ref": "Luke 1:38",
+    "note": "Mary humbly accepted God’s plan and became the mother of Jesus. In the Coptic Orthodox tradition, her annual feast spans August 7–22.",
+    "reflection": "Faithful surrender opens the door to God’s incredible purposes."
+  },
+  {
+    "id": "saint-0030",
+    "name": "Joseph",
+    "feast_date": "March 19",
+    "scripture_ref": "Matthew 1:24",
+    "note": "Joseph obeyed the angel and cared for Mary and Jesus with quiet faithfulness.",
+    "reflection": "God honors humble obedience and faithful care in everyday life."
+  },
+  {
+    "id": "saint-0031",
+    "name": "John the Baptist",
+    "feast_date": "June 24",
+    "scripture_ref": "Matthew 3:1-3",
+    "note": "John prepared the way for Jesus and called people to repentance in the wilderness.",
+    "reflection": "God uses faithful witnesses to prepare hearts for the Savior."
+  },
+  {
+    "id": "saint-0032",
+    "name": "Peter",
+    "feast_date": "June 29",
+    "scripture_ref": "Luke 5:8",
+    "note": "Peter was called to follow Jesus and became a foundation for the early church.",
+    "reflection": "God can use our failures and restoration to build His church."
+  },
+  {
+    "id": "saint-0033",
+    "name": "James",
+    "feast_date": "July 25",
+    "scripture_ref": "James 1:22",
+    "note": "James urged believers to be doers of the word and not hearers only.",
+    "reflection": "Faith grows strongest when it is lived out in obedience and action."
+  },
+  {
+    "id": "saint-0034",
+    "name": "John",
+    "feast_date": "December 27",
+    "scripture_ref": "John 13:34-35",
+    "note": "John emphasized God’s love and the command to love one another as proof of discipleship.",
+    "reflection": "Love is the distinguishing mark of those who follow Christ."
+  },
+  {
+    "id": "saint-0035",
+    "name": "Paul",
+    "feast_date": "June 29",
+    "scripture_ref": "Philippians 4:13",
+    "note": "Paul wrote from prison that he could do all things through Christ who strengthened him.",
+    "reflection": "Christ empowers us in weakness and keeps us steadfast in every season."
+  },
+  {
+    "id": "saint-0036",
+    "name": "Philip",
+    "feast_date": "October 11",
+    "scripture_ref": "Acts 8:26-40",
+    "note": "Philip preached the good news to the Ethiopian eunuch and baptized him immediately.",
+    "reflection": "God can open unexpected doors for the gospel when we obey His prompting."
+  },
+  {
+    "id": "saint-0037",
+    "name": "Stephen",
+    "feast_date": "December 26",
+    "scripture_ref": "Acts 7:59-60",
+    "note": "Stephen was the first Christian martyr, full of grace and forgiveness even in death.",
+    "reflection": "God’s strength enables us to trust Him even in the face of suffering."
+  },
+  {
+    "id": "saint-0038",
+    "name": "Barnabas",
+    "feast_date": "June 11",
+    "scripture_ref": "Acts 4:36-37",
+    "note": "Barnabas was known as the son of encouragement and supported new believers generously.",
+    "reflection": "Encouragement is a powerful spiritual gift that builds up the body of Christ."
+  },
+  {
+    "id": "saint-0039",
+    "name": "Timothy",
+    "feast_date": "January 26",
+    "scripture_ref": "2 Timothy 1:7",
+    "note": "Timothy was a young pastor encouraged by Paul to lead with power, love, and self-discipline.",
+    "reflection": "God equips His servants with boldness and sound judgment, regardless of age."
+  },
+  {
+    "id": "saint-0040",
+    "name": "Lydia",
+    "feast_date": "June 24",
+    "scripture_ref": "Acts 16:14-15",
+    "note": "Lydia opened her heart and her home to Paul’s message and became an early church partner.",
+    "reflection": "Hospitality and openness are vital ways to welcome God’s work in our lives."
+  },
+  {
+    "id": "feast-0001",
+    "name": "The Holy Nativity Feast",
+    "feast_date": "January 7",
+    "scripture_ref": "Isaiah 9:6-7",
+    "note": "The celebration of Christ’s birth according to the Coptic Orthodox calendar.",
+    "reflection": "God’s incarnation reminds us that He came to dwell with us in humble love."
+  },
+  {
+    "id": "feast-0002",
+    "name": "The Circumcision Feast",
+    "feast_date": "January 14",
+    "scripture_ref": "Luke 2:21",
+    "note": "Commemorates Christ’s obedience to the law through His circumcision on the eighth day.",
+    "reflection": "Even the Son of God honored the covenant, showing His solidarity with humanity."
+  },
+  {
+    "id": "feast-0003",
+    "name": "The Holy Epiphany",
+    "feast_date": "January 19",
+    "scripture_ref": "Matthew 3:16-17",
+    "note": "Celebrates the revelation of the Trinity at Christ’s baptism in the Jordan River.",
+    "reflection": "The Spirit descended and the Father spoke, unveiling the glory of the incarnate Word."
+  },
+  {
+    "id": "feast-0004",
+    "name": "The Feast of the Wedding of Cana of Galilee",
+    "feast_date": "January 21",
+    "scripture_ref": "John 2:1-11",
+    "note": "Honors Christ’s first miracle, turning water into wine at a wedding feast.",
+    "reflection": "Jesus transforms ordinary life into celebration when we trust His word."
+  },
+  {
+    "id": "fast-0001",
+    "name": "Nineveh (Jonah) Fast",
+    "feast_date": "February 2 - February 4",
+    "scripture_ref": "Jonah 3:5-10",
+    "note": "A three-day fast recalling the repentance of Nineveh and God’s mercy toward the city.",
+    "reflection": "True repentance invites God’s compassion and turns hearts back to Him."
+  },
+  {
+    "id": "feast-0005",
+    "name": "Nineveh (Jonah) Feast",
+    "feast_date": "February 5",
+    "scripture_ref": "Jonah 2:1-10",
+    "note": "Celebrates the end of the Nineveh fast and the mercy shown to those who repent.",
+    "reflection": "God delights in mercy and gives new life to those who return to Him in faith."
+  },
+  {
+    "id": "feast-0006",
+    "name": "Presentation of the Lord into the Temple",
+    "feast_date": "February 15",
+    "scripture_ref": "Luke 2:22-38",
+    "note": "Commemorates Christ being presented in the temple and recognized by Simeon and Anna.",
+    "reflection": "The faithful praise God as the promised Savior is revealed to the world."
+  },
+  {
+    "id": "fast-0002",
+    "name": "Holy Great Fast",
+    "feast_date": "February 16 - April 3",
+    "scripture_ref": "Matthew 4:1-2",
+    "note": "The Lenten fast leading to Pascha, marked by prayer, repentance, and spiritual preparation.",
+    "reflection": "Fasting opens the door for deeper communion with Christ and renewal of the heart."
+  },
+  {
+    "id": "feast-0007",
+    "name": "The Feast of the Cross",
+    "feast_date": "March 19",
+    "scripture_ref": "Matthew 16:24-25",
+    "note": "Honors the victory of the cross through which Christ redeemed the world.",
+    "reflection": "The cross is the source of life and the proof of God’s sacrificial love for us."
+  },
+  {
+    "id": "feast-0008",
+    "name": "Lazarus Saturday",
+    "feast_date": "April 4",
+    "scripture_ref": "John 11:1-44",
+    "note": "Celebrates Christ raising Lazarus from the dead, foreshadowing the Resurrection.",
+    "reflection": "Jesus has power over death and calls us to new life in Him."
+  },
+  {
+    "id": "feast-0009",
+    "name": "Entry of our Lord into Jerusalem (Hosanna Sunday)",
+    "feast_date": "April 5",
+    "scripture_ref": "Matthew 21:1-11",
+    "note": "Marks Jesus’ triumphant entry into Jerusalem before His passion.",
+    "reflection": "The King comes in humility, and the people shout hosanna as He brings salvation."
+  },
+  {
+    "id": "feast-0010",
+    "name": "Holy Pascha",
+    "feast_date": "April 6 - April 8",
+    "scripture_ref": "Luke 24:1-7",
+    "note": "The celebration of Christ’s Resurrection from the dead and the victory over sin.",
+    "reflection": "Because He is risen, we live in hope and share the joy of new creation."
+  },
+  {
+    "id": "feast-0011",
+    "name": "Covenant Thursday",
+    "feast_date": "April 9",
+    "scripture_ref": "Luke 22:20",
+    "note": "Commemorates the new covenant in Christ’s blood shared with his disciples.",
+    "reflection": "Christ’s blood seals our redemption and unites us in the new life of the Church."
+  },
+  {
+    "id": "feast-0012",
+    "name": "Good Friday",
+    "feast_date": "April 10",
+    "scripture_ref": "John 19:16-30",
+    "note": "Remembering the crucifixion of our Lord and His sacrificial death for humanity.",
+    "reflection": "On the cross, Christ carried our sin and opened the way for peace with God."
+  },
+  {
+    "id": "feast-0013",
+    "name": "Glorious Feast of the Resurrection",
+    "feast_date": "April 12",
+    "scripture_ref": "John 20:1-18",
+    "note": "The joyful feast celebrating Christ’s resurrection and the triumph of life over death.",
+    "reflection": "The Resurrection is the foundation of our faith and the hope of all believers."
+  },
+  {
+    "id": "feast-0014",
+    "name": "Thomas Sunday",
+    "feast_date": "April 19",
+    "scripture_ref": "John 20:24-29",
+    "note": "Celebrates the day the Apostle Thomas encountered the risen Christ and believed.",
+    "reflection": "Doubt can lead to deeper faith when we meet Jesus and receive His peace."
+  },
+  {
+    "id": "feast-0015",
+    "name": "Martyrdom of St. Mark the Evangelist",
+    "feast_date": "May 8",
+    "scripture_ref": "Mark 16:15",
+    "note": "Honors the witness and sacrifice of St. Mark, the founder of the Coptic Church.",
+    "reflection": "The gospel is carried forward through faithful witness, even to the point of death."
+  },
+  {
+    "id": "feast-0016",
+    "name": "The Holy Feast of Ascension",
+    "feast_date": "May 21",
+    "scripture_ref": "Acts 1:9-11",
+    "note": "Celebrates Christ’s ascension into heaven and the promise of His return.",
+    "reflection": "Jesus ascended to prepare a place for us and sends the Spirit to empower the Church."
+  },
+  {
+    "id": "feast-0017",
+    "name": "The Holy Pentecost Feast",
+    "feast_date": "May 31",
+    "scripture_ref": "Acts 2:1-4",
+    "note": "Marks the descent of the Holy Spirit on the apostles and the birth of the Church.",
+    "reflection": "The Spirit fills believers with power, unity, and the courage to witness."
+  },
+  {
+    "id": "fast-0003",
+    "name": "The Apostles Fast",
+    "feast_date": "June 1 - July 11",
+    "scripture_ref": "Acts 13:2-3",
+    "note": "A fast honoring the apostles and preparing the Church for the Feast of the Apostles.",
+    "reflection": "Fasting helps us remember the apostles’ sacrifice and renews our commitment to follow Jesus."
+  },
+  {
+    "id": "feast-0018",
+    "name": "Entry of the Lord into Egypt",
+    "feast_date": "June 1",
+    "scripture_ref": "Matthew 2:13-15",
+    "note": "Remembers the flight of the Holy Family into Egypt to escape Herod’s persecution.",
+    "reflection": "God protects and guides His own through danger, leading them toward His purpose."
+  },
+  {
+    "id": "feast-0019",
+    "name": "The Apostles Feast (Martyrdom of St. Peter & St. Paul)",
+    "feast_date": "July 12",
+    "scripture_ref": "2 Peter 1:16-18",
+    "note": "Honors the martyrdom and witness of the apostles Peter and Paul.",
+    "reflection": "Following Christ may require sacrifice, but it also brings eternal reward and glory."
+  },
+  {
+    "id": "fast-0004",
+    "name": "St. Mary Fast",
+    "feast_date": "August 7 - August 21",
+    "scripture_ref": "Luke 1:46-55",
+    "note": "A fast in honor of the Virgin Mary, leading to her Assumption feast on August 22.",
+    "reflection": "Mary’s humility and obedience model the faith we seek during seasons of fasting."
+  },
+  {
+    "id": "feast-0020",
+    "name": "Transfiguration Feast",
+    "feast_date": "August 19",
+    "scripture_ref": "Matthew 17:1-9",
+    "note": "Celebrates the Lord’s transfiguration on the mountain before Peter, James, and John.",
+    "reflection": "Christ’s glory is revealed to strengthen us for the journey of faith."
+  },
+  {
+    "id": "feast-0021",
+    "name": "Assumption of St. Mary’s Body",
+    "feast_date": "August 22",
+    "scripture_ref": "John 19:26-27",
+    "note": "Commemorates the translation of the Virgin Mary’s body to heaven.",
+    "reflection": "Mary’s life points us to Christ and the promise of resurrection for all believers."
+  },
+  {
+    "id": "feast-0022",
+    "name": "The Nayrouz Feast (Coptic New Year)",
+    "feast_date": "September 11",
+    "scripture_ref": "Revelation 21:1-4",
+    "note": "Celebrates the beginning of the Coptic year and the martyrs who preserved the faith.",
+    "reflection": "Nayrouz reminds us that through Christ, every new beginning is filled with hope."
+  },
+  {
+    "id": "feast-0023",
+    "name": "Feast of the Cross (Three days)",
+    "feast_date": "September 27 - September 29",
+    "scripture_ref": "1 Corinthians 1:18",
+    "note": "A three-day feast celebrating the life-giving power of the Cross.",
+    "reflection": "The Cross is our victory and the center of the Church’s life and witness."
+  },
+  {
+    "id": "fast-0005",
+    "name": "The Holy Nativity Fast",
+    "feast_date": "November 25 - January 6",
+    "scripture_ref": "Isaiah 40:3",
+    "note": "A fast preparing the Church for the Feast of the Nativity on January 7.",
+    "reflection": "Preparation in fasting helps us receive Christ with joy and expectancy."
+  }
+]
