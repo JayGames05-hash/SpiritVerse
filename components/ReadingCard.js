@@ -1,22 +1,28 @@
 import React, {useEffect, useState} from 'react'
 import Comments from './Comments'
-import { auth, getReactions, addReaction, removeReaction } from '../lib/apiClient'
+import { auth, getReactions, addReaction, removeReaction, getFavorite, addFavorite, removeFavorite } from '../lib/apiClient'
 
 export default function ReadingCard({post}){
   const [likes, setLikes] = useState(0)
   const [liked, setLiked] = useState(false)
+  const [favorite, setFavorite] = useState(false)
 
   useEffect(()=>{
     let mounted = true
     async function load(){
       try{
-        const { data, error } = await getReactions(post.id)
-        if(error) throw error
+        const [{ data: reactionData, error: reactionError }, { data: favoriteData, error: favoriteError }] = await Promise.all([
+          getReactions(post.id),
+          getFavorite(post.id),
+        ])
+        if(reactionError) throw reactionError
+        if(favoriteError) throw favoriteError
         if(mounted) {
-          setLikes(data.count)
-          setLiked(data.liked)
+          setLikes(reactionData.count)
+          setLiked(reactionData.liked)
+          setFavorite(favoriteData)
         }
-      }catch(e){ console.error('load reactions', e) }
+      }catch(e){ console.error('load reactions/favorite', e) }
     }
     load()
     return ()=> { mounted = false }
@@ -54,12 +60,41 @@ export default function ReadingCard({post}){
           {post.date && <p className="text-sm text-gray-500 font-semibold">{post.date}</p>}
           <h1 className="mt-2 text-3xl sm:text-4xl font-bold text-[#4b2d23]">{post.title || post.scripture_ref}</h1>
         </div>
-        <button 
-          onClick={toggleLike} 
-          className={`px-4 py-2 rounded-2xl font-semibold transition whitespace-nowrap ${liked ? 'bg-amber-200 text-amber-900' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
-        >
-          ♥ {likes}
-        </button>
+        <div className="flex flex-wrap gap-3">
+          <button 
+            onClick={toggleLike} 
+            className={`px-4 py-2 rounded-2xl font-semibold transition whitespace-nowrap ${liked ? 'bg-amber-200 text-amber-900' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+          >
+            ♥ {likes}
+          </button>
+          <button
+            onClick={async () => {
+              try {
+                const { data: userRes } = await auth.getUser()
+                const user = userRes.user
+                if (!user) {
+                  alert('Please sign in to save favorites.')
+                  return
+                }
+                if (favorite) {
+                  const { error } = await removeFavorite(post.id)
+                  if (error) throw error
+                  setFavorite(false)
+                } else {
+                  const { error } = await addFavorite(post.id)
+                  if (error) throw error
+                  setFavorite(true)
+                }
+              } catch (e) {
+                console.error('toggle favorite', e)
+                alert('Could not update favorites — try again.')
+              }
+            }}
+            className={`px-4 py-2 rounded-2xl font-semibold transition whitespace-nowrap ${favorite ? 'bg-red-100 text-[#7a1c1c]' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+          >
+            {favorite ? 'Saved' : 'Save'}
+          </button>
+        </div>
       </div>
 
       <div className="text-lg leading-relaxed text-gray-800 mb-6 whitespace-pre-wrap border-l-4 border-[#c89f5d] pl-6 py-4 bg-[#f5e5dc] rounded">

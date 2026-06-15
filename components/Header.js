@@ -19,10 +19,14 @@ export default function Header() {
         <nav className="flex flex-wrap items-center justify-center sm:justify-end gap-3 sm:gap-6 w-full sm:w-auto text-sm text-white/90">
           <Link href="/" className="hover:text-white">Home</Link>
           <Link href="/archive" className="hover:text-white">Archive</Link>
-          <Link href="/ask" className="hover:text-white">Ask a Question</Link>
+          <Link href="/search" className="hover:text-white">Search</Link>
+          <Link href="/saints" className="hover:text-white">Saints</Link>
           <Link href="/verse-suggestions" className="hover:text-white">Suggest a Verse</Link>
           {isLoggedIn && (
-            <Link href="/profile" className="hover:text-white font-semibold">Profile</Link>
+            <>
+              <Link href="/favorites" className="hover:text-white">Favorites</Link>
+              <Link href="/profile" className="hover:text-white font-semibold">Profile</Link>
+            </>
           )}
           <AuthButton />
         </nav>

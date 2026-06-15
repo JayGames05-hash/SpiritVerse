@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Header from '../components/Header'
 import ReadingCard from '../components/ReadingCard'
 import readings from '../data/readings'
+import { logHistory } from '../lib/apiClient'
 
 export default function Home() {
   const [availableReadings, setAvailableReadings] = useState(readings)
@@ -79,6 +80,11 @@ export default function Home() {
     const intervalId = window.setInterval(updateState, 1000)
     return () => window.clearInterval(intervalId)
   }, [availableReadings])
+
+  useEffect(() => {
+    if (!currentReading?.id) return
+    logHistory(currentReading.id).catch(() => {})
+  }, [currentReading])
 
   if (loading) {
     return (

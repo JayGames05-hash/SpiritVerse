@@ -1,3 +1,5 @@
+import saintDetails from './saints'
+
 const saints = [
   'Abraham',
   'Sarah',
@@ -299,7 +301,13 @@ const readings = [
   },
 ]
 
-export default readings.map((r, i) => ({
-  ...r,
-  saint: saints[(i * 37) % saints.length],
-}))
+export default readings.map((r, i) => {
+  const saintDetail = saintDetails[(i * 37) % saintDetails.length]
+  return {
+    ...r,
+    saint: saints[(i * 37) % saints.length],
+    feast_date: saintDetail?.feast_date || '',
+    saint_note: saintDetail?.note || '',
+    saint_scripture_ref: saintDetail?.scripture_ref || '',
+  }
+})

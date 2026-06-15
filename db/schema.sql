@@ -28,7 +28,8 @@ create table if not exists reactions (
   post_id text not null,
   user_id uuid references accounts(id),
   type text not null,
-  created_at timestamptz default now()
+  created_at timestamptz default now(),
+  unique(user_id, post_id)
 );
 
 create table if not exists questions (
@@ -62,4 +63,19 @@ create table if not exists verse_suggestions (
   status text not null default 'pending',
   created_at timestamptz default now(),
   updated_at timestamptz default now()
+);
+
+create table if not exists favorites (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references accounts(id) on delete cascade,
+  post_id text not null,
+  created_at timestamptz default now(),
+  unique(user_id, post_id)
+);
+
+create table if not exists user_history (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references accounts(id) on delete cascade,
+  post_id text not null,
+  created_at timestamptz default now()
 );

@@ -7,6 +7,8 @@ export default function AdminPage() {
   const [loadingComments, setLoadingComments] = useState(true)
   const [pendingSuggestions, setPendingSuggestions] = useState([])
   const [loadingSuggestions, setLoadingSuggestions] = useState(true)
+  const [metrics, setMetrics] = useState(null)
+  const [loadingMetrics, setLoadingMetrics] = useState(true)
   const [testQuote, setTestQuote] = useState(null)
   const [loadingQuote, setLoadingQuote] = useState(false)
 
@@ -31,6 +33,24 @@ export default function AdminPage() {
 
     loadComments()
     loadSuggestions()
+
+    async function loadMetrics() {
+      setLoadingMetrics(true)
+      try {
+        const res = await fetch('/api/admin/metrics', { credentials: 'include' })
+        if (!res.ok) {
+          throw new Error('Failed to load metrics')
+        }
+        const data = await res.json()
+        if (mounted) setMetrics(data.metrics)
+      } catch (err) {
+        console.error('Failed to load admin metrics:', err)
+      } finally {
+        if (mounted) setLoadingMetrics(false)
+      }
+    }
+
+    loadMetrics()
 
     return () => {
       mounted = false
@@ -147,6 +167,38 @@ export default function AdminPage() {
                   </div>
                 ))}
               </div>
+            )}
+          </section>
+
+          <section className="bg-white rounded-3xl shadow-xl p-6 sm:p-8">
+            <h2 className="text-3xl font-bold text-[#4b2d23] mb-4">Admin Metrics</h2>
+            {loadingMetrics ? (
+              <div className="text-gray-700">Loading metrics...</div>
+            ) : metrics ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="rounded-3xl bg-[#f8ebe1] p-5">
+                  <p className="text-sm text-[#7a2b1e] uppercase font-semibold">Pending Suggestions</p>
+                  <p className="text-3xl font-bold text-[#4b2d23]">{metrics.pendingSuggestions}</p>
+                </div>
+                <div className="rounded-3xl bg-[#eef4ea] p-5">
+                  <p className="text-sm text-[#4b5c3c] uppercase font-semibold">Approved Suggestions</p>
+                  <p className="text-3xl font-bold text-[#4b2d23]">{metrics.approvedSuggestions}</p>
+                </div>
+                <div className="rounded-3xl bg-[#f5e8dd] p-5">
+                  <p className="text-sm text-[#7a2b1e] uppercase font-semibold">Total Comments</p>
+                  <p className="text-3xl font-bold text-[#4b2d23]">{metrics.commentsTotal}</p>
+                </div>
+                <div className="rounded-3xl bg-[#eceaf2] p-5">
+                  <p className="text-sm text-[#4b2d23] uppercase font-semibold">Registered Users</p>
+                  <p className="text-3xl font-bold text-[#4b2d23]">{metrics.usersTotal}</p>
+                </div>
+                <div className="rounded-3xl bg-[#f8ebe1] p-5 sm:col-span-2">
+                  <p className="text-sm text-[#7a2b1e] uppercase font-semibold">Favorites Saved</p>
+                  <p className="text-3xl font-bold text-[#4b2d23]">{metrics.favoritesTotal}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="text-gray-700">Unable to display metrics.</div>
             )}
           </section>
 

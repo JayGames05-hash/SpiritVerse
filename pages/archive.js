@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import Header from '../components/Header'
+import readings from '../data/readings'
 
 export default function Archive() {
-  const [readings, setReadings] = useState([])
+  const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const readings = require('../data/readings').default || []
-    setReadings(readings)
+    setItems(readings)
     setLoading(false)
   }, [])
 
@@ -31,14 +31,27 @@ export default function Archive() {
                   <div>
                     <h2 className="text-2xl font-bold text-[#4b2d23]">{reading.title || reading.scripture_ref}</h2>
                     <p className="text-sm text-gray-500">{reading.scripture_ref}</p>
+                    {reading.saint && (
+                      <p className="text-sm text-[#8b1e1e] mt-1">Saint of the Day: {reading.saint}{reading.feast_date ? ` — Feast ${reading.feast_date}` : ''}</p>
+                    )}
                   </div>
                   <p className="text-sm text-gray-600">{reading.date}</p>
                 </div>
                 <div className="text-gray-800 mb-4 whitespace-pre-wrap leading-relaxed">{reading.reading_text}</div>
-                {reading.reflection && (
+                {(reading.reflection || reading.saint_note) && (
                   <div className="bg-[#f5e5dc] border border-[#d7b69a] rounded-lg p-4">
-                    <h3 className="text-sm font-semibold text-[#4b2d23] mb-2">Reflection</h3>
-                    <p className="text-gray-700 italic whitespace-pre-wrap">{reading.reflection}</p>
+                    {reading.reflection && (
+                      <>
+                        <h3 className="text-sm font-semibold text-[#4b2d23] mb-2">Reflection</h3>
+                        <p className="text-gray-700 italic whitespace-pre-wrap">{reading.reflection}</p>
+                      </>
+                    )}
+                    {reading.saint_note && (
+                      <div className="mt-4">
+                        <h3 className="text-sm font-semibold text-[#4b2d23] mb-2">Saint Note</h3>
+                        <p className="text-gray-700 whitespace-pre-wrap">{reading.saint_note}</p>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

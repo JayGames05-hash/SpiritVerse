@@ -9,45 +9,60 @@ export default function Profile() {
   const [myQuestions, setMyQuestions] = useState([])
   const [likedQuotes, setLikedQuotes] = useState([])
   const [myAnswers, setMyAnswers] = useState([])
+  const [historyEntries, setHistoryEntries] = useState([])
+  const [favoriteItems, setFavoriteItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('questions')
 
   useEffect(() => {
-    // Check if user is logged in
-    fetch('/api/auth/user')
-      .then(res => res.json())
-      .then(data => {
-        if (!data.user) {
+    async function loadProfileData() {
+      try {
+        const userRes = await fetch('/api/auth/user', { credentials: 'include' })
+        const userData = await userRes.json()
+        if (!userData.user) {
           router.push('/signin')
           return
         }
-        setUser(data.user)
+        setUser(userData.user)
 
-        // Fetch user's questions
-        fetch('/api/questions', { credentials: 'include' })
-          .then(res => res.json())
-          .then(data => {
-            const userQuestions = (data.questions || []).filter(q => q.author_id === data.user?.id)
-            setMyQuestions(userQuestions)
-          })
-          .catch(err => console.error('Failed to fetch questions:', err))
+        const [questionsRes, reactionsRes, answersRes, historyRes, favoritesRes] = await Promise.all([
+          fetch('/api/questions', { credentials: 'include' }),
+          fetch('/api/reactions/user', { credentials: 'include' }),
+          fetch('/api/answers/user', { credentials: 'include' }),
+          fetch('/api/history', { credentials: 'include' }),
+          fetch('/api/favorites', { credentials: 'include' }),
+        ])
 
-        // Fetch user's liked quotes
-        fetch('/api/reactions/user', { credentials: 'include' })
-          .then(res => res.json())
-          .then(data => {
-            const reactions = data.reactions || []
-            // Map post_ids to actual readings
-            const liked = reactions
-              .map(r => readings.find(reading => reading.id === r.post_id))
-              .filter(Boolean)
-            setLikedQuotes(liked)
-          })
-          .catch(err => console.error('Failed to fetch liked quotes:', err))
+        const questionsData = await questionsRes.json()
+        const reactionsData = await reactionsRes.json()
+        const answersData = await answersRes.json()
+        const historyData = await historyRes.json()
+        const favoritesData = await favoritesRes.json()
 
+        setMyQuestions((questionsData.questions || []).filter(q => q.author_id === userData.user?.id))
+        setMyAnswers(answersData.answers || [])
+
+        const liked = (reactionsData.reactions || [])
+          .map(r => readings.find(reading => reading.id === r.post_id))
+          .filter(Boolean)
+        setLikedQuotes(liked)
+
+        const favoriteIds = (favoritesData.favorites || []).map(f => f.post_id)
+        const favoritePosts = favoriteIds
+          .map(id => readings.find(reading => reading.id === id))
+          .filter(Boolean)
+        setFavoriteItems(favoritePosts)
+
+        setHistoryEntries(historyData.history || [])
+      } catch (err) {
+        console.error('Failed to load profile data:', err)
+        router.push('/signin')
+      } finally {
         setLoading(false)
-      })
-      .catch(() => router.push('/signin'))
+      }
+    }
+
+    loadProfileData()
   }, [router])
 
   const handleViewQuestion = id => {
@@ -135,6 +150,26 @@ export default function Profile() {
           >
             My Answers ({myAnswers.length})
           </button>
+          <button
+            onClick={() => setActiveTab('history')}
+            className={`px-6 py-2 rounded-lg font-semibold transition ${
+              activeTab === 'history'
+                ? 'bg-white text-[#4b2d23]'
+                : 'bg-[#5a211f] text-white hover:bg-[#7a1c1c]'
+            }`}
+          >
+            History ({historyEntries.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('favorites')}
+            className={`px-6 py-2 rounded-lg font-semibold transition ${
+              activeTab === 'favorites'
+                ? 'bg-white text-[#4b2d23]'
+                : 'bg-[#5a211f] text-white hover:bg-[#7a1c1c]'
+            }`}
+          >
+            Favorites ({favoriteItems.length})
+          </button>
         </div>
 
         {/* Content */}
@@ -196,6 +231,66 @@ export default function Profile() {
                     {quote.reflection && (
                       <p className="text-gray-600 text-sm border-t pt-4">{quote.reflection}</p>
                     )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'history' && (
+          <div>
+            {historyEntries.length === 0 ? (
+              <div className="bg-[#5a211f] rounded-3xl p-6 sm:p-8 text-white text-center">
+                <p className="mb-4">Your reading history is empty.</p>
+                <button
+                  onClick={() => router.push('/')}
+                  className="bg-white text-[#4b2d23] px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100 transition"
+                >
+                  View Today’s Reading
+                </button>
+              </div>
+            ) : (
+              <div className="grid gap-6">
+                {historyEntries.map((entry) => {
+                  const reading = readings.find((item) => item.id === entry.post_id)
+                  return (
+                    <div key={`${entry.post_id}-${entry.created_at}`} className="bg-white rounded-3xl shadow-xl p-6">
+                      <div className="flex flex-col sm:flex-row sm:justify-between gap-3">
+                        <div>
+                          <h3 className="text-xl font-bold text-[#4b2d23]">{reading?.title || entry.post_id}</h3>
+                          {reading?.scripture_ref && <p className="text-sm text-gray-500">{reading.scripture_ref}</p>}
+                        </div>
+                        <p className="text-sm text-gray-500">{new Date(entry.created_at).toLocaleDateString()}</p>
+                      </div>
+                      {reading && <p className="text-gray-700 mt-4 whitespace-pre-wrap">{reading.reading_text}</p>}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'favorites' && (
+          <div>
+            {favoriteItems.length === 0 ? (
+              <div className="bg-[#5a211f] rounded-3xl p-6 sm:p-8 text-white text-center">
+                <p className="mb-4">You don't have any saved favorites yet.</p>
+                <button
+                  onClick={() => router.push('/')}
+                  className="bg-white text-[#4b2d23] px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100 transition"
+                >
+                  Discover Readings
+                </button>
+              </div>
+            ) : (
+              <div className="grid gap-6">
+                {favoriteItems.map((quote) => (
+                  <div key={quote.id} className="bg-white rounded-3xl shadow-xl p-6">
+                    <h3 className="text-xl font-bold text-[#4b2d23] mb-2">{quote.title || quote.scripture_ref}</h3>
+                    <p className="text-gray-700 mb-4 whitespace-pre-wrap">{quote.reading_text}</p>
+                    {quote.reflection && <p className="text-gray-600 italic">{quote.reflection}</p>}
                   </div>
                 ))}
               </div>

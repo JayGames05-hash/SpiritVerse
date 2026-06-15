@@ -1,0 +1,34 @@
+import saints from '../data/saints'
+import Header from '../components/Header'
+
+export default function SaintsPage() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#3d1212] via-[#5c1515] to-[#1b0707]">
+      <Header />
+      <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 mb-10">
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#4b2d23] mb-4">Saints & Feasts</h1>
+          <p className="text-gray-600">Explore a curated list of saints, feast days, and notes for daily reflection.</p>
+        </div>
+
+        <div className="grid gap-6">
+          {saints.map((saint) => (
+            <div key={saint.id} className="bg-white rounded-3xl shadow-xl p-6">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-[#4b2d23]">{saint.name}</h2>
+                  <p className="text-sm text-gray-500">Feast Day: {saint.feast_date}</p>
+                  {saint.scripture_ref && <p className="text-sm text-gray-500">Scripture: {saint.scripture_ref}</p>}
+                </div>
+              </div>
+              <div className="mt-4 text-gray-700 leading-relaxed whitespace-pre-wrap">
+                <p>{saint.note}</p>
+                {saint.reflection && <p className="mt-3 italic text-gray-600">{saint.reflection}</p>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
+    </div>
+  )
+}
