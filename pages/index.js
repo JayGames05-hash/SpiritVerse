@@ -104,15 +104,15 @@ export default function Home() {
       <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {currentReading && (
           <div className="space-y-6">
-            <div className="flex justify-center mb-8">
-              <Link href="/ask" className="bg-white text-[#8b1e1e] px-6 py-2 rounded-2xl font-semibold hover:opacity-90 transition">
-                Ask a Question
-              </Link>
-            </div>
             <div className="text-right text-sm text-[#f4e5d7] sm:text-base">
               Next verse in <span className="font-semibold text-white">{formatDuration(remainingSeconds)}</span>
             </div>
             <ReadingCard post={currentReading} />
+            <div className="flex justify-center mt-8">
+              <Link href="/ask" className="bg-white text-[#8b1e1e] px-6 py-2 rounded-2xl font-semibold hover:opacity-90 transition">
+                Ask a Question
+              </Link>
+            </div>
           </div>
         )}
       </main>

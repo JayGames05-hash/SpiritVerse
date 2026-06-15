@@ -20,7 +20,6 @@ export default function Header() {
           <Link href="/" className="hover:text-white">Home</Link>
           <Link href="/archive" className="hover:text-white">Archive</Link>
           <Link href="/search" className="hover:text-white">Search</Link>
-          <Link href="/ask" className="hidden sm:inline-block bg-white text-[#4b2d23] px-3 py-1 rounded-2xl font-semibold hover:opacity-90">Ask a Question</Link>
           <Link href="/saints" className="hover:text-white">Saints</Link>
           <Link href="/verse-suggestions" className="hover:text-white">Suggest a Verse</Link>
           {isLoggedIn && (
@@ -31,10 +30,6 @@ export default function Header() {
           )}
           <AuthButton />
         </nav>
-        {/* Mobile-visible Ask button (shows when nav's Ask is hidden) */}
-        <div className="sm:hidden mt-2">
-          <Link href="/ask" className="bg-white text-[#4b2d23] px-3 py-1 rounded-2xl font-semibold">Ask</Link>
-        </div>
       </div>
     </header>
   )
