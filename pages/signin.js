@@ -70,8 +70,8 @@ export default function SignInPage() {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
       <Header />
       <main className="flex items-center justify-center px-4 py-8 sm:py-12">
-        <div className="w-full max-w-lg bg-white rounded-3xl shadow-xl p-6 sm:p-8 mx-auto">
-          <h1 className="text-2xl sm:text-3xl font-bold text-purple-900 mb-3 text-center sm:text-left">Saint Account Center</h1>
+        <div className="w-full max-w-lg church-panel rounded-3xl p-6 sm:p-8 mx-auto">
+          <h1 className="church-title text-2xl sm:text-3xl font-bold mb-3 text-center sm:text-left">Saint Account Center</h1>
           <p className="text-sm sm:text-base text-gray-600 mb-6 text-center sm:text-left">
             Create a saint-based account or sign in with your existing email. Accounts are stored directly in Postgres.
           </p>
@@ -124,7 +124,7 @@ export default function SignInPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-4 py-3 bg-purple-600 text-white rounded-2xl font-semibold hover:bg-purple-700 disabled:bg-gray-400 transition"
+              className="w-full px-4 py-3 church-button rounded-2xl font-semibold hover:bg-[#b68f35] disabled:bg-gray-400 transition"
             >
               {loading ? 'Working…' : mode === 'register' ? 'Create saint account' : 'Sign in'}
             </button>

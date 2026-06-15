@@ -67,9 +67,9 @@ export default function ReadingCard({post}){
       </div>
       
       {post.reflection && (
-        <div className="bg-purple-100 rounded-lg p-6 mb-8 border border-purple-200">
-          <h3 className="text-sm font-semibold text-purple-900 mb-2">Reflection</h3>
-          <p className="text-gray-800 italic">{post.reflection}</p>
+        <div className="church-panel-strong rounded-3xl p-6 mb-8 border church-border">
+          <h3 className="text-sm font-semibold text-[#5d2e58] mb-2">Reflection</h3>
+          <p className="text-[#4b3648] italic">{post.reflection}</p>
         </div>
       )}
 

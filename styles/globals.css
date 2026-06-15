@@ -1,11 +1,84 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=EB+Garamond:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html,body,#__next{height:100%}
-body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#fafafa;color:#111;margin:0}
-a{color:#246; text-decoration:none}
+:root {
+  color-scheme: dark;
+  --church-bg: #160b24;
+  --church-surface: rgba(255, 250, 241, 0.96);
+  --church-surface-strong: rgba(255, 249, 235, 0.98);
+  --church-text: #2f1c32;
+  --church-muted: #6b5661;
+  --church-gold: #d4ac52;
+  --church-gold-dark: #b68f35;
+  --church-accent: #7d1f3f;
+  --church-border: rgba(212, 172, 82, 0.22);
+}
 
-/* simple container */
-main{padding-bottom:48px}
+html,body,#__next { min-height: 100%; }
+body {
+  font-family: 'EB Garamond', Georgia, serif;
+  background-color: var(--church-bg);
+  background-image:
+    radial-gradient(circle at 15% 12%, rgba(255, 246, 216, 0.18), transparent 18%),
+    radial-gradient(circle at 85% 10%, rgba(212, 172, 82, 0.10), transparent 14%),
+    radial-gradient(circle at 50% 90%, rgba(255, 244, 221, 0.08), transparent 24%),
+    linear-gradient(180deg, #2d153f 0%, #2d1c4e 38%, #18091a 100%);
+  color: #f4ece1;
+  margin: 0;
+}
+a {
+  color: var(--church-gold);
+  text-decoration: none;
+}
+main {
+  padding-bottom: 48px;
+}
+.church-header {
+  background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08), transparent 16%),
+    linear-gradient(90deg, rgba(43, 19, 58, 0.96), rgba(103, 44, 124, 0.92));
+  border-bottom: 1px solid rgba(212, 172, 82, 0.22);
+}
+.church-header a {
+  color: #f7e2b7;
+}
+.church-panel {
+  background: var(--church-surface);
+  border: 1px solid var(--church-border);
+  box-shadow: 0 24px 60px rgba(8, 3, 22, 0.18);
+  color: var(--church-text);
+}
+.church-panel-strong {
+  background: var(--church-surface-strong);
+  border-color: rgba(125, 31, 47, 0.16);
+}
+.church-title {
+  position: relative;
+}
+.church-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.9rem;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(212, 172, 82, 0.9), rgba(125, 31, 47, 0.85));
+}
+.church-button {
+  background: var(--church-gold);
+  color: #241135;
+}
+.church-button:hover,
+.church-button:focus {
+  background: var(--church-gold-dark);
+}
+.church-border {
+  border-color: var(--church-border);
+}
+.church-deco {
+  background-image: radial-gradient(circle at center, rgba(212, 172, 82, 0.10), transparent 35%);
+}
