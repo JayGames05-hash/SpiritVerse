@@ -21,6 +21,7 @@ export default function Header() {
           <Link href="/archive" className="hover:text-white">Archive</Link>
           <Link href="/search" className="hover:text-white">Search</Link>
           <Link href="/saints" className="hover:text-white">Saints</Link>
+          <Link href="/calendar" className="hover:text-white">Feast Calendar</Link>
           <Link href="/verse-suggestions" className="hover:text-white">Suggest a Verse</Link>
           {isLoggedIn && (
             <>

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Header from '../components/Header'
 import ReadingCard from '../components/ReadingCard'
 import readings from '../data/readings'
+import saints from '../data/saints'
 import { logHistory } from '../lib/apiClient'
 
 export default function Home() {
@@ -18,6 +19,79 @@ export default function Home() {
     if (h > 0) return `${h}h ${m}m ${s}s`
     return `${m}m ${s}s`
   }
+
+  const monthOrder = {
+    January: 1,
+    February: 2,
+    March: 3,
+    April: 4,
+    May: 5,
+    June: 6,
+    July: 7,
+    August: 8,
+    September: 9,
+    October: 10,
+    November: 11,
+    December: 12,
+  }
+
+  const parseDatePart = (dateString) => {
+    const [month, day] = dateString.trim().split(' ')
+    return {
+      month,
+      day: Number(day),
+      monthIndex: monthOrder[month] || 0,
+    }
+  }
+
+  const isDateInRange = (range, today) => {
+    const parts = range.split('-').map((part) => part.trim())
+    const start = parseDatePart(parts[0])
+    const end = parseDatePart(parts[1] || parts[0])
+    const current = { monthIndex: today.getMonth() + 1, day: today.getDate() }
+
+    if (
+      start.monthIndex < end.monthIndex ||
+      (start.monthIndex === end.monthIndex && start.day <= end.day)
+    ) {
+      return (
+        (current.monthIndex > start.monthIndex ||
+          (current.monthIndex === start.monthIndex && current.day >= start.day)) &&
+        (current.monthIndex < end.monthIndex ||
+          (current.monthIndex === end.monthIndex && current.day <= end.day))
+      )
+    }
+
+    return (
+      current.monthIndex > start.monthIndex ||
+      (current.monthIndex === start.monthIndex && current.day >= start.day) ||
+      current.monthIndex < end.monthIndex ||
+      (current.monthIndex === end.monthIndex && current.day <= end.day)
+    )
+  }
+
+  const getEntryType = (entry) => entry.id.startsWith('fast-') ? 'fast' : 'feast'
+  const getBadgeClasses = (entry) => entry.id.startsWith('fast-')
+    ? 'bg-cyan-100 text-cyan-900'
+    : 'bg-amber-100 text-amber-900'
+
+  const liturgicalItems = saints.filter((item) => item.id.startsWith('feast-') || item.id.startsWith('fast-'))
+  const today = new Date()
+  const todayLiturgical = liturgicalItems.find((item) => isDateInRange(item.feast_date, today))
+
+  const sortedLiturgical = liturgicalItems.slice().sort((a, b) => {
+    const aDate = parseDatePart(a.feast_date.split('-')[0].trim())
+    const bDate = parseDatePart(b.feast_date.split('-')[0].trim())
+    if (aDate.monthIndex !== bDate.monthIndex) return aDate.monthIndex - bDate.monthIndex
+    return aDate.day - bDate.day
+  })
+
+  const nextLiturgical = sortedLiturgical.find((item) => {
+    const date = parseDatePart(item.feast_date.split('-')[0].trim())
+    if (date.monthIndex > today.getMonth() + 1) return true
+    if (date.monthIndex < today.getMonth() + 1) return false
+    return date.day >= today.getDate()
+  })
 
   useEffect(() => {
     async function loadApprovedSuggestions() {
@@ -104,6 +178,26 @@ export default function Home() {
       <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {currentReading && (
           <div className="space-y-6">
+            {(todayLiturgical || nextLiturgical) && (
+              <div className="rounded-3xl border border-white/10 bg-white/10 p-5 text-white backdrop-blur-lg">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div>
+                    <p className="text-sm uppercase tracking-[0.2em] text-[#f4e5d7]">
+                      {todayLiturgical ? 'Today in the liturgical calendar' : 'Next liturgical observance'}
+                    </p>
+                    <h2 className="mt-2 text-2xl font-semibold text-white">
+                      {todayLiturgical ? todayLiturgical.name : nextLiturgical.name}
+                    </h2>
+                    <p className="mt-2 text-sm text-[#f4e5d7]">
+                      {todayLiturgical ? todayLiturgical.note : nextLiturgical.note}
+                    </p>
+                  </div>
+                  <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${getBadgeClasses(todayLiturgical || nextLiturgical)}`}>
+                    {getEntryType(todayLiturgical || nextLiturgical) === 'fast' ? 'Fast' : 'Feast'}
+                  </span>
+                </div>
+              </div>
+            )}
             <div className="text-right text-sm text-[#f4e5d7] sm:text-base">
               Next verse in <span className="font-semibold text-white">{formatDuration(remainingSeconds)}</span>
             </div>
