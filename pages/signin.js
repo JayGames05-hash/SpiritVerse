@@ -69,23 +69,23 @@ export default function SignInPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
       <Header />
-      <main className="flex items-center justify-center px-4 py-12">
-        <div className="max-w-lg w-full bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-purple-900 mb-2">Saint Account Center</h1>
-          <p className="text-sm text-gray-600 mb-6">
+      <main className="flex items-center justify-center px-4 py-8 sm:py-12">
+        <div className="w-full max-w-lg bg-white rounded-3xl shadow-xl p-6 sm:p-8 mx-auto">
+          <h1 className="text-2xl sm:text-3xl font-bold text-purple-900 mb-3 text-center sm:text-left">Saint Account Center</h1>
+          <p className="text-sm sm:text-base text-gray-600 mb-6 text-center sm:text-left">
             Create a saint-based account or sign in with your existing email. Accounts are stored directly in Postgres.
           </p>
 
-          <div className="flex gap-2 mb-6">
+          <div className="flex flex-col sm:flex-row gap-3 mb-6">
             <button
-              className={`flex-1 px-4 py-2 rounded-lg font-semibold transition ${mode === 'register' ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+              className={`w-full sm:flex-1 px-4 py-3 rounded-2xl font-semibold transition ${mode === 'register' ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
               onClick={() => setMode('register')}
               type="button"
             >
               Register
             </button>
             <button
-              className={`flex-1 px-4 py-2 rounded-lg font-semibold transition ${mode === 'login' ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+              className={`w-full sm:flex-1 px-4 py-3 rounded-2xl font-semibold transition ${mode === 'login' ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
               onClick={() => setMode('login')}
               type="button"
             >
@@ -98,29 +98,33 @@ export default function SignInPage() {
             <label className="block mb-4">
               <div className="text-sm font-semibold text-gray-700 mb-2">Email</div>
               <input
+                name="email"
+                autoComplete="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:border-purple-500"
+                className="w-full border border-gray-300 p-3 rounded-2xl focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
               />
             </label>
             <label className="block mb-6">
               <div className="text-sm font-semibold text-gray-700 mb-2">Password</div>
               <input
+                name="password"
+                autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Choose a password"
-                className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:border-purple-500"
+                className="w-full border border-gray-300 p-3 rounded-2xl focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
               />
             </label>
-            {error && <div className="text-red-600 mb-4 font-semibold">{error}</div>}
-            {message && <div className="text-green-600 mb-4 font-semibold">{message}</div>}
+            {error && <div className="text-sm text-red-600 mb-4 font-semibold">{error}</div>}
+            {message && <div className="text-sm text-green-600 mb-4 font-semibold">{message}</div>}
             <button
               type="submit"
               disabled={loading}
-              className="w-full px-4 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 disabled:bg-gray-400 transition"
+              className="w-full px-4 py-3 bg-purple-600 text-white rounded-2xl font-semibold hover:bg-purple-700 disabled:bg-gray-400 transition"
             >
               {loading ? 'Working…' : mode === 'register' ? 'Create saint account' : 'Sign in'}
             </button>

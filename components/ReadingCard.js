@@ -48,15 +48,15 @@ export default function ReadingCard({post}){
   }
 
   return (
-    <article className="bg-white rounded-lg shadow-lg p-8">
-      <div className="flex justify-between items-start mb-6">
+    <article className="bg-white rounded-3xl shadow-xl p-6 sm:p-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div className="flex-1">
           <p className="text-sm text-gray-500 font-semibold">{post.date}</p>
-          <h1 className="mt-2 text-4xl font-bold text-purple-900">{post.title || post.scripture_ref}</h1>
+          <h1 className="mt-2 text-3xl sm:text-4xl font-bold text-purple-900">{post.title || post.scripture_ref}</h1>
         </div>
         <button 
           onClick={toggleLike} 
-          className={`px-4 py-2 rounded-lg font-semibold transition ml-4 whitespace-nowrap ${liked ? 'bg-amber-200 text-amber-900' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+          className={`px-4 py-2 rounded-2xl font-semibold transition whitespace-nowrap ${liked ? 'bg-amber-200 text-amber-900' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
         >
           ♥ {likes}
         </button>

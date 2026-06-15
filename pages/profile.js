@@ -58,7 +58,7 @@ export default function Profile() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
         <Header />
-        <main className="max-w-4xl mx-auto px-4 py-12">
+        <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
           <div className="text-center text-white">Loading...</div>
         </main>
       </div>
@@ -72,11 +72,11 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
       <Header />
-      <main className="max-w-4xl mx-auto px-4 py-12">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Profile Header */}
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-          <div className="flex items-center justify-between gap-4">
-            <h1 className="text-4xl font-bold text-purple-900 mb-2">{user.full_name || user.email}</h1>
+        <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 mb-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <h1 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-2">{user.full_name || user.email}</h1>
             {user.is_admin && (
               <div className="flex items-center gap-3">
                 <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold">Admin</span>
@@ -141,11 +141,11 @@ export default function Profile() {
         {activeTab === 'questions' && (
           <div>
             {myQuestions.length === 0 ? (
-              <div className="bg-purple-700 rounded-lg p-8 text-white text-center">
+              <div className="bg-purple-700 rounded-3xl p-6 sm:p-8 text-white text-center">
                 <p className="mb-4">You haven't asked any questions yet.</p>
                 <button
                   onClick={() => router.push('/ask')}
-                  className="bg-white text-purple-900 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100"
+                  className="bg-white text-purple-900 px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100 transition"
                 >
                   Ask a Question
                 </button>
@@ -153,10 +153,10 @@ export default function Profile() {
             ) : (
               <div className="grid gap-6">
                 {myQuestions.map(q => (
-                  <div key={q.id} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition">
+                  <div key={q.id} className="bg-white rounded-3xl shadow-xl p-6 hover:shadow-2xl transition">
                     <h3 className="text-xl font-bold text-purple-900 mb-2">{q.title}</h3>
                     <p className="text-gray-700 mb-4 line-clamp-2">{q.content}</p>
-                    <div className="flex justify-between items-center">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
                       <span className="text-xs text-gray-500">
                         {new Date(q.created_at).toLocaleDateString()}
                       </span>
@@ -177,11 +177,11 @@ export default function Profile() {
         {activeTab === 'liked' && (
           <div>
             {likedQuotes.length === 0 ? (
-              <div className="bg-purple-700 rounded-lg p-8 text-white text-center">
+              <div className="bg-purple-700 rounded-3xl p-6 sm:p-8 text-white text-center">
                 <p className="mb-4">You haven't liked any quotes yet.</p>
                 <button
                   onClick={() => router.push('/')}
-                  className="bg-white text-purple-900 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100"
+                  className="bg-white text-purple-900 px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100 transition"
                 >
                   Browse Quotes
                 </button>
@@ -189,7 +189,7 @@ export default function Profile() {
             ) : (
               <div className="grid gap-6">
                 {likedQuotes.map(quote => (
-                  <div key={quote.id} className="bg-white rounded-lg shadow-lg p-6">
+                  <div key={quote.id} className="bg-white rounded-3xl shadow-xl p-6">
                     <p className="text-gray-600 text-sm mb-2">{quote.date}</p>
                     <h3 className="text-xl font-bold text-purple-900 mb-3">{quote.title || quote.scripture_ref}</h3>
                     <p className="text-gray-800 mb-4 italic">{quote.reading_text}</p>
@@ -206,11 +206,11 @@ export default function Profile() {
         {activeTab === 'answers' && (
           <div>
             {myAnswers.length === 0 ? (
-              <div className="bg-purple-700 rounded-lg p-8 text-white text-center">
+              <div className="bg-purple-700 rounded-3xl p-6 sm:p-8 text-white text-center">
                 <p className="mb-4">You haven't answered any questions yet.</p>
                 <button
                   onClick={() => router.push('/ask')}
-                  className="bg-white text-purple-900 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100"
+                  className="bg-white text-purple-900 px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100 transition"
                 >
                   Browse Questions
                 </button>
@@ -218,7 +218,7 @@ export default function Profile() {
             ) : (
               <div className="grid gap-6">
                 {myAnswers.map(a => (
-                  <div key={a.id} className="bg-white rounded-lg shadow-lg p-6">
+                  <div key={a.id} className="bg-white rounded-3xl shadow-xl p-6">
                     <p className="text-gray-600 text-sm mb-2">Answer to question ID: {a.question_id}</p>
                     <p className="text-gray-800 mb-4 line-clamp-3">{a.content}</p>
                     <span className="text-xs text-gray-500">

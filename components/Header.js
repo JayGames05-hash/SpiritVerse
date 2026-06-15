@@ -14,9 +14,9 @@ export default function Header() {
 
   return (
     <header className="bg-gray-50 border-b">
-      <div className="max-w-4xl mx-auto flex items-center justify-between p-3">
+      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center sm:justify-between gap-3 sm:gap-0 p-3">
         <Link href="/" className="font-bold text-lg">Coptic Daily Readings</Link>
-        <nav className="flex items-center gap-6">
+        <nav className="flex flex-wrap items-center justify-center sm:justify-end gap-3 sm:gap-6 w-full sm:w-auto">
           <Link href="/" className="text-sm hover:text-purple-600">Home</Link>
           <Link href="/archive" className="text-sm hover:text-purple-600">Archive</Link>
           <Link href="/ask" className="text-sm hover:text-purple-600">Ask a Question</Link>

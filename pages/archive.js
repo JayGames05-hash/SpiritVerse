@@ -14,19 +14,19 @@ export default function Archive() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
       <Header />
-      <main className="max-w-4xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold text-white mb-8">Reading Archive</h1>
+      <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <h1 className="text-3xl sm:text-4xl font-bold text-white mb-8">Reading Archive</h1>
 
         {loading ? (
           <div className="text-center text-white">Loading...</div>
         ) : readings.length === 0 ? (
-          <div className="bg-purple-700 rounded-lg p-8 text-white text-center">
+          <div className="bg-purple-700 rounded-3xl p-6 sm:p-8 text-white text-center">
             <p>No readings available yet.</p>
           </div>
         ) : (
           <div className="grid gap-6">
             {readings.map(reading => (
-              <div key={reading.id} className="bg-white rounded-lg shadow-lg p-6">
+              <div key={reading.id} className="bg-white rounded-3xl shadow-xl p-6">
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-4">
                   <div>
                     <h2 className="text-2xl font-bold text-purple-900">{reading.title || reading.scripture_ref}</h2>

@@ -25,7 +25,7 @@ export default function Home() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
         <Header />
-        <main className="max-w-4xl mx-auto px-4 py-12">
+        <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
           <div className="text-center text-white">Loading...</div>
         </main>
       </div>
@@ -35,7 +35,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
       <Header />
-      <main className="max-w-4xl mx-auto px-4 py-12">
+      <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {currentReading && <ReadingCard post={currentReading} />}
       </main>
     </div>
