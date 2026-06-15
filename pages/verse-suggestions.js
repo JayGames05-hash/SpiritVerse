@@ -66,21 +66,21 @@ export default function VerseSuggestionsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
+    <div className="min-h-screen bg-gradient-to-br from-[#3d1212] via-[#5c1515] to-[#1b0707]">
       <Header />
       <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 mb-10">
-          <h1 className="text-3xl sm:text-4xl font-bold text-purple-900 mb-4">Suggest a Verse</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#4b2d23] mb-4">Suggest a Verse</h1>
           <p className="text-gray-600 mb-6">
             Share a Bible verse suggestion for the daily rotation. Admins will review and approve or deny it before it can appear in the randomizer.
           </p>
 
           {!isLoggedIn ? (
-            <div className="bg-purple-700 rounded-3xl p-6 text-white text-center">
+            <div className="bg-[#5a211f] rounded-3xl p-6 text-white text-center">
               <p className="mb-4">You must be signed in to suggest a verse.</p>
               <button
                 onClick={() => router.push('/signin')}
-                className="bg-white text-purple-900 px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100 transition"
+                className="bg-white text-[#4b2d23] px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100 transition"
               >
                 Sign in
               </button>
@@ -93,7 +93,7 @@ export default function VerseSuggestionsPage() {
                   value={scriptureRef}
                   onChange={e => setScriptureRef(e.target.value)}
                   placeholder="John 3:16"
-                  className="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:border-[#8b1e1e] focus:ring-2 focus:ring-[#f2e3d3]"
                 />
               </div>
               <div>
@@ -102,7 +102,7 @@ export default function VerseSuggestionsPage() {
                   value={title}
                   onChange={e => setTitle(e.target.value)}
                   placeholder="God’s Love for the World"
-                  className="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:border-[#8b1e1e] focus:ring-2 focus:ring-[#f2e3d3]"
                 />
               </div>
               <div>
@@ -112,7 +112,7 @@ export default function VerseSuggestionsPage() {
                   onChange={e => setReadingText(e.target.value)}
                   rows="4"
                   placeholder="For God so loved the world..."
-                  className="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:border-[#8b1e1e] focus:ring-2 focus:ring-[#f2e3d3]"
                 />
               </div>
               <div>
@@ -122,7 +122,7 @@ export default function VerseSuggestionsPage() {
                   onChange={e => setReflection(e.target.value)}
                   rows="3"
                   placeholder="Why this verse matters..."
-                  className="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                  className="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:border-[#8b1e1e] focus:ring-2 focus:ring-[#f2e3d3]"
                 />
               </div>
               {error && <div className="text-red-600 font-semibold">{error}</div>}
@@ -130,7 +130,7 @@ export default function VerseSuggestionsPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-purple-600 text-white w-full py-3 rounded-2xl font-semibold hover:bg-purple-700 disabled:bg-gray-400 transition"
+                className="bg-[#8b1e1e] text-white w-full py-3 rounded-2xl font-semibold hover:bg-[#7a1c1c] disabled:bg-gray-400 transition"
               >
                 {loading ? 'Submitting...' : 'Submit Suggestion'}
               </button>
@@ -139,7 +139,7 @@ export default function VerseSuggestionsPage() {
         </div>
 
         <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8">
-          <h2 className="text-2xl font-bold text-purple-900 mb-4">Your Suggestions</h2>
+          <h2 className="text-2xl font-bold text-[#4b2d23] mb-4">Your Suggestions</h2>
           {fetchLoading ? (
             <div className="text-center text-gray-700">Loading suggestions...</div>
           ) : suggestions.length === 0 ? (
@@ -151,9 +151,9 @@ export default function VerseSuggestionsPage() {
                   <div className="flex flex-col sm:flex-row sm:justify-between gap-3">
                     <div>
                       <p className="text-sm text-gray-500">{suggestion.scripture_ref}</p>
-                      <h3 className="text-lg font-semibold text-purple-900">{suggestion.title}</h3>
+                      <h3 className="text-lg font-semibold text-[#4b2d23]">{suggestion.title}</h3>
                     </div>
-                    <span className="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-sm font-semibold text-purple-900">
+                    <span className="inline-flex items-center rounded-full bg-[#f6e8d9] px-3 py-1 text-sm font-semibold text-[#8b1e1e]">
                       {suggestion.status}
                     </span>
                   </div>

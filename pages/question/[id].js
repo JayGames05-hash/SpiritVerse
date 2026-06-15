@@ -71,7 +71,7 @@ export default function QuestionDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
+      <div className="min-h-screen bg-gradient-to-br from-[#3d1212] via-[#5c1515] to-[#1b0707]">
         <Header />
         <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
           <div className="text-center text-white">Loading...</div>
@@ -82,10 +82,10 @@ export default function QuestionDetail() {
 
   if (!question) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
+      <div className="min-h-screen bg-gradient-to-br from-[#3d1212] via-[#5c1515] to-[#1b0707]">
         <Header />
         <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-          <div className="bg-purple-700 rounded-3xl p-6 sm:p-8 text-white text-center">
+          <div className="bg-[#5a211f] rounded-3xl p-6 sm:p-8 text-white text-center">
             <p>Question not found.</p>
           </div>
         </main>
@@ -94,12 +94,12 @@ export default function QuestionDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
+    <div className="min-h-screen bg-gradient-to-br from-[#3d1212] via-[#5c1515] to-[#1b0707]">
       <Header />
       <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Question */}
         <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 mb-8">
-          <h1 className="text-3xl font-bold text-purple-900 mb-4">{question.title}</h1>
+          <h1 className="text-3xl font-bold text-[#4b2d23] mb-4">{question.title}</h1>
           <p className="text-gray-600 text-sm mb-4">
             Asked by <span className="font-semibold">{question.author_name}</span> on{' '}
             {new Date(question.created_at).toLocaleDateString()}
@@ -110,21 +110,21 @@ export default function QuestionDetail() {
         {/* Answer Form */}
         {isLoggedIn && (
           <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 mb-8">
-            <h2 className="text-2xl font-bold text-purple-900 mb-4">Your Answer</h2>
+            <h2 className="text-2xl font-bold text-[#4b2d23] mb-4">Your Answer</h2>
             <form onSubmit={handleSubmitAnswer}>
               <textarea
                 value={answerContent}
                 onChange={e => setAnswerContent(e.target.value)}
                 placeholder="Share your answer..."
                 rows="5"
-                className="w-full px-4 py-3 sm:px-5 sm:py-4 border border-gray-300 rounded-2xl focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100 mb-4"
+                className="w-full px-4 py-3 sm:px-5 sm:py-4 border border-gray-300 rounded-2xl focus:outline-none focus:border-[#8b1e1e] focus:ring-2 focus:ring-[#f2e3d3] mb-4"
                 required
               />
               {error && <p className="text-red-600 mb-4">{error}</p>}
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full sm:w-auto bg-purple-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-purple-700 disabled:bg-gray-400 transition"
+                className="w-full sm:w-auto bg-[#8b1e1e] text-white px-6 py-3 rounded-2xl font-semibold hover:bg-[#7a1c1c] disabled:bg-gray-400 transition"
               >
                 {submitting ? 'Posting...' : 'Post Answer'}
               </button>
@@ -133,11 +133,11 @@ export default function QuestionDetail() {
         )}
 
         {!isLoggedIn && (
-          <div className="bg-purple-700 rounded-3xl p-6 sm:p-8 text-white text-center mb-8">
+          <div className="bg-[#5a211f] rounded-3xl p-6 sm:p-8 text-white text-center mb-8">
             <p className="mb-4">Sign in to post an answer.</p>
             <button
               onClick={() => router.push('/signin')}
-              className="bg-white text-purple-900 px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100 transition"
+              className="bg-white text-[#4b2d23] px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100 transition"
             >
               Sign In
             </button>
@@ -150,7 +150,7 @@ export default function QuestionDetail() {
             {answers.length} {answers.length === 1 ? 'Answer' : 'Answers'}
           </h2>
           {answers.length === 0 ? (
-            <div className="bg-purple-700 rounded-3xl p-6 sm:p-8 text-white text-center">
+            <div className="bg-[#5a211f] rounded-3xl p-6 sm:p-8 text-white text-center">
               <p>No answers yet. Be the first to answer!</p>
             </div>
           ) : (

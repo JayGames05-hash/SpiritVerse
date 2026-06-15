@@ -52,7 +52,7 @@ export default function ReadingCard({post}){
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div className="flex-1">
           {post.date && <p className="text-sm text-gray-500 font-semibold">{post.date}</p>}
-          <h1 className="mt-2 text-3xl sm:text-4xl font-bold text-purple-900">{post.title || post.scripture_ref}</h1>
+          <h1 className="mt-2 text-3xl sm:text-4xl font-bold text-[#4b2d23]">{post.title || post.scripture_ref}</h1>
         </div>
         <button 
           onClick={toggleLike} 
@@ -62,7 +62,7 @@ export default function ReadingCard({post}){
         </button>
       </div>
 
-      <div className="text-lg leading-relaxed text-gray-800 mb-6 whitespace-pre-wrap border-l-4 border-purple-600 pl-6 py-4 bg-purple-50 rounded">
+      <div className="text-lg leading-relaxed text-gray-800 mb-6 whitespace-pre-wrap border-l-4 border-[#c89f5d] pl-6 py-4 bg-[#f5e5dc] rounded">
         {post.reading_text}
       </div>
       

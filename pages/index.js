@@ -82,7 +82,7 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
+      <div className="min-h-screen bg-gradient-to-br from-[#3d1212] via-[#5c1515] to-[#1b0707]">
         <Header />
         <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
           <div className="text-center text-white">Loading...</div>
@@ -92,12 +92,12 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
+    <div className="min-h-screen bg-gradient-to-br from-[#3d1212] via-[#5c1515] to-[#1b0707]">
       <Header />
       <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {currentReading && (
           <div className="space-y-6">
-            <div className="text-right text-sm text-purple-100 sm:text-base">
+            <div className="text-right text-sm text-[#f4e5d7] sm:text-base">
               Next verse in <span className="font-semibold text-white">{formatDuration(remainingSeconds)}</span>
             </div>
             <ReadingCard post={currentReading} />

@@ -74,17 +74,17 @@ export default function Ask() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
+    <div className="min-h-screen bg-gradient-to-br from-[#3d1212] via-[#5c1515] to-[#1b0707]">
       <Header />
       <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <h1 className="text-3xl sm:text-4xl font-bold text-white mb-8">Ask a Question</h1>
 
         {!isLoggedIn ? (
-          <div className="bg-purple-700 rounded-3xl p-6 sm:p-8 text-white text-center mb-8">
+          <div className="bg-[#5a211f] rounded-3xl p-6 sm:p-8 text-white text-center mb-8">
             <p className="mb-4">You must be logged in to ask questions.</p>
             <button
               onClick={() => router.push('/signin')}
-              className="bg-white text-purple-900 px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100 transition"
+              className="bg-white text-[#4b2d23] px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100 transition"
             >
               Sign In
             </button>
@@ -98,7 +98,7 @@ export default function Ask() {
                 value={title}
                 onChange={e => setTitle(e.target.value)}
                 placeholder="What would you like to ask?"
-                className="w-full px-4 py-3 sm:px-5 sm:py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                className="w-full px-4 py-3 sm:px-5 sm:py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-[#8b1e1e] focus:ring-2 focus:ring-[#f2e3d3]"
                 required
               />
             </div>
@@ -110,7 +110,7 @@ export default function Ask() {
                 onChange={e => setContent(e.target.value)}
                 placeholder="Provide more details about your question..."
                 rows="6"
-                className="w-full px-4 py-3 sm:px-5 sm:py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100"
+                className="w-full px-4 py-3 sm:px-5 sm:py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-[#8b1e1e] focus:ring-2 focus:ring-[#f2e3d3]"
                 required
               />
             </div>
@@ -120,7 +120,7 @@ export default function Ask() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-purple-600 text-white py-3 rounded-2xl font-semibold hover:bg-purple-700 disabled:bg-gray-400 transition"
+              className="w-full bg-[#8b1e1e] text-white py-3 rounded-2xl font-semibold hover:bg-[#7a1c1c] disabled:bg-gray-400 transition"
             >
               {loading ? 'Posting...' : 'Post Question'}
             </button>
@@ -132,14 +132,14 @@ export default function Ask() {
           {fetchLoading ? (
             <div className="text-center text-white">Loading...</div>
           ) : questions.length === 0 ? (
-            <div className="bg-purple-700 rounded-3xl p-6 sm:p-8 text-white text-center">
+            <div className="bg-[#5a211f] rounded-3xl p-6 sm:p-8 text-white text-center">
               <p>No questions yet. Be the first to ask!</p>
             </div>
           ) : (
             <div className="grid gap-4">
               {questions.map(q => (
                 <div key={q.id} className="bg-white rounded-3xl shadow-xl p-6 hover:shadow-2xl transition">
-                  <h3 className="text-xl font-bold text-purple-900 mb-2">{q.title}</h3>
+                  <h3 className="text-xl font-bold text-[#4b2d23] mb-2">{q.title}</h3>
                   <p className="text-gray-600 text-sm mb-2">
                     Asked by <span className="font-semibold">{q.author_name}</span>
                   </p>
@@ -150,7 +150,7 @@ export default function Ask() {
                     </span>
                     <button
                       onClick={() => handleViewQuestion(q.id)}
-                      className="text-purple-600 font-semibold hover:text-purple-800"
+                      className="text-[#8b1e1e] font-semibold hover:text-[#6d1b1b]"
                     >
                       View & Answer →
                     </button>

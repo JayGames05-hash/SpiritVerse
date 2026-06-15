@@ -79,11 +79,11 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
+    <div className="min-h-screen bg-gradient-to-br from-[#3d1212] via-[#5c1515] to-[#1b0707]">
       <Header />
       <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
         <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8">
-          <h2 className="text-2xl font-bold text-purple-900 mb-4">Quote Testing</h2>
+          <h2 className="text-2xl font-bold text-[#4b2d23] mb-4">Quote Testing</h2>
           <p className="text-gray-600 mb-6">Click below to force a new random quote (for testing purposes)</p>
           <button
             onClick={handleRandomQuote}
@@ -94,9 +94,9 @@ export default function AdminPage() {
           </button>
 
           {testQuote && (
-            <div className="bg-purple-50 rounded-lg p-6 border-l-4 border-purple-600">
+            <div className="bg-[#f5e5dc] rounded-lg p-6 border-l-4 border-[#c89f5d]">
               {testQuote.date && <p className="text-sm text-gray-500 font-semibold mb-2">{testQuote.date}</p>}
-              <h3 className="text-xl font-bold text-purple-900 mb-3">{testQuote.title || testQuote.scripture_ref}</h3>
+              <h3 className="text-xl font-bold text-[#4b2d23] mb-3">{testQuote.title || testQuote.scripture_ref}</h3>
               <p className="text-gray-800 mb-4 italic">{testQuote.reading_text}</p>
               {testQuote.reflection && (
                 <p className="text-gray-600 text-sm border-t pt-4">{testQuote.reflection}</p>
@@ -107,11 +107,11 @@ export default function AdminPage() {
 
         <div className="grid gap-8">
           <section className="bg-white rounded-3xl shadow-xl p-6 sm:p-8">
-            <h2 className="text-3xl font-bold text-purple-900 mb-6">Pending Verse Suggestions</h2>
+            <h2 className="text-3xl font-bold text-[#4b2d23] mb-6">Pending Verse Suggestions</h2>
             {loadingSuggestions ? (
               <div className="text-gray-700">Loading suggestions...</div>
             ) : pendingSuggestions.length === 0 ? (
-              <div className="rounded-3xl bg-purple-50 border border-purple-200 p-6 text-gray-700">
+              <div className="rounded-3xl bg-[#f5e5dc] border border-[#d7b69a] p-6 text-gray-700">
                 No pending verse suggestions at the moment.
               </div>
             ) : (
@@ -121,7 +121,7 @@ export default function AdminPage() {
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
                       <div>
                         <p className="text-sm text-gray-500">{suggestion.scripture_ref}</p>
-                        <h3 className="text-xl font-semibold text-purple-900">{suggestion.title}</h3>
+                        <h3 className="text-xl font-semibold text-[#4b2d23]">{suggestion.title}</h3>
                         <p className="text-sm text-gray-500">Suggested by {suggestion.author_name || 'Anonymous'}</p>
                       </div>
                       <span className="inline-flex rounded-full bg-yellow-100 px-3 py-1 text-sm font-semibold text-yellow-800">
@@ -155,7 +155,7 @@ export default function AdminPage() {
             {loadingComments ? (
               <div className="text-center text-white text-lg mt-6">Loading comments...</div>
             ) : comments.length === 0 ? (
-              <div className="bg-purple-700 rounded-3xl p-6 sm:p-8 text-white text-center mt-6">
+              <div className="bg-[#5a211f] rounded-3xl p-6 sm:p-8 text-white text-center mt-6">
                 No comments found.
               </div>
             ) : (
@@ -163,7 +163,7 @@ export default function AdminPage() {
                 {comments.map(c => (
                   <div key={c.id} className="bg-white rounded-3xl shadow-xl p-6">
                     <div className="flex flex-col sm:flex-row justify-between mb-4 gap-2 sm:gap-0">
-                      <div className="font-semibold text-purple-900">{c.author_name || 'Anonymous'}</div>
+                      <div className="font-semibold text-[#4b2d23]">{c.author_name || 'Anonymous'}</div>
                       <div className="text-sm text-gray-500">{new Date(c.created_at).toLocaleString()}</div>
                     </div>
                     <div className="mt-2 whitespace-pre-wrap text-gray-800 mb-4">{c.text}</div>
