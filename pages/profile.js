@@ -3,7 +3,8 @@ import { useRouter } from 'next/router'
 import Header from '../components/Header'
 import readings from '../data/readings'
 
-const verseIntervals = [2, 4, 6, 12, 24]
+// Intervals in minutes (every 10 minutes up to 2 hours, plus larger presets)
+const verseIntervals = [10, 20, 30, 40, 50, 60, 90, 120, 180, 360, 720, 1440]
 
 export default function Profile() {
   const router = useRouter()
@@ -37,7 +38,7 @@ export default function Profile() {
           return
         }
         setUser(userData.user)
-        setVerseInterval(userData.user.verse_interval_hours || 2)
+        setVerseInterval(userData.user.verse_interval_minutes || 120)
 
         const [questionsRes, answersRes, historyRes, favoritesRes] = await Promise.all([
           fetch('/api/questions', { credentials: 'include' }),
@@ -212,22 +213,22 @@ export default function Profile() {
     // Intentionally left blank — test notifications removed.
   }
 
-  const handleIntervalChange = async (interval) => {
-    if (interval === verseInterval) return
+  const handleIntervalChange = async (intervalMinutes) => {
+    if (intervalMinutes === verseInterval) return
     setIsSavingInterval(true)
     try {
       const res = await fetch('/api/auth/user', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ verse_interval_hours: interval }),
+        body: JSON.stringify({ verse_interval_minutes: intervalMinutes }),
       })
       if (!res.ok) {
         throw new Error('Failed to save verse interval')
       }
       const data = await res.json()
       setUser(data.user)
-      setVerseInterval(data.user.verse_interval_hours || 2)
+      setVerseInterval(data.user.verse_interval_minutes || 120)
     } catch (err) {
       console.error('Interval save failed:', err)
       const message = err?.message || 'Unable to update verse frequency. Please try again.'
@@ -299,7 +300,7 @@ export default function Profile() {
                       : 'bg-white text-[#4b2d23] border-[#d1d5db] hover:border-[#9ca3af]'
                   }`}
                 >
-                  Every {interval}h
+                  {formatIntervalLabel(interval)}
                 </button>
               ))}
             </div>
@@ -537,4 +538,13 @@ export default function Profile() {
       </main>
     </div>
   )
+}
+
+function formatIntervalLabel(minutes) {
+  if (minutes >= 60) {
+    const hours = Math.floor(minutes / 60)
+    const rem = minutes % 60
+    return rem === 0 ? `Every ${hours}h` : `Every ${hours}h ${rem}m`
+  }
+  return `Every ${minutes}m`
 }

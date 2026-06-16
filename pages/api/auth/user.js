@@ -13,15 +13,16 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Unauthorized' })
     }
 
-    const { verse_interval_hours } = req.body || {}
-    const interval = Number(verse_interval_hours)
-    if (![2, 4, 6, 12, 24].includes(interval)) {
-      return res.status(400).json({ error: 'Invalid verse interval. Use 2, 4, 6, 12, or 24 hours.' })
+    const { verse_interval_minutes } = req.body || {}
+    const interval = Number(verse_interval_minutes)
+    // Accept multiples of 10 minutes from 10 minutes up to 24 hours (1440 minutes)
+    if (!Number.isInteger(interval) || interval < 10 || interval > 1440 || interval % 10 !== 0) {
+      return res.status(400).json({ error: 'Invalid verse interval. Provide minutes in 10-minute increments between 10 and 1440.' })
     }
 
     try {
       const result = await query(
-        'update accounts set verse_interval_hours = $1 where id = $2 returning id, email, saint_name, full_name, is_admin, verse_interval_hours, created_at',
+        'update accounts set verse_interval_minutes = $1 where id = $2 returning id, email, saint_name, full_name, is_admin, verse_interval_minutes, created_at',
         [interval, userRow.id],
       )
 
