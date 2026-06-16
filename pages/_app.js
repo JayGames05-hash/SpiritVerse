@@ -6,10 +6,14 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch((err) => {
-          console.warn('Service worker registration failed:', err)
+        navigator.serviceWorker.register('/sw.js').then((reg) => {
+          console.log('✓ Service Worker registered:', reg.scope)
+        }).catch((err) => {
+          console.error('✗ Service worker registration failed:', err.message, err)
         })
       })
+    } else {
+      console.warn('ServiceWorker not supported in this browser')
     }
   }, [])
 
