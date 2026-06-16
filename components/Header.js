@@ -15,16 +15,16 @@ export default function Header() {
 
   const navLinks = (
     <>
-      <Link href="/" className="block px-3 py-2 hover:text-white">Home</Link>
-      <Link href="/archive" className="block px-3 py-2 hover:text-white">Archive</Link>
-      <Link href="/search" className="block px-3 py-2 hover:text-white">Search</Link>
-      <Link href="/saints" className="block px-3 py-2 hover:text-white">Saints</Link>
-      <Link href="/calendar" className="block px-3 py-2 hover:text-white">Feast Calendar</Link>
-      <Link href="/verse-suggestions" className="block px-3 py-2 hover:text-white">Suggest a Verse</Link>
+      <Link href="/" className="block px-3 py-2 text-white hover:text-gray-100">Home</Link>
+      <Link href="/archive" className="block px-3 py-2 text-white hover:text-gray-100">Archive</Link>
+      <Link href="/search" className="block px-3 py-2 text-white hover:text-gray-100">Search</Link>
+      <Link href="/saints" className="block px-3 py-2 text-white hover:text-gray-100">Saints</Link>
+      <Link href="/calendar" className="block px-3 py-2 text-white hover:text-gray-100">Feast Calendar</Link>
+      <Link href="/verse-suggestions" className="block px-3 py-2 text-white hover:text-gray-100">Suggest a Verse</Link>
       {isLoggedIn && (
         <>
-          <Link href="/favorites" className="block px-3 py-2 hover:text-white">Favorites</Link>
-          <Link href="/profile" className="block px-3 py-2 hover:text-white font-semibold">Profile</Link>
+          <Link href="/favorites" className="block px-3 py-2 text-white hover:text-gray-100">Favorites</Link>
+          <Link href="/profile" className="block px-3 py-2 text-white font-semibold hover:text-gray-100">Profile</Link>
         </>
       )}
       <div className="block px-3 py-2">
@@ -69,7 +69,7 @@ export default function Header() {
 
       {/* Mobile dropdown */}
       {menuOpen && (
-        <div className="sm:hidden absolute left-0 right-0 top-full bg-white/5 backdrop-blur-sm border-t border-white/10">
+        <div className="sm:hidden absolute left-0 right-0 top-full bg-[#0f0a09] border-t border-white/10">
           <div className="max-w-4xl mx-auto p-4 flex flex-col gap-1">{navLinks}</div>
         </div>
       )}
