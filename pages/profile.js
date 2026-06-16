@@ -83,8 +83,9 @@ export default function Profile() {
       setUser(data.user)
       setVerseInterval(data.user.verse_interval_hours || 2)
     } catch (err) {
-      console.error(err)
-      alert('Unable to update verse frequency. Please try again.')
+      console.error('Interval save failed:', err)
+      const message = err?.message || 'Unable to update verse frequency. Please try again.'
+      alert(message)
     } finally {
       setIsSavingInterval(false)
     }
