@@ -1,6 +1,7 @@
 import webpush from 'web-push'
 import { getUserFromRequest } from '../../../lib/auth'
 import { query } from '../../../lib/db'
+import { setupWebPush } from '../../../lib/push'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -17,17 +18,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing title or body' })
   }
 
-  const vapidPublicKey = process.env.VAPID_PUBLIC_KEY
-  const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY
-  if (!vapidPublicKey || !vapidPrivateKey) {
-    return res.status(500).json({ error: 'Missing VAPID keys' })
-  }
-
-  webpush.setVapidDetails(
-    'mailto:admin@example.com',
-    vapidPublicKey,
-    vapidPrivateKey,
-  )
+  setupWebPush()
 
   try {
     const result = await query(
