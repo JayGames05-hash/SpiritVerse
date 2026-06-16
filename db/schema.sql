@@ -9,6 +9,7 @@ create table if not exists accounts (
   password_hash text not null,
   session_token text,
   session_expires_at timestamptz,
+  verse_interval_hours integer default 2,
   created_at timestamptz default now()
 );
 

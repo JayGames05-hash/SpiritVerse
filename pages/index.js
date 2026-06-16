@@ -120,12 +120,31 @@ export default function Home() {
     loadApprovedSuggestions()
   }, [])
 
+  const [verseIntervalHours, setVerseIntervalHours] = useState(2)
+
+  useEffect(() => {
+    async function loadUserPreferences() {
+      try {
+        const res = await fetch('/api/auth/user', { credentials: 'include' })
+        if (!res.ok) return
+        const data = await res.json()
+        if (data.user?.verse_interval_hours) {
+          setVerseIntervalHours(data.user.verse_interval_hours)
+        }
+      } catch (err) {
+        console.error('Failed to load user preferences:', err)
+      }
+    }
+
+    loadUserPreferences()
+  }, [])
+
   useEffect(() => {
     if (!availableReadings || availableReadings.length === 0) return
 
     const selectReading = () => {
       const now = new Date()
-      const cycleNumber = Math.floor(now.getHours() / 2)
+      const cycleNumber = Math.floor(now.getTime() / (verseIntervalHours * 3600 * 1000))
       const seededRandom = Math.abs(Math.sin(cycleNumber * 12.9898) * 43758.5453) % 1
       const readingIndex = Math.floor(seededRandom * availableReadings.length)
       return availableReadings[readingIndex]
@@ -133,15 +152,9 @@ export default function Home() {
 
     const getRemainingSeconds = () => {
       const now = new Date()
-      const currentCycleStart = Math.floor(now.getHours() / 2) * 2
-      let nextCycleHour = currentCycleStart + 2
-      const nextBoundary = new Date(now)
-      if (nextCycleHour >= 24) {
-        nextBoundary.setDate(nextBoundary.getDate() + 1)
-        nextCycleHour = 0
-      }
-      nextBoundary.setHours(nextCycleHour, 0, 0, 0)
-      return Math.max(0, Math.floor((nextBoundary.getTime() - now.getTime()) / 1000))
+      const cycleLengthMs = verseIntervalHours * 3600 * 1000
+      const elapsed = now.getTime() % cycleLengthMs
+      return Math.max(0, Math.floor((cycleLengthMs - elapsed) / 1000))
     }
 
     const updateState = () => {
@@ -154,7 +167,7 @@ export default function Home() {
     updateState()
     const intervalId = window.setInterval(updateState, 1000)
     return () => window.clearInterval(intervalId)
-  }, [availableReadings])
+  }, [availableReadings, verseIntervalHours])
 
   useEffect(() => {
     if (!currentReading?.id) return

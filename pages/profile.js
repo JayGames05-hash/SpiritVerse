@@ -3,9 +3,13 @@ import { useRouter } from 'next/router'
 import Header from '../components/Header'
 import readings from '../data/readings'
 
+const verseIntervals = [2, 4, 6, 12, 24]
+
 export default function Profile() {
   const router = useRouter()
   const [user, setUser] = useState(null)
+  const [verseInterval, setVerseInterval] = useState(2)
+  const [isSavingInterval, setIsSavingInterval] = useState(false)
   const [myQuestions, setMyQuestions] = useState([])
   const [myAnswers, setMyAnswers] = useState([])
   const [historyEntries, setHistoryEntries] = useState([])
@@ -23,6 +27,7 @@ export default function Profile() {
           return
         }
         setUser(userData.user)
+        setVerseInterval(userData.user.verse_interval_hours || 2)
 
         const [questionsRes, answersRes, historyRes, favoritesRes] = await Promise.all([
           fetch('/api/questions', { credentials: 'include' }),
@@ -59,6 +64,30 @@ export default function Profile() {
 
   const handleViewQuestion = id => {
     router.push(`/question/${id}`)
+  }
+
+  const handleIntervalChange = async (interval) => {
+    if (interval === verseInterval) return
+    setIsSavingInterval(true)
+    try {
+      const res = await fetch('/api/auth/user', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ verse_interval_hours: interval }),
+      })
+      if (!res.ok) {
+        throw new Error('Failed to save verse interval')
+      }
+      const data = await res.json()
+      setUser(data.user)
+      setVerseInterval(data.user.verse_interval_hours || 2)
+    } catch (err) {
+      console.error(err)
+      alert('Unable to update verse frequency. Please try again.')
+    } finally {
+      setIsSavingInterval(false)
+    }
   }
 
   if (loading) {
@@ -104,10 +133,31 @@ export default function Profile() {
           <p className="text-gray-600">
             <span className="font-semibold">Email:</span> {user.email}
           </p>
-          <p className="text-gray-600">
+          <p className="text-gray-600 mb-6">
             <span className="font-semibold">Member since:</span>{' '}
             {new Date(user.created_at).toLocaleDateString()}
           </p>
+          <div className="bg-[#f8fafc] rounded-3xl p-5 border border-gray-200">
+            <h2 className="text-xl font-semibold text-[#4b2d23] mb-3">Verse refresh frequency</h2>
+            <p className="text-gray-600 mb-4">Choose how often you want a new verse to appear. Default is 2 hours.</p>
+            <div className="flex flex-wrap gap-3">
+              {verseIntervals.map((interval) => (
+                <button
+                  key={interval}
+                  onClick={() => handleIntervalChange(interval)}
+                  disabled={isSavingInterval}
+                  className={`px-4 py-2 rounded-2xl font-semibold transition border ${
+                    verseInterval === interval
+                      ? 'bg-[#4b2d23] text-white border-transparent'
+                      : 'bg-white text-[#4b2d23] border-[#d1d5db] hover:border-[#9ca3af]'
+                  }`}
+                >
+                  Every {interval}h
+                </button>
+              ))}
+            </div>
+            <p className="text-sm text-gray-500 mt-3">Your preference is saved immediately.</p>
+          </div>
         </div>
 
         {/* Tabs */}
