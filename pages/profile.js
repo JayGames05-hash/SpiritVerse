@@ -294,21 +294,19 @@ export default function Profile() {
           <div className="bg-[#f8fafc] rounded-3xl p-5 border border-gray-200">
             <h2 className="text-xl font-semibold text-[#4b2d23] mb-3">Verse refresh frequency</h2>
             <p className="text-gray-600 mb-4">Choose how often you want a new verse to appear. Default is 2 hours.</p>
-            <div className="flex flex-wrap gap-3">
-              {verseIntervals.map((interval) => (
-                <button
-                  key={interval}
-                  onClick={() => handleIntervalChange(interval)}
-                  disabled={isSavingInterval}
-                  className={`px-4 py-2 rounded-2xl font-semibold transition border ${
-                    verseInterval === interval
-                      ? 'bg-[#4b2d23] text-white border-transparent'
-                      : 'bg-white text-[#4b2d23] border-[#d1d5db] hover:border-[#9ca3af]'
-                  }`}
-                >
-                  {formatIntervalLabel(interval)}
-                </button>
-              ))}
+            <div className="w-48">
+              <label htmlFor="verse-interval" className="sr-only">Verse interval</label>
+              <select
+                id="verse-interval"
+                value={verseInterval}
+                onChange={(e) => handleIntervalChange(Number(e.target.value))}
+                disabled={isSavingInterval}
+                className="w-full border rounded-2xl px-4 py-2 bg-white text-[#4b2d23] font-semibold"
+              >
+                {verseIntervals.map((interval) => (
+                  <option key={interval} value={interval}>{formatIntervalLabel(interval)}</option>
+                ))}
+              </select>
             </div>
             <p className="text-sm text-gray-500 mt-3">Your preference is saved immediately.</p>
             <div className="mt-4 space-y-4">
