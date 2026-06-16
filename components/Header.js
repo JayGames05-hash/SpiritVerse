@@ -7,7 +7,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    fetch('/api/auth/user')
+    fetch('/api/auth/user', { credentials: 'include' })
       .then(res => res.json())
       .then(data => setIsLoggedIn(!!data.user))
       .catch(() => setIsLoggedIn(false))
