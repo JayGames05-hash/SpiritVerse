@@ -16,6 +16,9 @@ export default function Profile() {
   const [favoriteItems, setFavoriteItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('questions')
+  const [deferredPrompt, setDeferredPrompt] = useState(null)
+  const [showInstallBtn, setShowInstallBtn] = useState(false)
+  const [isIos, setIsIos] = useState(false)
 
   useEffect(() => {
     async function loadProfileData() {
@@ -61,6 +64,36 @@ export default function Profile() {
 
     loadProfileData()
   }, [router])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const beforeInstallHandler = (e) => {
+      e.preventDefault()
+      setDeferredPrompt(e)
+      setShowInstallBtn(true)
+    }
+
+    const appInstalledHandler = () => {
+      setDeferredPrompt(null)
+      setShowInstallBtn(false)
+    }
+
+    window.addEventListener('beforeinstallprompt', beforeInstallHandler)
+    window.addEventListener('appinstalled', appInstalledHandler)
+
+    // Detect iOS for manual install instructions
+    const ua = navigator.userAgent || ''
+    const isiOS = /iP(ad|hone|od)/.test(ua)
+    const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches
+    setIsIos(isiOS && !isStandalone)
+    if (isiOS && !isStandalone) setShowInstallBtn(true)
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', beforeInstallHandler)
+      window.removeEventListener('appinstalled', appInstalledHandler)
+    }
+  }, [])
 
   const handleViewQuestion = id => {
     router.push(`/question/${id}`)
@@ -158,6 +191,32 @@ export default function Profile() {
               ))}
             </div>
             <p className="text-sm text-gray-500 mt-3">Your preference is saved immediately.</p>
+            <div className="mt-4">
+              {showInstallBtn && (
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={async () => {
+                      if (deferredPrompt) {
+                        deferredPrompt.prompt()
+                        const choice = await deferredPrompt.userChoice
+                        if (choice && choice.outcome === 'accepted') {
+                          setShowInstallBtn(false)
+                        }
+                        setDeferredPrompt(null)
+                      } else if (isIos) {
+                        alert('To install on iOS: tap Share → Add to Home Screen in Safari.')
+                      } else {
+                        alert('Your browser does not support the automatic install prompt.');
+                      }
+                    }}
+                    className="bg-[#4b2d23] text-white px-4 py-2 rounded-2xl font-semibold"
+                  >
+                    Add to Home Screen
+                  </button>
+                  <span className="text-sm text-gray-500">Install the app for quick access.</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
