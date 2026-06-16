@@ -27,7 +27,7 @@ export default async function handler(req, res) {
   const password_hash = await hashPassword(password)
   const fullName = assignedSaint
   const result = await query(
-    'insert into accounts (email, saint_name, full_name, password_hash) values ($1, $2, $3, $4) returning id, email, saint_name, full_name, verse_interval_hours',
+    'insert into accounts (email, saint_name, full_name, password_hash) values ($1, $2, $3, $4) returning id, email, saint_name, full_name, verse_interval_minutes, verse_interval_hours',
     [normalizedEmail, fullName, fullName, password_hash],
   )
 

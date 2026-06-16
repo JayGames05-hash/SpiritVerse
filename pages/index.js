@@ -120,7 +120,7 @@ export default function Home() {
     loadApprovedSuggestions()
   }, [])
 
-  const [verseIntervalHours, setVerseIntervalHours] = useState(2)
+  const [verseIntervalMinutes, setVerseIntervalMinutes] = useState(120)
 
   useEffect(() => {
     async function loadUserPreferences() {
@@ -128,8 +128,8 @@ export default function Home() {
         const res = await fetch('/api/auth/user', { credentials: 'include' })
         if (!res.ok) return
         const data = await res.json()
-        if (data.user?.verse_interval_hours) {
-          setVerseIntervalHours(data.user.verse_interval_hours)
+        if (data.user?.verse_interval_minutes) {
+          setVerseIntervalMinutes(data.user.verse_interval_minutes)
         }
       } catch (err) {
         console.error('Failed to load user preferences:', err)
@@ -144,7 +144,7 @@ export default function Home() {
 
     const selectReading = () => {
       const now = new Date()
-      const cycleNumber = Math.floor(now.getTime() / (verseIntervalHours * 3600 * 1000))
+      const cycleNumber = Math.floor(now.getTime() / (verseIntervalMinutes * 60 * 1000))
       const seededRandom = Math.abs(Math.sin(cycleNumber * 12.9898) * 43758.5453) % 1
       const readingIndex = Math.floor(seededRandom * availableReadings.length)
       return availableReadings[readingIndex]
@@ -152,7 +152,7 @@ export default function Home() {
 
     const getRemainingSeconds = () => {
       const now = new Date()
-      const cycleLengthMs = verseIntervalHours * 3600 * 1000
+      const cycleLengthMs = verseIntervalMinutes * 60 * 1000
       const elapsed = now.getTime() % cycleLengthMs
       return Math.max(0, Math.floor((cycleLengthMs - elapsed) / 1000))
     }
@@ -167,7 +167,31 @@ export default function Home() {
     updateState()
     const intervalId = window.setInterval(updateState, 1000)
     return () => window.clearInterval(intervalId)
-  }, [availableReadings, verseIntervalHours])
+  }, [availableReadings, verseIntervalMinutes])
+
+  // Listen for interval changes from other tabs or the profile page
+  useEffect(() => {
+    const onStorage = (e) => {
+      if (e.key === 'verse_interval_minutes') {
+        const v = Number(e.newValue)
+        if (Number.isFinite(v) && v > 0) setVerseIntervalMinutes(v)
+      }
+    }
+    const onCustom = (e) => {
+      const v = Number(e.detail)
+      if (Number.isFinite(v) && v > 0) setVerseIntervalMinutes(v)
+    }
+    try {
+      window.addEventListener('storage', onStorage)
+      window.addEventListener('verseIntervalChanged', onCustom)
+    } catch (e) {}
+    return () => {
+      try {
+        window.removeEventListener('storage', onStorage)
+        window.removeEventListener('verseIntervalChanged', onCustom)
+      } catch (e) {}
+    }
+  }, [])
 
   useEffect(() => {
     if (!currentReading?.id) return

@@ -229,6 +229,12 @@ export default function Profile() {
       const data = await res.json()
       setUser(data.user)
       setVerseInterval(data.user.verse_interval_minutes || 120)
+      try {
+        localStorage.setItem('verse_interval_minutes', String(data.user.verse_interval_minutes || 120))
+        window.dispatchEvent(new CustomEvent('verseIntervalChanged', { detail: data.user.verse_interval_minutes || 120 }))
+      } catch (e) {
+        // ignore (server-side rendering or restricted storage)
+      }
     } catch (err) {
       console.error('Interval save failed:', err)
       const message = err?.message || 'Unable to update verse frequency. Please try again.'
