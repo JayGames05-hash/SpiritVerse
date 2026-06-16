@@ -134,6 +134,16 @@ export default function Home() {
       } catch (err) {
         console.error('Failed to load user preferences:', err)
       }
+      // Fallback to locally saved preference if present (works for unauthenticated or when API doesn't return)
+      try {
+        const local = localStorage.getItem('verse_interval_minutes')
+        if (local) {
+          const v = Number(local)
+          if (Number.isFinite(v) && v > 0) setVerseIntervalMinutes(v)
+        }
+      } catch (e) {
+        // ignore (SSR / restricted storage)
+      }
     }
 
     loadUserPreferences()
