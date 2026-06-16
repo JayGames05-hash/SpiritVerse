@@ -326,7 +326,7 @@ export default function Profile() {
             </p>
           )}
           <p className="text-gray-600">
-            <span className="font-semibold">Email:</span> {user.saint_name} //test 
+            <span className="font-semibold">Email:</span> {user.email}
           </p>
           <p className="text-gray-600 mb-6">
             <span className="font-semibold">Member since:</span>{' '}
