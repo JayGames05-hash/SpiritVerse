@@ -1,0 +1,6 @@
+{
+  "appId": "com.coptic.daily",
+  "appName": "Coptic Daily Readings",
+  "webDir": "out",
+  "bundledWebRuntime": false
+}
