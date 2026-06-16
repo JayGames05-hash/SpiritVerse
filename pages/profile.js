@@ -11,6 +11,7 @@ export default function Profile() {
   const [user, setUser] = useState(null)
   const [verseInterval, setVerseInterval] = useState(2)
   const [pendingInterval, setPendingInterval] = useState(2)
+  const [saveMessage, setSaveMessage] = useState('')
   const [isSavingInterval, setIsSavingInterval] = useState(false)
   const [myQuestions, setMyQuestions] = useState([])
   const [myAnswers, setMyAnswers] = useState([])
@@ -254,9 +255,13 @@ export default function Profile() {
       } catch (e) {
         // ignore
       }
+      setSaveMessage('Saved')
+      setTimeout(() => setSaveMessage(''), 3000)
     } catch (err) {
       console.error('Interval save failed:', err)
       const message = err?.message || 'Unable to update verse frequency. Please try again.'
+      setSaveMessage('Save failed')
+      setTimeout(() => setSaveMessage(''), 3000)
       alert(message)
     } finally {
       setIsSavingInterval(false)
