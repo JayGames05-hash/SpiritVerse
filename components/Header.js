@@ -16,7 +16,7 @@ export default function Header() {
     <header className="church-header">
       <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center sm:justify-between gap-3 sm:gap-0 p-3 sm:p-4">
         <Link href="/" className="flex items-center gap-3">
-          <img src="/logo.png" alt="Coptic Daily Readings" className="h-10 w-auto" />
+          <img src="/logo.png" alt="Coptic Daily Readings" className="h-12 w-auto" />
           <span className="font-bold text-lg text-white tracking-wide">Coptic Daily Readings</span>
         </Link>
         <nav className="flex flex-wrap items-center justify-center sm:justify-end gap-3 sm:gap-6 w-full sm:w-auto text-sm text-white/90">
