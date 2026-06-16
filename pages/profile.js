@@ -3,16 +3,9 @@ import { useRouter } from 'next/router'
 import Header from '../components/Header'
 import readings from '../data/readings'
 
-// Intervals in minutes (every 10 minutes up to 2 hours, plus larger presets)
-const verseIntervals = [10, 20, 30, 40, 50, 60, 90, 120, 180, 360, 720, 1440]
-
 export default function Profile() {
   const router = useRouter()
   const [user, setUser] = useState(null)
-  const [verseInterval, setVerseInterval] = useState(2)
-  const [pendingInterval, setPendingInterval] = useState(2)
-  const [saveMessage, setSaveMessage] = useState('')
-  const [isSavingInterval, setIsSavingInterval] = useState(false)
   const [myQuestions, setMyQuestions] = useState([])
   const [myAnswers, setMyAnswers] = useState([])
   const [historyEntries, setHistoryEntries] = useState([])
@@ -48,15 +41,6 @@ export default function Profile() {
           return
         }
         setUser(userData.user)
-        const minutes = userData.user.verse_interval_minutes || 120
-        setVerseInterval(minutes)
-        setPendingInterval(minutes)
-        try {
-          localStorage.setItem('verse_interval_minutes', String(minutes))
-          window.dispatchEvent(new CustomEvent('verseIntervalChanged', { detail: minutes }))
-        } catch (e) {
-          // ignore
-        }
 
         const [questionsRes, answersRes, historyRes, favoritesRes] = await Promise.all([
           fetch('/api/questions', { credentials: 'include' }),
@@ -301,52 +285,6 @@ export default function Profile() {
     }
   }
 
-
-  // Local pending change handler (does not save)
-  const handlePendingChange = (minutes) => {
-    setPendingInterval(minutes)
-  }
-
-  // Save pending interval to server and propagate to other tabs
-  const handleSaveInterval = async () => {
-    const intervalMinutes = pendingInterval
-    if (intervalMinutes === verseInterval) return
-    setIsSavingInterval(true)
-    try {
-      const res = await fetch('/api/auth/user', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ verse_interval_minutes: intervalMinutes }),
-      })
-      if (!res.ok) {
-        const errJson = await res.json().catch(() => ({}))
-        throw new Error(errJson.error || 'Failed to save verse interval')
-      }
-      const data = await res.json()
-      const minutes = data.user.verse_interval_minutes || intervalMinutes
-      setUser(data.user)
-      setVerseInterval(minutes)
-      setPendingInterval(minutes)
-      try {
-        localStorage.setItem('verse_interval_minutes', String(minutes))
-        window.dispatchEvent(new CustomEvent('verseIntervalChanged', { detail: minutes }))
-      } catch (e) {
-        // ignore
-      }
-      setSaveMessage('Saved')
-      setTimeout(() => setSaveMessage(''), 3000)
-    } catch (err) {
-      console.error('Interval save failed:', err)
-      const message = err?.message || 'Unable to update verse frequency. Please try again.'
-      setSaveMessage('Save failed')
-      setTimeout(() => setSaveMessage(''), 3000)
-      alert(message)
-    } finally {
-      setIsSavingInterval(false)
-    }
-  }
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#3d1212] via-[#5c1515] to-[#1b0707]">
@@ -395,32 +333,8 @@ export default function Profile() {
             {new Date(user.created_at).toLocaleDateString()}
           </p>
           <div className="bg-[#f8fafc] rounded-3xl p-5 border border-gray-200">
-            <h2 className="text-xl font-semibold text-[#4b2d23] mb-3">Verse refresh frequency</h2>
-            <p className="text-gray-600 mb-4">Choose how often you want a new verse to appear. Default is 2 hours.</p>
-            <div className="w-48">
-              <label htmlFor="verse-interval" className="sr-only">Verse interval</label>
-              <div className="flex items-center gap-3">
-                <select
-                  id="verse-interval"
-                  value={pendingInterval}
-                  onChange={(e) => handlePendingChange(Number(e.target.value))}
-                  disabled={isSavingInterval}
-                  className="w-full border rounded-2xl px-4 py-2 bg-white text-[#4b2d23] font-semibold"
-                >
-                  {verseIntervals.map((interval) => (
-                    <option key={interval} value={interval}>{formatIntervalLabel(interval)}</option>
-                  ))}
-                </select>
-                <button
-                  onClick={handleSaveInterval}
-                  disabled={isSavingInterval || pendingInterval === verseInterval}
-                  className="bg-[#4b2d23] text-white px-4 py-2 rounded-2xl font-semibold disabled:opacity-50"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-            <p className="text-sm text-gray-500 mt-3">Choose an interval and click Save to persist.</p>
+            <h2 className="text-xl font-semibold text-[#4b2d23] mb-3">Verse Settings</h2>
+            <p className="text-gray-600 mb-6">All users see the same verse on a 2-hour cycle to discuss together.</p>
             <div className="mt-4 space-y-4">
               {showInstallBtn && (
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -682,13 +596,4 @@ export default function Profile() {
       </main>
     </div>
   )
-}
-
-function formatIntervalLabel(minutes) {
-  if (minutes >= 60) {
-    const hours = Math.floor(minutes / 60)
-    const rem = minutes % 60
-    return rem === 0 ? `Every ${hours}h` : `Every ${hours}h ${rem}m`
-  }
-  return `Every ${minutes}m`
 }
