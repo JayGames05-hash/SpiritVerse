@@ -23,30 +23,9 @@ export default function Profile() {
   const [pushPermission, setPushPermission] = useState('default')
   const [pushEnabled, setPushEnabled] = useState(false)
   const [pushLoading, setPushLoading] = useState(false)
-  const [pushTestLoading, setPushTestLoading] = useState(false)
   const [pushMessage, setPushMessage] = useState('')
 
-  const refreshPushState = async () => {
-    if (typeof window === 'undefined') return
-    try {
-      const supported = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window
-      setPushSupported(supported)
-      setPushPermission(Notification.permission)
-      if (!supported) {
-        setPushEnabled(false)
-        return
-      }
-      const registration = await navigator.serviceWorker.ready
-      const subscription = await registration.pushManager.getSubscription()
-      setPushEnabled(Boolean(subscription))
-      setPushMessage('')
-    } catch (err) {
-      console.warn('refreshPushState error:', err)
-      setPushSupported(false)
-      setPushEnabled(false)
-      setPushMessage('Unable to detect push subscription state.')
-    }
-  }
+ 
 
   useEffect(() => {
     async function loadProfileData() {
@@ -230,36 +209,8 @@ export default function Profile() {
   }
 
   const handleSendTestNotification = async () => {
-    if (!pushEnabled) {
-      setPushMessage('Enable notifications first before sending a test notification.')
-      return
-    }
-
-    setPushTestLoading(true)
-    setPushMessage('')
-
-    try {
-      const response = await fetch('/api/notifications/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          title: 'Test reminder',
-          body: 'This is a test notification from SpiritVerse.',
-          url: '/',
-        }),
-      })
-      const result = await response.json()
-      if (!response.ok) {
-        throw new Error(result.error || 'Test notification failed.')
-      }
-      setPushMessage('Test notification sent. Check your device/browser.')
-    } catch (err) {
-      console.error('Send test notification failed:', err)
-      setPushMessage(err.message || 'Failed to send test notification.')
-    } finally {
-      setPushTestLoading(false)
-    }
+    // Test notification function removed — kept placeholder to avoid breaking references.
+    setPushMessage('Test notifications have been disabled.')
   }
 
   const handleIntervalChange = async (interval) => {
@@ -412,12 +363,7 @@ export default function Profile() {
                       >
                         Send test notification
                       </button>
-                      <button
-                        onClick={refreshPushState}
-                        className="bg-gray-100 text-gray-700 px-3 py-2 rounded-2xl font-semibold border border-gray-200 hover:bg-gray-200"
-                      >
-                        Refresh
-                      </button>
+                      {/* Refresh and Test buttons removed per user request */}
                     </div>
                   </div>
                   {pushMessage && <p className="text-sm text-red-600">{pushMessage}</p>}
