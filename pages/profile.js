@@ -19,6 +19,11 @@ export default function Profile() {
   const [deferredPrompt, setDeferredPrompt] = useState(null)
   const [showInstallBtn, setShowInstallBtn] = useState(false)
   const [isIos, setIsIos] = useState(false)
+  const [pushSupported, setPushSupported] = useState(false)
+  const [pushPermission, setPushPermission] = useState('default')
+  const [pushEnabled, setPushEnabled] = useState(false)
+  const [pushLoading, setPushLoading] = useState(false)
+  const [pushMessage, setPushMessage] = useState('')
 
   useEffect(() => {
     async function loadProfileData() {
@@ -89,6 +94,19 @@ export default function Profile() {
     setIsIos(isiOS && !isStandalone)
     if (isiOS && !isStandalone) setShowInstallBtn(true)
 
+    const checkPushSupport = async () => {
+      const supported = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window
+      setPushSupported(supported)
+      setPushPermission(Notification.permission)
+      if (!supported) return
+
+      const registration = await navigator.serviceWorker.ready
+      const subscription = await registration.pushManager.getSubscription()
+      setPushEnabled(Boolean(subscription))
+    }
+
+    checkPushSupport()
+
     return () => {
       window.removeEventListener('beforeinstallprompt', beforeInstallHandler)
       window.removeEventListener('appinstalled', appInstalledHandler)
@@ -97,6 +115,72 @@ export default function Profile() {
 
   const handleViewQuestion = id => {
     router.push(`/question/${id}`)
+  }
+
+  const urlBase64ToUint8Array = (base64String) => {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/')
+    const rawData = window.atob(base64)
+    const outputArray = new Uint8Array(rawData.length)
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i)
+    }
+    return outputArray
+  }
+
+  const handlePushSubscription = async () => {
+    if (!pushSupported) {
+      setPushMessage('Notifications are not supported in this browser.')
+      return
+    }
+
+    setPushLoading(true)
+    setPushMessage('')
+
+    try {
+      let permission = Notification.permission
+      if (permission !== 'granted') {
+        permission = await Notification.requestPermission()
+        setPushPermission(permission)
+      }
+
+      if (permission !== 'granted') {
+        setPushMessage('Please allow notifications to enable reminders.')
+        return
+      }
+
+      const vapidRes = await fetch('/api/notifications/vapid', { credentials: 'include' })
+      const vapidData = await vapidRes.json()
+      if (!vapidRes.ok || !vapidData.publicKey) {
+        throw new Error(vapidData.error || 'Unable to get VAPID public key.')
+      }
+
+      const registration = await navigator.serviceWorker.ready
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(vapidData.publicKey),
+      })
+
+      const response = await fetch('/api/notifications/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ subscription: subscription.toJSON() }),
+      })
+
+      const result = await response.json()
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to save subscription.')
+      }
+
+      setPushEnabled(true)
+      setPushMessage('Notifications enabled. You will receive verse reminders.')
+    } catch (err) {
+      console.error('Push subscription failed:', err)
+      setPushMessage(err.message || 'Failed to enable notifications.')
+    } finally {
+      setPushLoading(false)
+    }
   }
 
   const handleIntervalChange = async (interval) => {
@@ -191,9 +275,9 @@ export default function Profile() {
               ))}
             </div>
             <p className="text-sm text-gray-500 mt-3">Your preference is saved immediately.</p>
-            <div className="mt-4">
+            <div className="mt-4 space-y-4">
               {showInstallBtn && (
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                   <button
                     onClick={async () => {
                       if (deferredPrompt) {
@@ -206,7 +290,7 @@ export default function Profile() {
                       } else if (isIos) {
                         alert('To install on iOS: tap Share → Add to Home Screen in Safari.')
                       } else {
-                        alert('Your browser does not support the automatic install prompt.');
+                        alert('Your browser does not support the automatic install prompt.')
                       }
                     }}
                     className="bg-[#4b2d23] text-white px-4 py-2 rounded-2xl font-semibold"
@@ -216,6 +300,35 @@ export default function Profile() {
                   <span className="text-sm text-gray-500">Install the app for quick access.</span>
                 </div>
               )}
+              <div className="rounded-3xl border border-gray-200 bg-white p-4">
+                <div className="flex flex-col gap-3">
+                  <div>
+                    <h3 className="text-lg font-semibold text-[#4b2d23]">Verse reminder notifications</h3>
+                    <p className="text-gray-600 text-sm">
+                      Enable browser notifications to receive an alert when your next verse is ready.
+                    </p>
+                  </div>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <span className="text-sm text-gray-500">
+                      {pushSupported
+                        ? pushPermission === 'granted'
+                          ? pushEnabled
+                            ? 'Notifications are enabled.'
+                            : 'Ready to subscribe.'
+                          : 'Permission required.'
+                        : 'Notifications are not supported in this browser.'}
+                    </span>
+                    <button
+                      onClick={handlePushSubscription}
+                      disabled={pushLoading || !pushSupported}
+                      className="bg-[#8b1e1e] text-white px-4 py-2 rounded-2xl font-semibold disabled:opacity-50"
+                    >
+                      {pushEnabled ? 'Refresh notifications' : 'Enable notifications'}
+                    </button>
+                  </div>
+                  {pushMessage && <p className="text-sm text-red-600">{pushMessage}</p>}
+                </div>
+              </div>
             </div>
           </div>
         </div>
