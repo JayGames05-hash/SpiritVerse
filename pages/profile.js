@@ -209,8 +209,7 @@ export default function Profile() {
   }
 
   const handleSendTestNotification = async () => {
-    // Test notification function removed — kept placeholder to avoid breaking references.
-    setPushMessage('Test notifications have been disabled.')
+    // Intentionally left blank — test notifications removed.
   }
 
   const handleIntervalChange = async (interval) => {
@@ -356,14 +355,7 @@ export default function Profile() {
                       >
                         {pushEnabled ? 'Refresh notifications' : 'Enable notifications'}
                       </button>
-                      <button
-                        onClick={handleSendTestNotification}
-                        disabled={pushTestLoading || !pushEnabled}
-                        className="bg-white text-[#4b2d23] border border-[#4b2d23] px-4 py-2 rounded-2xl font-semibold disabled:opacity-50"
-                      >
-                        Send test notification
-                      </button>
-                      {/* Refresh and Test buttons removed per user request */}
+                      {/* Test and Refresh buttons removed per user request */}
                     </div>
                   </div>
                   {pushMessage && <p className="text-sm text-red-600">{pushMessage}</p>}
