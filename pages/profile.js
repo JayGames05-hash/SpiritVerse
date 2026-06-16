@@ -23,6 +23,7 @@ export default function Profile() {
   const [pushPermission, setPushPermission] = useState('default')
   const [pushEnabled, setPushEnabled] = useState(false)
   const [pushLoading, setPushLoading] = useState(false)
+  const [pushTestLoading, setPushTestLoading] = useState(false)
   const [pushMessage, setPushMessage] = useState('')
 
   useEffect(() => {
@@ -183,6 +184,39 @@ export default function Profile() {
     }
   }
 
+  const handleSendTestNotification = async () => {
+    if (!pushEnabled) {
+      setPushMessage('Enable notifications first before sending a test notification.')
+      return
+    }
+
+    setPushTestLoading(true)
+    setPushMessage('')
+
+    try {
+      const response = await fetch('/api/notifications/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          title: 'Test reminder',
+          body: 'This is a test notification from SpiritVerse.',
+          url: '/',
+        }),
+      })
+      const result = await response.json()
+      if (!response.ok) {
+        throw new Error(result.error || 'Test notification failed.')
+      }
+      setPushMessage('Test notification sent. Check your device/browser.')
+    } catch (err) {
+      console.error('Send test notification failed:', err)
+      setPushMessage(err.message || 'Failed to send test notification.')
+    } finally {
+      setPushTestLoading(false)
+    }
+  }
+
   const handleIntervalChange = async (interval) => {
     if (interval === verseInterval) return
     setIsSavingInterval(true)
@@ -318,13 +352,22 @@ export default function Profile() {
                           : 'Permission required.'
                         : 'Notifications are not supported in this browser.'}
                     </span>
-                    <button
-                      onClick={handlePushSubscription}
-                      disabled={pushLoading || !pushSupported}
-                      className="bg-[#8b1e1e] text-white px-4 py-2 rounded-2xl font-semibold disabled:opacity-50"
-                    >
-                      {pushEnabled ? 'Refresh notifications' : 'Enable notifications'}
-                    </button>
+                    <div className="flex flex-wrap gap-3">
+                      <button
+                        onClick={handlePushSubscription}
+                        disabled={pushLoading || !pushSupported}
+                        className="bg-[#8b1e1e] text-white px-4 py-2 rounded-2xl font-semibold disabled:opacity-50"
+                      >
+                        {pushEnabled ? 'Refresh notifications' : 'Enable notifications'}
+                      </button>
+                      <button
+                        onClick={handleSendTestNotification}
+                        disabled={pushTestLoading || !pushEnabled}
+                        className="bg-white text-[#4b2d23] border border-[#4b2d23] px-4 py-2 rounded-2xl font-semibold disabled:opacity-50"
+                      >
+                        Send test notification
+                      </button>
+                    </div>
                   </div>
                   {pushMessage && <p className="text-sm text-red-600">{pushMessage}</p>}
                 </div>
