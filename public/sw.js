@@ -1,26 +1,11 @@
 const CACHE_NAME = 'coptic-daily-readings-v1'
-const ASSETS_TO_CACHE = [
-  '/favicon.ico',
-  '/manifest.json',
-  '/logo.png',
-  '/logo-192.png',
-  '/logo-512.png'
-]
 
 self.addEventListener('install', (event) => {
   console.log('[SW] Install event starting')
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('[SW] Cache opened, adding assets')
-        return cache.addAll(ASSETS_TO_CACHE).catch((err) => {
-          console.warn('[SW] Failed to cache some assets:', err)
-          // Don't fail the install even if some assets can't be cached
-          return Promise.resolve()
-        })
-      })
+    Promise.resolve()
       .then(() => {
-        console.log('[SW] Install complete, claiming clients')
+        console.log('[SW] Install complete, skipping clients')
         return self.skipWaiting()
       })
   )
