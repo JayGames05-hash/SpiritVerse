@@ -116,15 +116,15 @@ export default function CalendarPage() {
             <div className="text-sm text-gray-500">Click a day to view feasts/fasts</div>
           </div>
 
-          <div className="grid grid-cols-7 gap-2 text-center text-sm text-gray-600 mb-2">
+          <div className="grid grid-cols-7 gap-1 sm:gap-2 text-center text-xs sm:text-sm text-gray-600 mb-2">
             {weekDayNames.map((w) => (
               <div key={w} className="font-medium">{w}</div>
             ))}
           </div>
 
-          <div className="grid grid-cols-7 gap-2">
+          <div className="grid grid-cols-7 gap-1 sm:gap-2">
             {Array.from({ length: firstDayIndex }).map((_, idx) => (
-              <div key={`pad-${idx}`} className="p-3 rounded-lg bg-transparent" />
+              <div key={`pad-${idx}`} className="p-2 sm:p-3 rounded-lg bg-transparent" />
             ))}
             {Array.from({ length: daysInMonth }).map((_, i) => {
               const day = i + 1
@@ -135,14 +135,14 @@ export default function CalendarPage() {
                 <button
                   key={key}
                   onClick={() => setSelectedDate(key)}
-                  className={`p-3 rounded-lg text-left border ${selectedDate === key ? 'ring-2 ring-[#8b1e1e]' : 'border-gray-100'} bg-white hover:shadow-sm`}
+                  className={`p-2 sm:p-3 rounded-lg text-left border ${selectedDate === key ? 'ring-2 ring-[#8b1e1e]' : 'border-gray-100'} bg-white hover:shadow-sm`}
                 >
                   <div className="flex items-center justify-between">
-                    <div className={`text-sm font-medium ${isToday ? 'text-[#8b1e1e]' : 'text-gray-800'}`}>{day}</div>
+                    <div className={`text-xs sm:text-sm font-medium ${isToday ? 'text-[#8b1e1e]' : 'text-gray-800'}`}>{day}</div>
                     <div className="flex items-center gap-1">
                       {dayEntries.slice(0,2).map(e => {
                         const cls = e.id.startsWith('fast-') ? 'bg-cyan-100 text-cyan-900' : 'bg-amber-100 text-amber-900'
-                        return <span key={e.id} className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${cls}`}>{e.id.startsWith('fast-') ? 'Fast' : 'Feast'}</span>
+                        return <span key={e.id} className={`inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] sm:text-xs font-semibold ${cls}`}>{e.id.startsWith('fast-') ? 'Fast' : 'Feast'}</span>
                       })}
                     </div>
                   </div>
