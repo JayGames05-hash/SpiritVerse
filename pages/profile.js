@@ -27,6 +27,14 @@ export default function Profile() {
   const [pushEnabled, setPushEnabled] = useState(false)
   const [pushLoading, setPushLoading] = useState(false)
   const [pushMessage, setPushMessage] = useState('')
+  const [debugInfo, setDebugInfo] = useState({
+    swRegistered: false,
+    swScope: '',
+    notificationPermission: 'default',
+    subscriptionEndpoint: '',
+    subscriptionKeys: '',
+  })
+  const [debugLoading, setDebugLoading] = useState(false)
 
  
 
@@ -133,6 +141,27 @@ export default function Profile() {
     }
   }, [])
 
+  useEffect(() => {
+    // Refresh debug info on mount
+    if (typeof window !== 'undefined') {
+      try {
+        (async () => {
+          const swReg = await navigator.serviceWorker.getRegistration()
+          const sub = swReg ? await swReg.pushManager.getSubscription() : null
+          setDebugInfo({
+            swRegistered: !!swReg,
+            swScope: swReg?.scope || 'N/A',
+            notificationPermission: Notification.permission,
+            subscriptionEndpoint: sub?.endpoint ? sub.endpoint.substring(0, 50) + '...' : 'Not subscribed',
+            subscriptionKeys: sub ? `p256dh: ${sub.getKey('p256dh') ? 'present' : 'missing'}, auth: ${sub.getKey('auth') ? 'present' : 'missing'}` : 'N/A',
+          })
+        })()
+      } catch (err) {
+        console.error('Failed to load debug info on mount:', err)
+      }
+    }
+  }, [])
+
   const handleViewQuestion = id => {
     router.push(`/question/${id}`)
   }
@@ -222,6 +251,56 @@ export default function Profile() {
   const handleSendTestNotification = async () => {
     // Intentionally left blank — test notifications removed.
   }
+
+  const refreshDebugInfo = async () => {
+    setDebugLoading(true)
+    try {
+      const swReg = await navigator.serviceWorker.getRegistration()
+      const sub = swReg ? await swReg.pushManager.getSubscription() : null
+      setDebugInfo({
+        swRegistered: !!swReg,
+        swScope: swReg?.scope || 'N/A',
+        notificationPermission: Notification.permission,
+        subscriptionEndpoint: sub?.endpoint ? sub.endpoint.substring(0, 50) + '...' : 'Not subscribed',
+        subscriptionKeys: sub ? `p256dh: ${sub.getKey('p256dh') ? 'present' : 'missing'}, auth: ${sub.getKey('auth') ? 'present' : 'missing'}` : 'N/A',
+      })
+    } catch (err) {
+      console.error('Failed to refresh debug info:', err)
+      setDebugInfo(prev => ({ ...prev }))
+    } finally {
+      setDebugLoading(false)
+    }
+  }
+
+  const handleSendDebugTestNotification = async () => {
+    setPushLoading(true)
+    try {
+      const res = await fetch('/api/notifications/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          title: 'Debug test notification',
+          body: 'This is a test from the profile debug panel.',
+          url: '/',
+        }),
+      })
+      const json = await res.json()
+      if (!res.ok) {
+        setPushMessage(`Send failed: ${json.error || res.statusText}`)
+      } else {
+        setPushMessage('Test sent — check your device.')
+      }
+      setTimeout(() => setPushMessage(''), 3000)
+    } catch (err) {
+      console.error('Debug test send failed:', err)
+      setPushMessage(err.message || 'Test send failed')
+      setTimeout(() => setPushMessage(''), 3000)
+    } finally {
+      setPushLoading(false)
+    }
+  }
+
 
   // Local pending change handler (does not save)
   const handlePendingChange = (minutes) => {
@@ -398,6 +477,34 @@ export default function Profile() {
                   </div>
                   {pushMessage && <p className="text-sm text-red-600">{pushMessage}</p>}
                 </div>
+              </div>
+              <div className="rounded-3xl border border-gray-200 bg-white p-4">
+                <details className="cursor-pointer">
+                  <summary className="text-lg font-semibold text-[#4b2d23]">Debug: Push Notifications</summary>
+                  <div className="mt-3 space-y-2 text-sm text-gray-700">
+                    <p><strong>Service Worker:</strong> {debugInfo.swRegistered ? '✓ Registered' : '✗ Not registered'}</p>
+                    {debugInfo.swScope && <p><strong>Scope:</strong> {debugInfo.swScope}</p>}
+                    <p><strong>Notification Permission:</strong> {debugInfo.notificationPermission}</p>
+                    <p><strong>Subscription Endpoint:</strong> {debugInfo.subscriptionEndpoint}</p>
+                    <p><strong>Subscription Keys:</strong> {debugInfo.subscriptionKeys}</p>
+                    <div className="flex gap-2 mt-3">
+                      <button
+                        onClick={refreshDebugInfo}
+                        disabled={debugLoading}
+                        className="bg-gray-400 text-white px-3 py-1 rounded text-xs disabled:opacity-50"
+                      >
+                        Refresh Debug Info
+                      </button>
+                      <button
+                        onClick={handleSendDebugTestNotification}
+                        disabled={debugLoading}
+                        className="bg-blue-600 text-white px-3 py-1 rounded text-xs disabled:opacity-50"
+                      >
+                        Send Debug Test
+                      </button>
+                    </div>
+                  </div>
+                </details>
               </div>
             </div>
           </div>
