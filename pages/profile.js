@@ -176,6 +176,22 @@ export default function Profile() {
 
       setPushEnabled(true)
       setPushMessage('Notifications enabled. You will receive verse reminders.')
+
+      // Send a quick test notification immediately so users can verify it's working
+      try {
+        const testRes = await fetch('/api/notifications/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ title: 'Test reminder', body: 'Notifications are enabled — this is a test.', url: '/' }),
+        })
+        const testJson = await testRes.json()
+        if (!testRes.ok) {
+          console.warn('Test notification failed:', testJson)
+        }
+      } catch (err) {
+        console.warn('Failed to send test notification after subscribe:', err)
+      }
     } catch (err) {
       console.error('Push subscription failed:', err)
       setPushMessage(err.message || 'Failed to enable notifications.')
