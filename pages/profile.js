@@ -26,6 +26,28 @@ export default function Profile() {
   const [pushTestLoading, setPushTestLoading] = useState(false)
   const [pushMessage, setPushMessage] = useState('')
 
+  const refreshPushState = async () => {
+    if (typeof window === 'undefined') return
+    try {
+      const supported = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window
+      setPushSupported(supported)
+      setPushPermission(Notification.permission)
+      if (!supported) {
+        setPushEnabled(false)
+        return
+      }
+      const registration = await navigator.serviceWorker.ready
+      const subscription = await registration.pushManager.getSubscription()
+      setPushEnabled(Boolean(subscription))
+      setPushMessage('')
+    } catch (err) {
+      console.warn('refreshPushState error:', err)
+      setPushSupported(false)
+      setPushEnabled(false)
+      setPushMessage('Unable to detect push subscription state.')
+    }
+  }
+
   useEffect(() => {
     async function loadProfileData() {
       try {
@@ -95,15 +117,22 @@ export default function Profile() {
     setIsIos(isiOS && !isStandalone)
     if (isiOS && !isStandalone) setShowInstallBtn(true)
 
+    // Exposed small helper to refresh push subscription/permission state
     const checkPushSupport = async () => {
-      const supported = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window
-      setPushSupported(supported)
-      setPushPermission(Notification.permission)
-      if (!supported) return
+      try {
+        const supported = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window
+        setPushSupported(supported)
+        setPushPermission(Notification.permission)
+        if (!supported) return
 
-      const registration = await navigator.serviceWorker.ready
-      const subscription = await registration.pushManager.getSubscription()
-      setPushEnabled(Boolean(subscription))
+        const registration = await navigator.serviceWorker.ready
+        const subscription = await registration.pushManager.getSubscription()
+        setPushEnabled(Boolean(subscription))
+      } catch (err) {
+        console.warn('Error checking push support:', err)
+        setPushSupported(false)
+        setPushEnabled(false)
+      }
     }
 
     checkPushSupport()
@@ -382,6 +411,12 @@ export default function Profile() {
                         className="bg-white text-[#4b2d23] border border-[#4b2d23] px-4 py-2 rounded-2xl font-semibold disabled:opacity-50"
                       >
                         Send test notification
+                      </button>
+                      <button
+                        onClick={refreshPushState}
+                        className="bg-gray-100 text-gray-700 px-3 py-2 rounded-2xl font-semibold border border-gray-200 hover:bg-gray-200"
+                      >
+                        Refresh
                       </button>
                     </div>
                   </div>
