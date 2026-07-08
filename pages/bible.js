@@ -108,7 +108,7 @@ export default function BiblePage() {
                         <button onClick={() => toggleBookmark(v.verse)} className="mr-3 text-sm text-gray-500">{(bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? '★' : '☆'}</button>
                         <span className="font-semibold mr-2">{v.verse}.</span>
                         <span>{v.text}</span>
-                        <a className="ml-3 text-sm text-blue-600" href={`#${encodeURIComponent(book)}-${encodeURIComponent(chapter)}-${encodeURIComponent(v.verse)}`} onClick={(e) => { e.preventDefault(); window.location.hash = `${book}-${chapter}-${v.verse}` }}>Link</a>
+                        {/* Link removed per request */}
                       </div>
                     ))}
                   </div>
