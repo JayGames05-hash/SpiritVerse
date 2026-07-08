@@ -104,12 +104,12 @@ export default function BiblePage() {
                   <h2 className="text-xl font-semibold mb-3">{data.reference}</h2>
                   <div>
                     {data.verses && data.verses.map(v => (
-                      <div key={v.verse} id={`verse-${book}-${chapter}-${v.verse}`} className={`py-2 border-b last:border-b-0 ${ (bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? 'bg-yellow-200' : ''}`}>
+                      <div key={v.verse} id={`verse-${book}-${chapter}-${v.verse}`} className={`py-2 border-b last:border-b-0 ${ (bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? 'bg-yellow-300' : ''}`}>
                         <button
                           onClick={() => toggleBookmark(v.verse)}
                           aria-pressed={(bookmarks[`${book}-${chapter}`]||[]).includes(v.verse)}
                           title="Toggle bookmark"
-                          className={`mr-3 text-sm focus:outline-none ${ (bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? 'text-yellow-600 text-lg' : 'text-gray-500' }`}
+                          className={`mr-3 text-sm focus:outline-none ${ (bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? 'text-yellow-700 text-lg' : 'text-gray-500' }`}
                         >
                           {(bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? '★' : '☆'}
                         </button>
