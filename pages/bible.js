@@ -15,7 +15,19 @@ export default function BiblePage() {
 
   useEffect(() => {
     const stored = localStorage.getItem('bible_bookmarks')
-    if (stored) setBookmarks(JSON.parse(stored))
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) || {}
+        // remove any empty arrays that may have been left behind
+        const cleaned = Object.fromEntries(Object.entries(parsed).filter(([k, v]) => Array.isArray(v) && v.length > 0))
+        setBookmarks(cleaned)
+        // persist cleaned version back to storage
+        localStorage.setItem('bible_bookmarks', JSON.stringify(cleaned))
+      } catch (e) {
+        // ignore parse errors
+        setBookmarks({})
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -32,8 +44,10 @@ export default function BiblePage() {
   }, [])
 
   const saveBookmarks = (b) => {
-    setBookmarks(b)
-    localStorage.setItem('bible_bookmarks', JSON.stringify(b))
+    // Ensure we don't persist empty bookmark groups
+    const cleaned = Object.fromEntries(Object.entries(b).filter(([k, v]) => Array.isArray(v) && v.length > 0))
+    setBookmarks(cleaned)
+    localStorage.setItem('bible_bookmarks', JSON.stringify(cleaned))
   }
 
   const toggleBookmark = (verseNum) => {
