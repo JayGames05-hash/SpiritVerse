@@ -11,6 +11,10 @@ export default function AdminPage() {
   const [loadingMetrics, setLoadingMetrics] = useState(true)
   const [testQuote, setTestQuote] = useState(null)
   const [loadingQuote, setLoadingQuote] = useState(false)
+  const [announcementTitle, setAnnouncementTitle] = useState('')
+  const [announcementBody, setAnnouncementBody] = useState('')
+  const [announcementUrl, setAnnouncementUrl] = useState('')
+  const [sendingAnnouncement, setSendingAnnouncement] = useState(false)
 
   useEffect(() => {
     let mounted = true
@@ -98,6 +102,35 @@ export default function AdminPage() {
     }
   }
 
+  async function sendAnnouncement() {
+    if (!announcementTitle || !announcementBody) {
+      alert('Title and body are required')
+      return
+    }
+    setSendingAnnouncement(true)
+    try {
+      const res = await fetch('/api/admin/announce', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: announcementTitle.trim(), body: announcementBody.trim(), url: announcementUrl?.trim() || '/' }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send announcement')
+      }
+      alert(`Announcement sent to ${data.sent || 0} subscriptions`)
+      setAnnouncementTitle('')
+      setAnnouncementBody('')
+      setAnnouncementUrl('')
+    } catch (err) {
+      console.error('Announcement send failed:', err)
+      alert('Failed to send announcement')
+    } finally {
+      setSendingAnnouncement(false)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#3d1212] via-[#5c1515] to-[#1b0707]">
       <Header />
@@ -127,6 +160,20 @@ export default function AdminPage() {
               )}
             </div>
           )}
+          <div className="mt-8 bg-white rounded-3xl shadow-xl p-6 sm:p-8">
+            <h2 className="text-2xl font-bold text-[#4b2d23] mb-4">Send Announcement</h2>
+            <p className="text-gray-600 mb-4">Create an announcement to push to all subscribers.</p>
+            <div className="space-y-3">
+              <input value={announcementTitle} onChange={e => setAnnouncementTitle(e.target.value)} placeholder="Title" className="w-full p-3 rounded-lg border" />
+              <textarea value={announcementBody} onChange={e => setAnnouncementBody(e.target.value)} placeholder="Message body" className="w-full p-3 rounded-lg border h-32" />
+              <input value={announcementUrl} onChange={e => setAnnouncementUrl(e.target.value)} placeholder="URL (optional)" className="w-full p-3 rounded-lg border" />
+              <div className="flex gap-3">
+                <button onClick={sendAnnouncement} disabled={sendingAnnouncement} className="px-4 py-2 bg-green-600 text-white rounded-2xl font-semibold hover:bg-green-700 transition">
+                  {sendingAnnouncement ? 'Sending...' : 'Send Announcement'}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="grid gap-8">
