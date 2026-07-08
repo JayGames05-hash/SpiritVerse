@@ -41,7 +41,14 @@ export default function BiblePage() {
     const cur = bookmarks[key] || []
     const exists = cur.includes(verseNum)
     const next = exists ? cur.filter(v => v !== verseNum) : [...cur, verseNum]
-    saveBookmarks({ ...bookmarks, [key]: next })
+    // If removing the last verse for this key, delete the key entirely
+    const updated = { ...bookmarks }
+    if (next.length === 0) {
+      delete updated[key]
+    } else {
+      updated[key] = next
+    }
+    saveBookmarks(updated)
   }
 
   const handleFetch = async () => {
