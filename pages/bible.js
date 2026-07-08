@@ -127,14 +127,14 @@ export default function BiblePage() {
           </div>
 
           <aside className="bg-white rounded-2xl p-4">
-            <h3 className="font-semibold mb-3">Bookmarks</h3>
+            <h3 className="font-semibold mb-3 text-black">Bookmarks</h3>
             {Object.keys(bookmarks).length === 0 ? (
                 <div className="text-sm text-gray-800">No bookmarks yet. Click the star next to a verse to save it.</div>
             ) : (
               <ul className="space-y-2">
                 {Object.entries(bookmarks).map(([key, verses]) => (
                   <li key={key} className="text-sm">
-                    <div className="font-medium text-gray-900">{key}</div>
+                    <div className="font-medium text-black">{key}</div>
                     <div className="text-gray-900">{verses.map(v => (
                       <button key={v} className="mr-2 text-blue-800" onClick={() => openBookmark(key, v)}>{v}</button>
                     ))}</div>
