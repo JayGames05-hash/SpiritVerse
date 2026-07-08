@@ -105,7 +105,14 @@ export default function BiblePage() {
                   <div>
                     {data.verses && data.verses.map(v => (
                       <div key={v.verse} id={`verse-${book}-${chapter}-${v.verse}`} className={`py-2 border-b last:border-b-0 ${ (bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? 'bg-yellow-200' : ''}`}>
-                        <button onClick={() => toggleBookmark(v.verse)} className="mr-3 text-sm text-gray-500">{(bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? '★' : '☆'}</button>
+                        <button
+                          onClick={() => toggleBookmark(v.verse)}
+                          aria-pressed={(bookmarks[`${book}-${chapter}`]||[]).includes(v.verse)}
+                          title="Toggle bookmark"
+                          className={`mr-3 text-sm focus:outline-none ${ (bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? 'text-yellow-600 text-lg' : 'text-gray-500' }`}
+                        >
+                          {(bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? '★' : '☆'}
+                        </button>
                         <span className="font-semibold mr-2">{v.verse}.</span>
                         <span className="text-black">{v.text}</span>
                         {/* Link removed per request */}
