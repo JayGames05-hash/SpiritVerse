@@ -12,7 +12,7 @@ export default function CopticServicesPage() {
         <div className="mb-8">
           <h1 className="text-4xl font-bold">St. Basil Liturgy</h1>
           <p className="mt-3 text-slate-200 max-w-3xl">
-            Deep dive into the full Coptic Divine Liturgy of St. Basil. This page focuses exclusively on the St. Basil order, prayers, and structure.
+            Deep dive into the complete Coptic Divine Liturgy of St. Basil. Tap any step below to open the full liturgy details.
           </p>
         </div>
 
@@ -26,22 +26,23 @@ export default function CopticServicesPage() {
               href={`/coptic-services/${service.id}`}
               className="inline-flex items-center justify-center rounded-2xl bg-slate-900/90 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 border border-slate-700"
             >
-              View St. Basil Order
+              View Full St. Basil Liturgy
             </Link>
           </div>
 
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            <div className="rounded-3xl bg-slate-950/70 border border-slate-700 p-5">
-              <h3 className="text-xl font-semibold text-white">Full Order</h3>
-              <p className="mt-3 text-slate-300 text-sm leading-relaxed">
-                The full St. Basil liturgy order is rendered in detail on the service page. It includes the Offeratory, Liturgy of the Faithful, Communion, and Thanksgiving.
-              </p>
-            </div>
-            <div className="rounded-3xl bg-slate-950/70 border border-slate-700 p-5">
-              <h3 className="text-xl font-semibold text-white">Focused Content</h3>
-              <p className="mt-3 text-slate-300 text-sm leading-relaxed">
-                This app no longer includes other Coptic liturgies or Agpeya hours. The experience is narrowed to St. Basil only, as requested.
-              </p>
+          <div className="mt-10">
+            <h3 className="text-2xl font-semibold text-white mb-4">St. Basil Full Liturgy Order</h3>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {service.order.map((item, index) => (
+                <Link
+                  key={item.title}
+                  href={`/coptic-services/${service.id}`}
+                  className="block rounded-3xl bg-slate-900/80 p-5 border border-slate-700 transition hover:bg-slate-800"
+                >
+                  <p className="font-semibold text-white">{index + 1}. {item.title}</p>
+                  <p className="text-slate-300 mt-2 text-sm leading-relaxed">{item.description}</p>
+                </Link>
+              ))}
             </div>
           </div>
         </section>
