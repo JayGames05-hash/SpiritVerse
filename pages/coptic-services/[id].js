@@ -37,6 +37,20 @@ export default function CopticServiceDetail() {
           </div>
 
           <div className="mt-8 space-y-8">
+            {service.order && (
+              <div className="rounded-3xl bg-slate-900/80 p-6 border border-slate-700">
+                <h2 className="text-2xl font-semibold mb-4">Full Liturgy Order</h2>
+                <div className="space-y-3 text-slate-200">
+                  {service.order.map((item, index) => (
+                    <div key={index} className="rounded-2xl bg-white/5 p-4 border border-white/10">
+                      <p className="font-semibold text-white">{index + 1}. {item.title}</p>
+                      <p className="text-slate-300 mt-1 text-sm leading-relaxed">{item.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {service.sections.map((section, index) => (
               <div key={index}>
                 <h2 className="text-2xl font-semibold mb-3">{section.heading}</h2>

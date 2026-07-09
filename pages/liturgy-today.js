@@ -3,6 +3,31 @@ import Header from '../components/Header'
 import { getDailyLiturgyForDate } from '../data/dailyLiturgy'
 import { findFeastFastForDate } from '../data/fastsFeasts2026'
 
+const DEFAULT_LITURGY_ORDERS = {
+  'Liturgy of St. Basil': [
+    { title: 'Opening Prayers', description: 'Begin with praise, confession, and the Trisagion to prepare the faithful for worship.' },
+    { title: 'Great Litany', description: 'Prayers are offered for the Church, the world, the living, and the departed.' },
+    { title: 'Scripture Readings', description: 'The Old Testament, Epistle, and Gospel readings are proclaimed and meditated upon.' },
+    { title: 'Sermon', description: 'A brief reflection on the Gospel and its meaning for the congregation.' },
+    { title: 'Anaphora', description: 'The Eucharistic prayer of thanksgiving and the consecration of the gifts.' },
+    { title: 'Communion', description: 'The faithful receive the Body and Blood of Christ in thanksgiving.' },
+    { title: 'Doxology and Dismissal', description: 'The service concludes with blessings and praise.' }
+  ],
+  'Liturgy of St. Gregory': [
+    { title: 'Preparation', description: 'Prepare the gifts and enter into silence and repentance.' },
+    { title: 'Entrance Hymns', description: 'The Gospel book is carried in procession with hymns and incense.' },
+    { title: 'Scripture Readings', description: 'Readings from the Old Testament, Epistle, and Gospel center the service.' },
+    { title: 'Eucharistic Prayer', description: 'The anaphora gives thanks and invokes the Holy Spirit over the gifts.' },
+    { title: 'Communion', description: 'The faithful receive the mysteries, then the service closes in prayer.' }
+  ],
+  'Liturgy of St. Cyril': [
+    { title: 'Confession and Forgiveness', description: 'The faithful confess sins and ask for mercy before entering the mysteries.' },
+    { title: 'Readings and Antiphons', description: 'Psalms and short readings prepare the congregation for communion.' },
+    { title: 'Anaphora', description: 'A shorter Eucharistic prayer of thanksgiving and consecration.' },
+    { title: 'Doxology', description: 'The hour ends with praise and blessing.' }
+  ]
+}
+
 export default function LiturgyTodayPage() {
   const [liturgy, setLiturgy] = useState(null)
   const [season, setSeason] = useState(null)
@@ -110,10 +135,28 @@ export default function LiturgyTodayPage() {
                 <p className="text-slate-300 mt-2">{liturgy.title}</p>
               </div>
 
-              <div className="space-y-4">
-                {renderPassage('Old Testament', 'old_testament')}
-                {renderPassage('Epistle', 'epistle')}
-                {renderPassage('Gospel', 'gospel')}
+              <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+                <div className="space-y-4">
+                  {renderPassage('Old Testament', 'old_testament')}
+                  {renderPassage('Epistle', 'epistle')}
+                  {renderPassage('Gospel', 'gospel')}
+                </div>
+
+                <aside className="rounded-3xl bg-slate-900/80 p-5 border border-slate-700">
+                  <h3 className="font-semibold text-white mb-3">Liturgy Order</h3>
+                  <div className="space-y-3 text-slate-200">
+                    {(liturgy.order || DEFAULT_LITURGY_ORDERS[liturgy.liturgy]) ? (
+                      (liturgy.order || DEFAULT_LITURGY_ORDERS[liturgy.liturgy]).map((step, index) => (
+                        <div key={index} className="rounded-2xl bg-white/5 p-4 border border-white/10">
+                          <p className="font-semibold text-white">{index + 1}. {step.title}</p>
+                          <p className="text-slate-300 mt-1 text-sm leading-relaxed">{step.description}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-slate-400">The order of the liturgy is not available for this service.</p>
+                    )}
+                  </div>
+                </aside>
               </div>
 
               <div className="rounded-3xl bg-white/5 p-4 border border-white/10">
