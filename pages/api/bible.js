@@ -1,13 +1,14 @@
 export default async function handler(req, res) {
-  const { book, chapter } = req.query
-  if (!book || !chapter) {
-    return res.status(400).json({ error: 'Missing book or chapter' })
+  const { ref, book, chapter } = req.query
+  const reference = ref || (book && chapter ? `${book} ${chapter}` : null)
+
+  if (!reference) {
+    return res.status(400).json({ error: 'Missing Bible reference' })
   }
 
   try {
-    // Proxy to bible-api.com for KJV text
-    const ref = `${encodeURIComponent(book)}%20${encodeURIComponent(chapter)}`
-    const apiUrl = `https://bible-api.com/${ref}?translation=kjv`
+    const encodedRef = encodeURIComponent(reference)
+    const apiUrl = `https://bible-api.com/${encodedRef}?translation=kjv`
     const r = await fetch(apiUrl)
     if (!r.ok) {
       const text = await r.text().catch(() => '')

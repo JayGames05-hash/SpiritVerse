@@ -179,7 +179,7 @@ export default function Home() {
             </div>
             <ReadingCard post={currentReading} />
             {/* Calendar preview inserted between the verse and Ask button */}
-            <div className="mt-6">
+            <div className="mt-6 space-y-4">
               <Link href="/calendar" className="block bg-white/5 backdrop-blur-sm rounded-2xl p-4 hover:bg-white/10 transition border border-white/10">
                 <div className="flex items-center justify-between">
                   <div>
@@ -190,6 +190,21 @@ export default function Home() {
                   <div>
                     <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ml-4 ${getBadgeClasses(todayLiturgical || nextLiturgical)}`}>
                       {getEntryType(todayLiturgical || nextLiturgical) === 'fast' ? 'Fast' : 'Feast'}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+
+              <Link href="/coptic-services" className="block bg-white/5 backdrop-blur-sm rounded-2xl p-4 hover:bg-white/10 transition border border-white/10">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-[#f4e5d7]">New Section</p>
+                    <h3 className="mt-1 text-white font-semibold">Coptic Services</h3>
+                    <p className="text-sm text-[#f4e5d7] mt-1">Explore liturgies, prayers, and Agpeya hours.</p>
+                  </div>
+                  <div>
+                    <span className="inline-flex items-center rounded-full bg-amber-100 text-amber-900 px-3 py-1 text-xs font-semibold">
+                      View Now
                     </span>
                   </div>
                 </div>
