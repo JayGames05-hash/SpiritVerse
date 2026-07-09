@@ -5,26 +5,12 @@ import { findFeastFastForDate } from '../data/fastsFeasts2026'
 
 const DEFAULT_LITURGY_ORDERS = {
   'Liturgy of St. Basil': [
-    { title: 'Opening Prayers', description: 'Begin with praise, confession, and the Trisagion to prepare the faithful for worship.' },
-    { title: 'Great Litany', description: 'Prayers are offered for the Church, the world, the living, and the departed.' },
-    { title: 'Scripture Readings', description: 'The Old Testament, Epistle, and Gospel readings are proclaimed and meditated upon.' },
-    { title: 'Sermon', description: 'A brief reflection on the Gospel and its meaning for the congregation.' },
-    { title: 'Anaphora', description: 'The Eucharistic prayer of thanksgiving and the consecration of the gifts.' },
-    { title: 'Communion', description: 'The faithful receive the Body and Blood of Christ in thanksgiving.' },
-    { title: 'Doxology and Dismissal', description: 'The service concludes with blessings and praise.' }
-  ],
-  'Liturgy of St. Gregory': [
-    { title: 'Preparation', description: 'Prepare the gifts and enter into silence and repentance.' },
-    { title: 'Entrance Hymns', description: 'The Gospel book is carried in procession with hymns and incense.' },
-    { title: 'Scripture Readings', description: 'Readings from the Old Testament, Epistle, and Gospel center the service.' },
-    { title: 'Eucharistic Prayer', description: 'The anaphora gives thanks and invokes the Holy Spirit over the gifts.' },
-    { title: 'Communion', description: 'The faithful receive the mysteries, then the service closes in prayer.' }
-  ],
-  'Liturgy of St. Cyril': [
-    { title: 'Confession and Forgiveness', description: 'The faithful confess sins and ask for mercy before entering the mysteries.' },
-    { title: 'Readings and Antiphons', description: 'Psalms and short readings prepare the congregation for communion.' },
-    { title: 'Anaphora', description: 'A shorter Eucharistic prayer of thanksgiving and consecration.' },
-    { title: 'Doxology', description: 'The hour ends with praise and blessing.' }
+    { title: 'Opening and Preparation', description: 'Hymns and prayers prepare the faithful, followed by the priest’s preparation of the gifts.' },
+    { title: 'Procession of the Lamb', description: 'The consecrated offerings are carried forward as the liturgy approaches the sacred mysteries.' },
+    { title: 'Liturgy of the Faithful', description: 'The faithful enter the core of the service, receiving prayers of absolution and the Creed.' },
+    { title: 'Prayer of the Veil', description: 'The priest covers the gifts and invokes the Holy Spirit for sanctification.' },
+    { title: 'Holy Communion', description: 'The Body and Blood of Christ are distributed to the faithful with hymns of thanksgiving.' },
+    { title: 'Thanksgiving and Dismissal', description: 'The service closes with prayers of gratitude and a final blessing.' }
   ]
 }
 

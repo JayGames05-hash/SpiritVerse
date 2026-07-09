@@ -199,8 +199,8 @@ export default function Home() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-[#f4e5d7]">New Section</p>
-                    <h3 className="mt-1 text-white font-semibold">Coptic Services</h3>
-                    <p className="text-sm text-[#f4e5d7] mt-1">Explore liturgies, prayers, and Agpeya hours.</p>
+                    <h3 className="mt-1 text-white font-semibold">St. Basil Liturgy</h3>
+                    <p className="text-sm text-[#f4e5d7] mt-1">Explore the full St. Basil liturgy order and structure.</p>
                   </div>
                   <div>
                     <span className="inline-flex items-center rounded-full bg-amber-100 text-amber-900 px-3 py-1 text-xs font-semibold">
