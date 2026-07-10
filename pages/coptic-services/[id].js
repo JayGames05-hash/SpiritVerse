@@ -36,27 +36,41 @@ export default function CopticServiceDetail() {
             </div>
           </div>
 
-          <div className="mt-8 space-y-8">
-            {service.order && (
-              <div className="rounded-3xl bg-slate-900/80 p-6 border border-slate-700">
-                <h2 className="text-2xl font-semibold mb-4">Full Liturgy Order</h2>
-                <div className="space-y-3 text-slate-200">
-                  {service.order.map((item, index) => (
-                    <div key={index} className="rounded-2xl bg-white/5 p-4 border border-white/10">
-                      <p className="font-semibold text-white">{index + 1}. {item.title}</p>
-                      <p className="text-slate-300 mt-1 text-sm leading-relaxed">{item.description}</p>
-                    </div>
-                  ))}
-                </div>
+          <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
+            <aside className="rounded-3xl bg-slate-950/80 p-6 border border-slate-700">
+              <h2 className="text-2xl font-semibold mb-4">Bookmarks</h2>
+              <div className="space-y-2 text-slate-300 text-sm">
+                {(service.bookmarks || []).map((bookmark, index) => (
+                  <a
+                    key={index}
+                    href={`#bookmark-${index}`}
+                    className="block rounded-2xl bg-white/5 px-4 py-3 transition hover:bg-white/10"
+                  >
+                    <span className="font-semibold text-white">{index + 1}.</span> {bookmark.heading}
+                  </a>
+                ))}
               </div>
-            )}
+            </aside>
 
-            {service.sections.map((section, index) => (
-              <div key={index}>
-                <h2 className="text-2xl font-semibold mb-3">{section.heading}</h2>
-                <p className="text-slate-200 leading-relaxed">{section.content}</p>
-              </div>
-            ))}
+            <div className="space-y-6">
+              {(service.bookmarks || []).map((bookmark, index) => (
+                <section key={index} id={`bookmark-${index}`} className="rounded-3xl bg-slate-900/80 p-6 border border-slate-700">
+                  <div className="mb-4">
+                    <p className="text-slate-400 text-sm">Bookmark {index + 1}</p>
+                    <h3 className="text-2xl font-semibold text-white mt-1">{bookmark.heading}</h3>
+                    <p className="text-slate-300 mt-2 text-sm leading-relaxed">{bookmark.description}</p>
+                  </div>
+                  <div className="space-y-3">
+                    {bookmark.items.map((item, itemIndex) => (
+                      <div key={itemIndex} className="rounded-2xl bg-white/5 p-4 border border-white/10">
+                        <p className="font-semibold text-white">{itemIndex + 1}. {item.title}</p>
+                        <p className="text-slate-300 mt-2 text-sm leading-relaxed">{item.details || item.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
           </div>
         </div>
       </main>
