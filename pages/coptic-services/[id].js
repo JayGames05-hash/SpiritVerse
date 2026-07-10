@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Header from '../../components/Header'
 import COPTIC_SERVICES from '../../data/copticServices'
@@ -6,6 +7,13 @@ export default function CopticServiceDetail() {
   const router = useRouter()
   const { id } = router.query
   const service = COPTIC_SERVICES.find(item => item.id === id)
+  const [activePage, setActivePage] = useState(7)
+
+  useEffect(() => {
+    if (service?.bookmarks?.[0]?.page) {
+      setActivePage(service.bookmarks[0].page)
+    }
+  }, [service])
 
   if (!service) {
     return (
@@ -41,35 +49,37 @@ export default function CopticServiceDetail() {
               <h2 className="text-2xl font-semibold mb-4">Bookmarks</h2>
               <div className="space-y-2 text-slate-300 text-sm">
                 {(service.bookmarks || []).map((bookmark, index) => (
-                  <a
+                  <button
                     key={index}
-                    href={`#bookmark-${index}`}
-                    className="block rounded-2xl bg-white/5 px-4 py-3 transition hover:bg-white/10"
+                    onClick={() => setActivePage(bookmark.page || 7)}
+                    className="block w-full text-left rounded-2xl bg-white/5 px-4 py-3 transition hover:bg-white/10"
                   >
                     <span className="font-semibold text-white">{index + 1}.</span> {bookmark.heading}
-                  </a>
+                  </button>
                 ))}
               </div>
+              <a
+                href="/Rites_Liturgy_Full.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-6 inline-flex items-center justify-center rounded-2xl bg-amber-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-amber-500"
+              >
+                Open full PDF
+              </a>
             </aside>
 
-            <div className="space-y-6">
-              {(service.bookmarks || []).map((bookmark, index) => (
-                <section key={index} id={`bookmark-${index}`} className="rounded-3xl bg-slate-900/80 p-6 border border-slate-700">
-                  <div className="mb-4">
-                    <p className="text-slate-400 text-sm">Bookmark {index + 1}</p>
-                    <h3 className="text-2xl font-semibold text-white mt-1">{bookmark.heading}</h3>
-                    <p className="text-slate-300 mt-2 text-sm leading-relaxed">{bookmark.description}</p>
-                  </div>
-                  <div className="space-y-3">
-                    {bookmark.items.map((item, itemIndex) => (
-                      <div key={itemIndex} className="rounded-2xl bg-white/5 p-4 border border-white/10">
-                        <p className="font-semibold text-white">{itemIndex + 1}. {item.title}</p>
-                        <p className="text-slate-300 mt-2 text-sm leading-relaxed">{item.details || item.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              ))}
+            <div className="space-y-4">
+              <div className="rounded-3xl bg-slate-900/80 p-4 border border-slate-700">
+                <p className="text-slate-400 text-sm">Showing the actual liturgy PDF from the uploaded mass book.</p>
+                <div className="mt-3 overflow-hidden rounded-2xl border border-slate-700 bg-white">
+                  <iframe
+                    key={activePage}
+                    src={`/Rites_Liturgy_Full.pdf#page=${activePage}`}
+                    className="h-[70vh] w-full"
+                    title="St. Basil liturgy PDF"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

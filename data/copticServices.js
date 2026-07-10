@@ -60,6 +60,7 @@ const COPTIC_SERVICES = [
       {
         heading: 'Opening and Preparation',
         description: 'The service begins with the Offeratory, blessings, and the preparation of the gifts.',
+        page: 7,
         items: [
           { title: 'The Offeratory', details: 'The priest prepares the altar and the gifts as the faithful begin in prayer.' },
           { title: 'Hymn of the Blessing', details: 'A hymn invoking God’s blessing at the start of the service.' },
@@ -74,6 +75,7 @@ const COPTIC_SERVICES = [
       {
         heading: 'The Liturgy of the Word',
         description: 'The Church sings and prays as the service moves toward the Liturgy of the Faithful.',
+        page: 28,
         items: [
           { title: 'Hymn Nicabeu Tyrou', details: 'A hymn proclaiming the victory and glory of God.' },
           { title: 'Hymn Nefcen', details: 'A hymn of praise acknowledging the Lord’s presence among the faithful.' },
@@ -85,6 +87,7 @@ const COPTIC_SERVICES = [
       {
         heading: 'The Liturgy of the Faithful',
         description: 'The heart of the Divine Liturgy, where the Church prays for peace and the faithful prepare for communion.',
+        page: 62,
         items: [
           { title: 'Liturgy of the Faithful', details: 'The faithful enter the sacred portion of the service and prepare to receive the Mysteries.' },
           { title: 'Prayer of the Veil', details: 'The priest covers the gifts and invokes the Holy Spirit to sanctify them.' },
@@ -96,6 +99,7 @@ const COPTIC_SERVICES = [
       {
         heading: 'Communion and Dismissal',
         description: 'The Mass reaches its summit in communion and closes with thanksgiving and blessing.',
+        page: 79,
         items: [
           { title: 'Rejoice O Mary', details: 'A hymn in praise of the Virgin Mary.' },
           { title: 'Greet One Another', details: 'A hymn inviting the faithful to offer peace to one another.' },
