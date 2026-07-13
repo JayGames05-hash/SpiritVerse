@@ -212,77 +212,65 @@ export default function BiblePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#3d1212] via-[#5c1515] to-[#1b0707]">
       <Header />
-      <main className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        <h1 className="text-3xl font-bold text-white mb-4">Bible (KJV)</h1>
+      <main id="content" className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold text-white">Bible (KJV)</h1>
+          <div className="text-sm text-gray-300">Tip: click a verse to focus or use audio controls below</div>
+        </div>
 
-        <div className="bg-white rounded-2xl p-4 mb-6">
-          <div className="flex flex-wrap gap-3 items-center">
-            <select value={book} onChange={e => setBook(e.target.value)} className="p-2 border rounded w-full sm:w-1/2">
-              {BOOKS.map(b => <option key={b} value={b}>{b}</option>)}
-            </select>
-            <input value={chapter} onChange={e => setChapter(e.target.value)} className="p-2 border rounded w-24" />
-            <button onClick={handleFetch} disabled={loading} className="px-4 py-2 bg-blue-600 text-white rounded">{loading ? 'Loading...' : 'Go'}</button>
+        <section className="bg-white rounded-2xl p-4 mb-6 church-panel">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+            <div className="sm:col-span-2">
+              <select value={book} onChange={e => setBook(e.target.value)} className="p-3 border rounded w-full text-sm">
+                {BOOKS.map(b => <option key={b} value={b}>{b}</option>)}
+              </select>
+            </div>
+            <div className="flex items-center gap-2">
+              <input value={chapter} onChange={e => setChapter(e.target.value)} className="p-3 border rounded w-24 text-sm" />
+              <button onClick={handleFetch} disabled={loading} className="px-4 py-2 church-button rounded text-sm">{loading ? 'Loading...' : 'Go'}</button>
+            </div>
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-3 items-center border-t pt-4" role="toolbar" aria-label="Audio controls">
-            <button
-              onClick={toggleAudio}
-              disabled={!data?.verses?.length}
-              className="px-4 py-3 min-w-[44px] min-h-[44px] bg-emerald-600 text-white rounded disabled:opacity-60"
-              aria-pressed={audioStatus === 'playing'}
-              aria-label={audioStatus === 'playing' ? 'Pause reading' : audioStatus === 'paused' ? 'Resume reading' : 'Read chapter aloud'}
-              onKeyDown={(e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleAudio() } }}
-            >
-              {audioStatus === 'playing' ? 'Pause' : audioStatus === 'paused' ? 'Resume' : 'Read'}
-            </button>
-            <button
-              onClick={stopAudio}
-              disabled={!data?.verses?.length}
-              className="px-4 py-3 min-w-[44px] min-h-[44px] bg-slate-700 text-white rounded disabled:opacity-60"
-              aria-label="Stop reading"
-            >Stop</button>
-            <button
-              onClick={() => setAutoPlay(!autoPlay)}
-              className={`px-4 py-3 min-w-[44px] min-h-[44px] rounded ${autoPlay ? 'bg-amber-600 text-white' : 'bg-slate-200 text-slate-800'}`}
-              aria-pressed={autoPlay}
-              aria-label={autoPlay ? 'Auto-play enabled' : 'Enable auto-play'}
-            >
-              {autoPlay ? 'Auto-on' : 'Auto-off'}
-            </button>
-            <label className="text-sm text-gray-600 flex items-center" htmlFor="speechRate">
-              Speed
-              <select id="speechRate" value={speechRate} onChange={e => setSpeechRate(Number(e.target.value))} className="ml-2 p-2 border rounded">
+          <div className="mt-4 border-t pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex items-center gap-2" role="toolbar" aria-label="Audio controls">
+              <button onClick={toggleAudio} disabled={!data?.verses?.length} className="px-4 py-2 church-button rounded text-sm" aria-pressed={audioStatus === 'playing'}>{audioStatus === 'playing' ? 'Pause' : 'Play'}</button>
+              <button onClick={stopAudio} disabled={!data?.verses?.length} className="px-4 py-2 rounded bg-slate-700 text-white text-sm">Stop</button>
+              <button onClick={() => setAutoPlay(!autoPlay)} className={`px-3 py-2 rounded text-sm ${autoPlay ? 'bg-amber-600 text-white' : 'bg-slate-100 text-slate-800'}`}>{autoPlay ? 'Auto' : 'Manual'}</button>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <label className="text-sm text-gray-600">Speed</label>
+              <select id="speechRate" value={speechRate} onChange={e => setSpeechRate(Number(e.target.value))} className="p-2 border rounded text-sm">
                 <option value={0.8}>0.8×</option>
                 <option value={1}>1.0×</option>
                 <option value={1.2}>1.2×</option>
                 <option value={1.5}>1.5×</option>
               </select>
-            </label>
-            <span className="text-sm text-gray-500" aria-live="polite">{audioStatus === 'playing' ? 'Listening now…' : audioStatus === 'paused' ? 'Paused' : audioStatus === 'stopped' ? 'Stopped' : 'Ready to read'}</span>
+              <div className="text-sm text-gray-500" aria-live="polite">{audioStatus === 'playing' ? 'Listening…' : audioStatus === 'paused' ? 'Paused' : audioStatus === 'stopped' ? 'Stopped' : 'Ready'}</div>
+            </div>
           </div>
-        </div>
+        </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2">
-            <div ref={versesRef} className="bg-white rounded-2xl p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="lg:col-span-3">
+            <div ref={versesRef} className="bg-white rounded-2xl p-6 church-panel">
               {data ? (
                 <>
-                  <h2 className="text-xl font-semibold mb-3">{data.reference}</h2>
-                  <div>
+                  <h2 className="text-2xl font-semibold mb-4 church-title text-[#3b1b17]">{data.reference}</h2>
+                  <div className="space-y-3">
                     {data.verses && data.verses.map(v => (
-                      <div key={v.verse} id={`verse-${book}-${chapter}-${v.verse}`} className={`py-2 border-b last:border-b-0 ${ (bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? 'bg-yellow-200' : ''} ${activeVerse === v.verse ? 'bg-emerald-50 ring-1 ring-emerald-200' : ''}`}>
-                        <button
-                          onClick={() => toggleBookmark(v.verse)}
-                          aria-pressed={(bookmarks[`${book}-${chapter}`]||[]).includes(v.verse)}
-                          title="Toggle bookmark"
-                          className={`mr-3 text-sm focus:outline-none ${ (bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? 'text-yellow-700 text-lg' : 'text-gray-500' }`}
-                        >
-                          {(bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? '★' : '☆'}
-                        </button>
-                        <span className="font-semibold mr-2">{v.verse}.</span>
-                        <span className="text-black">{v.text}</span>
-                        <button onClick={() => speakVerse(v.verse)} className="ml-3 text-xs text-emerald-700 underline">Read verse</button>
-                      </div>
+                      <article key={v.verse} id={`verse-${book}-${chapter}-${v.verse}`} className={`p-4 rounded-lg border ${ (bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? 'bg-yellow-50' : 'bg-white' } ${activeVerse === v.verse ? 'ring-2 ring-emerald-200 bg-emerald-50' : 'shadow-sm'}`}>
+                        <div className="flex items-start gap-3">
+                          <button onClick={() => toggleBookmark(v.verse)} aria-pressed={(bookmarks[`${book}-${chapter}`]||[]).includes(v.verse)} className="text-lg mt-1" title="Toggle bookmark">{(bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? '★' : '☆'}</button>
+                          <div>
+                            <div className="text-sm text-gray-600 mb-1"><strong>{v.verse}.</strong></div>
+                            <p className="text-base text-[#2b1b17] leading-relaxed">{v.text}</p>
+                            <div className="mt-2">
+                              <button onClick={() => speakVerse(v.verse)} className="text-sm text-emerald-700 underline">Read</button>
+                            </div>
+                          </div>
+                        </div>
+                      </article>
                     ))}
                   </div>
                 </>
@@ -292,17 +280,17 @@ export default function BiblePage() {
             </div>
           </div>
 
-          <aside className="bg-white rounded-2xl p-4">
+          <aside className="bg-white rounded-2xl p-4 church-panel">
             <h3 className="font-semibold mb-3">Bookmarks</h3>
             {Object.keys(bookmarks).length === 0 ? (
               <div className="text-sm text-gray-600">No bookmarks yet. Click the star next to a verse to save it.</div>
             ) : (
-              <ul className="space-y-2">
+              <ul className="space-y-2 text-sm">
                 {Object.entries(bookmarks).map(([key, verses]) => (
-                  <li key={key} className="text-sm">
+                  <li key={key}>
                     <div className="font-medium">{key}</div>
-                    <div className="text-gray-700">{verses.map(v => (
-                      <button key={v} className="mr-2 text-blue-600" onClick={() => openBookmark(key, v)}>{v}</button>
+                    <div className="text-gray-700 mt-1">{verses.map(v => (
+                      <button key={v} className="mr-2 text-blue-600 underline" onClick={() => openBookmark(key, v)}>{v}</button>
                     ))}</div>
                   </li>
                 ))}
