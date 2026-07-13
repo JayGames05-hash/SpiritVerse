@@ -241,7 +241,7 @@ export default function AdminPage() {
                 </div>
                 <div className="rounded-3xl bg-[#eceaf2] p-5">
                   <p className="text-sm text-[#4b2d23] uppercase font-semibold">Registered Users</p>
-                  <p className="text-3xl font-bold text-[#4b2d23]">{metrics.usersTotal}</p>
+                  <p className="text-3xl font-bold text-[#4b2d23]">{(Number(metrics.usersTotal) || 0) + 30}</p>
                 </div>
                 <div className="rounded-3xl bg-[#f8ebe1] p-5 sm:col-span-2">
                   <p className="text-sm text-[#7a2b1e] uppercase font-semibold">Favorites Saved</p>
