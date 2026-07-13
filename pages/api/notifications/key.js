@@ -1,4 +1,4 @@
-import { getVapidKeys } from '../../../../lib/push'
+import { getVapidKeys } from '../../../lib/push'
 
 export default function handler(req, res) {
   const { publicKey } = getVapidKeys()
