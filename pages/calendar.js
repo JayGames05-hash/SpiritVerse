@@ -122,9 +122,9 @@ export default function CalendarPage() {
             ))}
           </div>
 
-          <div className="grid grid-cols-7 gap-1 sm:gap-2">
+          <div className="grid grid-cols-7 gap-2">
             {Array.from({ length: firstDayIndex }).map((_, idx) => (
-              <div key={`pad-${idx}`} className="p-2 sm:p-3 rounded-lg bg-transparent" />
+              <div key={`pad-${idx}`} className="aspect-square rounded-lg bg-transparent" />
             ))}
             {Array.from({ length: daysInMonth }).map((_, i) => {
               const day = i + 1
@@ -135,17 +135,24 @@ export default function CalendarPage() {
                 <button
                   key={key}
                   onClick={() => setSelectedDate(key)}
-                  className={`p-2 sm:p-3 rounded-lg text-left border ${selectedDate === key ? 'ring-2 ring-[#8b1e1e]' : 'border-gray-100'} bg-white hover:shadow-sm`}
+                  className={`group aspect-square rounded-3xl border bg-white p-3 text-left transition hover:-translate-y-0.5 hover:shadow-lg ${selectedDate === key ? 'border-[#8b1e1e] ring-2 ring-[#8b1e1e]/30' : 'border-gray-200'}`}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className={`text-xs sm:text-sm font-medium ${isToday ? 'text-[#8b1e1e]' : 'text-gray-800'}`}>{day}</div>
-                    <div className="flex items-center gap-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className={`text-sm font-semibold ${isToday ? 'text-[#8b1e1e]' : 'text-gray-800'}`}>{day}</div>
+                    <div className="flex flex-wrap gap-1">
                       {dayEntries.slice(0,2).map(e => {
                         const cls = e.id.startsWith('fast-') ? 'bg-cyan-100 text-cyan-900' : 'bg-amber-100 text-amber-900'
-                        return <span key={e.id} className={`inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] sm:text-xs font-semibold ${cls}`}>{e.id.startsWith('fast-') ? 'Fast' : 'Feast'}</span>
+                        return <span key={e.id} className={`inline-flex items-center rounded-full px-2 py-1 text-[10px] font-semibold ${cls}`}>{e.id.startsWith('fast-') ? 'Fast' : 'Feast'}</span>
                       })}
                     </div>
                   </div>
+                  {dayEntries.length > 0 && (
+                    <div className="mt-3 space-y-1 text-[11px] text-gray-600">
+                      {dayEntries.slice(0, 3).map(entry => (
+                        <div key={entry.id} className="truncate">{entry.name}</div>
+                      ))}
+                    </div>
+                  )}
                 </button>
               )
             })}
@@ -153,35 +160,60 @@ export default function CalendarPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2 bg-white rounded-2xl p-6">
-            <h3 className="text-lg font-semibold text-[#4b2d23] mb-3">{selectedDate ? `Events for ${selectedDate}` : 'Select a day'}</h3>
-            {selectedEntries.length === 0 && <p className="text-gray-600">No feasts or fasts on this day.</p>}
-            {selectedEntries.map((entry) => (
-              <div key={entry.id} className="mb-4 border-t pt-3">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-semibold text-[#4b2d23]">{entry.name}</h4>
-                  <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${entry.id.startsWith('fast-') ? 'bg-cyan-100 text-cyan-900' : 'bg-amber-100 text-amber-900'}`}>
-                    {entry.id.startsWith('fast-') ? 'Fast' : 'Feast'}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-500 mt-1">{entry.feast_date}</p>
-                <div className="mt-2 text-gray-700 whitespace-pre-wrap">{entry.note}</div>
-                {entry.scripture_ref && <p className="mt-2 italic text-gray-600">Scripture: {entry.scripture_ref}</p>}
+          <div className="md:col-span-2 bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between mb-5 gap-3">
+              <div>
+                <h3 className="text-xl sm:text-2xl font-bold text-[#4b2d23]">{selectedDate ? `Events for ${selectedDate}` : 'Select a day'}</h3>
+                <p className="text-sm text-gray-500">Detailed feast and fast information appears here.</p>
               </div>
-            ))}
+              <button
+                onClick={() => setSelectedDate(null)}
+                className="text-sm text-[#8b1e1e] hover:text-[#6d1515]"
+              >
+                Clear
+              </button>
+            </div>
+            {selectedEntries.length === 0 ? (
+              <div className="rounded-3xl bg-[#f8f2ec] border border-[#e9d5c3] p-6 text-gray-700">
+                No feasts or fasts on this day.
+              </div>
+            ) : (
+              <div className="space-y-5">
+                {selectedEntries.map((entry) => (
+                  <div key={entry.id} className="rounded-3xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                      <div>
+                        <h4 className="text-lg font-semibold text-[#4b2d23]">{entry.name}</h4>
+                        <p className="text-sm text-gray-500 mt-1">{entry.feast_date}</p>
+                      </div>
+                      <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${entry.id.startsWith('fast-') ? 'bg-cyan-100 text-cyan-900' : 'bg-amber-100 text-amber-900'}`}>
+                        {entry.id.startsWith('fast-') ? 'Fast' : 'Feast'}
+                      </span>
+                    </div>
+                    <div className="mt-4 text-gray-700 whitespace-pre-wrap">{entry.note}</div>
+                    {entry.scripture_ref && <p className="mt-3 italic text-gray-600">Scripture: {entry.scripture_ref}</p>}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
-          <aside className="bg-white rounded-2xl p-6">
-            <h4 className="font-semibold text-[#4b2d23] mb-2">Upcoming</h4>
-            <div className="space-y-3">
+          <aside className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="font-semibold text-[#4b2d23]">Upcoming</h4>
+              <span className="text-sm text-gray-500">Next 8 events</span>
+            </div>
+            <div className="space-y-4">
               {upcoming.map(e => (
-                <div key={e.id} className="flex items-start justify-between">
-                  <div>
-                    <div className="text-sm font-semibold text-[#4b2d23]">{e.name}</div>
-                    <div className="text-xs text-gray-500">{e.feast_date}</div>
-                  </div>
-                  <div className="ml-2">
-                    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${e.id.startsWith('fast-') ? 'bg-cyan-100 text-cyan-900' : 'bg-amber-100 text-amber-900'}`}>{e.id.startsWith('fast-') ? 'Fast' : 'Feast'}</span>
+                <div key={e.id} className="rounded-3xl border border-gray-100 p-4 hover:border-[#8b1e1e] hover:shadow-sm transition">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <div className="text-sm font-semibold text-[#4b2d23]">{e.name}</div>
+                      <div className="text-xs text-gray-500">{e.feast_date}</div>
+                    </div>
+                    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${e.id.startsWith('fast-') ? 'bg-cyan-100 text-cyan-900' : 'bg-amber-100 text-amber-900'}`}>
+                      {e.id.startsWith('fast-') ? 'Fast' : 'Feast'}
+                    </span>
                   </div>
                 </div>
               ))}
