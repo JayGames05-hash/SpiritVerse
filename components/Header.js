@@ -17,7 +17,6 @@ export default function Header() {
     <>
       <Link href="/" className="block px-3 py-2 text-white hover:text-gray-100">Home</Link>
       <Link href="/bible" className="block px-3 py-2 text-white hover:text-gray-100">Bible</Link>
-      <Link href="/coptic-services" className="block px-3 py-2 text-white hover:text-gray-100">Coptic Services</Link>
       <Link href="/archive" className="block px-3 py-2 text-white hover:text-gray-100">Archive</Link>
       <Link href="/search" className="block px-3 py-2 text-white hover:text-gray-100">Search</Link>
       <Link href="/saints" className="block px-3 py-2 text-white hover:text-gray-100">Saints</Link>
