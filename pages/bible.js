@@ -11,6 +11,10 @@ export default function BiblePage() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState(null)
   const [bookmarks, setBookmarks] = useState({})
+  const [audioStatus, setAudioStatus] = useState('idle')
+  const [speechRate, setSpeechRate] = useState(1)
+  const [activeVerse, setActiveVerse] = useState(null)
+  const [autoPlay, setAutoPlay] = useState(false)
   const versesRef = useRef(null)
 
   useEffect(() => {
@@ -36,6 +40,30 @@ export default function BiblePage() {
       }
     }
   }, [])
+
+  useEffect(() => {
+    return () => {
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.cancel()
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel()
+    }
+    setAudioStatus('idle')
+    setActiveVerse(null)
+  }, [book, chapter])
+
+  useEffect(() => {
+    if (!activeVerse) return
+    const el = document.getElementById(`verse-${book}-${chapter}-${activeVerse}`)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }, [activeVerse, book, chapter])
 
   const saveBookmarks = (b) => {
     const cleaned = Object.fromEntries(Object.entries(b).filter(([k, v]) => Array.isArray(v) && v.length > 0))
@@ -91,6 +119,96 @@ export default function BiblePage() {
     setTimeout(handleFetch, 100)
   }
 
+  const speakChapter = () => {
+    if (!data?.verses?.length) return
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+      alert('Text-to-speech is not available in this browser.')
+      return
+    }
+
+    setAutoPlay(true)
+    const text = data.verses.map(v => `${v.verse}. ${v.text}`).join(' ')
+    const utterance = new SpeechSynthesisUtterance(text)
+    utterance.lang = 'en-US'
+    utterance.rate = speechRate
+    utterance.pitch = 1
+    utterance.onstart = () => setAudioStatus('playing')
+    utterance.onend = () => setAudioStatus('finished')
+    utterance.onerror = () => setAudioStatus('error')
+
+    window.speechSynthesis.cancel()
+    window.speechSynthesis.speak(utterance)
+    setAudioStatus('playing')
+    setActiveVerse(null)
+  }
+
+  const speakVerse = (verseNum) => {
+    if (!data?.verses?.length) return
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+      alert('Text-to-speech is not available in this browser.')
+      return
+    }
+
+    const verse = data.verses.find(v => v.verse === verseNum)
+    if (!verse) return
+
+    const utterance = new SpeechSynthesisUtterance(`${verse.verse}. ${verse.text}`)
+    utterance.lang = 'en-US'
+    utterance.rate = speechRate
+    utterance.pitch = 1
+    utterance.onstart = () => {
+      setActiveVerse(verseNum)
+      setAudioStatus('playing')
+    }
+    utterance.onend = () => {
+      setActiveVerse(null)
+      setAudioStatus('finished')
+      if (autoPlay) {
+        const nextVerse = data?.verses?.find(v => v.verse === verseNum + 1)
+        if (nextVerse) {
+          setTimeout(() => speakVerse(nextVerse.verse), 120)
+        } else {
+          setAutoPlay(false)
+        }
+      }
+    }
+    utterance.onerror = () => {
+      setActiveVerse(null)
+      setAudioStatus('error')
+    }
+
+    window.speechSynthesis.cancel()
+    window.speechSynthesis.speak(utterance)
+    setAudioStatus('playing')
+  }
+
+  const toggleAudio = () => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return
+
+    if (audioStatus === 'paused') {
+      window.speechSynthesis.resume()
+      setAudioStatus('playing')
+      return
+    }
+
+    if (audioStatus === 'playing') {
+      window.speechSynthesis.pause()
+      setAudioStatus('paused')
+      return
+    }
+
+    speakChapter()
+  }
+
+  const stopAudio = () => {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel()
+    }
+    setActiveVerse(null)
+    setAudioStatus('stopped')
+    setAutoPlay(false)
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#3d1212] via-[#5c1515] to-[#1b0707]">
       <Header />
@@ -98,12 +216,32 @@ export default function BiblePage() {
         <h1 className="text-3xl font-bold text-white mb-4">Bible (KJV)</h1>
 
         <div className="bg-white rounded-2xl p-4 mb-6">
-          <div className="flex gap-3 items-center">
-            <select value={book} onChange={e => setBook(e.target.value)} className="p-2 border rounded w-1/2">
+          <div className="flex flex-wrap gap-3 items-center">
+            <select value={book} onChange={e => setBook(e.target.value)} className="p-2 border rounded w-full sm:w-1/2">
               {BOOKS.map(b => <option key={b} value={b}>{b}</option>)}
             </select>
             <input value={chapter} onChange={e => setChapter(e.target.value)} className="p-2 border rounded w-24" />
             <button onClick={handleFetch} disabled={loading} className="px-4 py-2 bg-blue-600 text-white rounded">{loading ? 'Loading...' : 'Go'}</button>
+          </div>
+
+          <div className="mt-4 flex flex-wrap gap-3 items-center border-t pt-4">
+            <button onClick={toggleAudio} disabled={!data?.verses?.length} className="px-4 py-2 bg-emerald-600 text-white rounded disabled:opacity-60">
+              {audioStatus === 'playing' ? 'Pause' : audioStatus === 'paused' ? 'Resume' : 'Read chapter aloud'}
+            </button>
+            <button onClick={stopAudio} disabled={!data?.verses?.length} className="px-4 py-2 bg-slate-700 text-white rounded disabled:opacity-60">Stop</button>
+            <button onClick={() => setAutoPlay(!autoPlay)} className={`px-4 py-2 rounded ${autoPlay ? 'bg-amber-600 text-white' : 'bg-slate-200 text-slate-800'}`}>
+              {autoPlay ? 'Auto-play on' : 'Auto-play off'}
+            </button>
+            <label className="text-sm text-gray-600">
+              Speed
+              <select value={speechRate} onChange={e => setSpeechRate(Number(e.target.value))} className="ml-2 p-2 border rounded">
+                <option value={0.8}>0.8×</option>
+                <option value={1}>1.0×</option>
+                <option value={1.2}>1.2×</option>
+                <option value={1.5}>1.5×</option>
+              </select>
+            </label>
+            <span className="text-sm text-gray-500">{audioStatus === 'playing' ? 'Listening now…' : audioStatus === 'paused' ? 'Paused' : audioStatus === 'stopped' ? 'Stopped' : 'Ready to read'}</span>
           </div>
         </div>
 
@@ -115,7 +253,7 @@ export default function BiblePage() {
                   <h2 className="text-xl font-semibold mb-3">{data.reference}</h2>
                   <div>
                     {data.verses && data.verses.map(v => (
-                      <div key={v.verse} id={`verse-${book}-${chapter}-${v.verse}`} className={`py-2 border-b last:border-b-0 ${ (bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? 'bg-yellow-200' : ''}`}>
+                      <div key={v.verse} id={`verse-${book}-${chapter}-${v.verse}`} className={`py-2 border-b last:border-b-0 ${ (bookmarks[`${book}-${chapter}`]||[]).includes(v.verse) ? 'bg-yellow-200' : ''} ${activeVerse === v.verse ? 'bg-emerald-50 ring-1 ring-emerald-200' : ''}`}>
                         <button
                           onClick={() => toggleBookmark(v.verse)}
                           aria-pressed={(bookmarks[`${book}-${chapter}`]||[]).includes(v.verse)}
@@ -126,6 +264,7 @@ export default function BiblePage() {
                         </button>
                         <span className="font-semibold mr-2">{v.verse}.</span>
                         <span className="text-black">{v.text}</span>
+                        <button onClick={() => speakVerse(v.verse)} className="ml-3 text-xs text-emerald-700 underline">Read verse</button>
                       </div>
                     ))}
                   </div>
