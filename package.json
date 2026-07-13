@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "test": "node test/smoke.js",
     "export": "next build && next export -o out",
     "generate-icons": "node scripts/generate-icons.js",
     "cap:init": "npx cap init CopticDaily com.coptic.daily --web-dir=out",

@@ -1,0 +1,1 @@
+Smoke tests live in `test/smoke.js` and are executed by `npm test` which runs a small Node script to verify key files exist. This is intended as a fast CI check, not a replacement for unit/UI tests.

@@ -15,17 +15,17 @@ export default function Header() {
 
   const navLinks = (
     <>
-      <Link href="/" className="block px-3 py-2 text-white hover:text-gray-100">Home</Link>
-      <Link href="/bible" className="block px-3 py-2 text-white hover:text-gray-100">Bible</Link>
-      <Link href="/archive" className="block px-3 py-2 text-white hover:text-gray-100">Archive</Link>
-      <Link href="/search" className="block px-3 py-2 text-white hover:text-gray-100">Search</Link>
-      <Link href="/saints" className="block px-3 py-2 text-white hover:text-gray-100">Saints</Link>
-      <Link href="/calendar" className="block px-3 py-2 text-white hover:text-gray-100">Feast Calendar</Link>
-      <Link href="/verse-suggestions" className="block px-3 py-2 text-white hover:text-gray-100">Suggest a Verse</Link>
+      <Link href="/" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Home">Home</Link>
+      <Link href="/bible" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Bible">Bible</Link>
+      <Link href="/archive" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Archive">Archive</Link>
+      <Link href="/search" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Search">Search</Link>
+      <Link href="/saints" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Saints">Saints</Link>
+      <Link href="/calendar" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Feast Calendar">Feast Calendar</Link>
+      <Link href="/verse-suggestions" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Suggest a Verse">Suggest a Verse</Link>
       {isLoggedIn && (
         <>
-          <Link href="/favorites" className="block px-3 py-2 text-white hover:text-gray-100">Favorites</Link>
-          <Link href="/profile" className="block px-3 py-2 text-white font-semibold hover:text-gray-100">Profile</Link>
+          <Link href="/favorites" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Favorites">Favorites</Link>
+          <Link href="/profile" className="block px-4 py-3 text-white font-semibold hover:text-gray-100 rounded" aria-label="Profile">Profile</Link>
         </>
       )}
       <div className="block px-3 py-2">
@@ -53,13 +53,15 @@ export default function Header() {
 
         {/* Right: nav (desktop) + hamburger (mobile) */}
         <div className="flex items-center gap-3">
-          <nav className="hidden sm:flex items-center gap-3 text-sm text-white/90">{navLinks}</nav>
+          <nav className="hidden sm:flex items-center gap-3 text-sm text-white/90" role="navigation" aria-label="Main navigation">{navLinks}</nav>
 
           {/* Mobile menu button */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="sm:hidden inline-flex items-center justify-center p-2 rounded-md text-white/90 hover:text-white"
+            className="sm:hidden inline-flex items-center justify-center p-3 rounded-md text-white/90 hover:text-white"
             aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
           >
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={menuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'} />
@@ -70,7 +72,7 @@ export default function Header() {
 
       {/* Mobile dropdown */}
       {menuOpen && (
-        <div className="sm:hidden absolute left-0 right-0 top-full bg-[#0f0a09] border-t border-white/10">
+        <div id="mobile-menu" className="sm:hidden absolute left-0 right-0 top-full bg-[#0f0a09] border-t border-white/10">
           <div className="max-w-4xl mx-auto p-4 flex flex-col gap-1">{navLinks}</div>
         </div>
       )}

@@ -224,24 +224,41 @@ export default function BiblePage() {
             <button onClick={handleFetch} disabled={loading} className="px-4 py-2 bg-blue-600 text-white rounded">{loading ? 'Loading...' : 'Go'}</button>
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-3 items-center border-t pt-4">
-            <button onClick={toggleAudio} disabled={!data?.verses?.length} className="px-4 py-2 bg-emerald-600 text-white rounded disabled:opacity-60">
-              {audioStatus === 'playing' ? 'Pause' : audioStatus === 'paused' ? 'Resume' : 'Read chapter aloud'}
+          <div className="mt-4 flex flex-wrap gap-3 items-center border-t pt-4" role="toolbar" aria-label="Audio controls">
+            <button
+              onClick={toggleAudio}
+              disabled={!data?.verses?.length}
+              className="px-4 py-3 min-w-[44px] min-h-[44px] bg-emerald-600 text-white rounded disabled:opacity-60"
+              aria-pressed={audioStatus === 'playing'}
+              aria-label={audioStatus === 'playing' ? 'Pause reading' : audioStatus === 'paused' ? 'Resume reading' : 'Read chapter aloud'}
+              onKeyDown={(e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleAudio() } }}
+            >
+              {audioStatus === 'playing' ? 'Pause' : audioStatus === 'paused' ? 'Resume' : 'Read'}
             </button>
-            <button onClick={stopAudio} disabled={!data?.verses?.length} className="px-4 py-2 bg-slate-700 text-white rounded disabled:opacity-60">Stop</button>
-            <button onClick={() => setAutoPlay(!autoPlay)} className={`px-4 py-2 rounded ${autoPlay ? 'bg-amber-600 text-white' : 'bg-slate-200 text-slate-800'}`}>
-              {autoPlay ? 'Auto-play on' : 'Auto-play off'}
+            <button
+              onClick={stopAudio}
+              disabled={!data?.verses?.length}
+              className="px-4 py-3 min-w-[44px] min-h-[44px] bg-slate-700 text-white rounded disabled:opacity-60"
+              aria-label="Stop reading"
+            >Stop</button>
+            <button
+              onClick={() => setAutoPlay(!autoPlay)}
+              className={`px-4 py-3 min-w-[44px] min-h-[44px] rounded ${autoPlay ? 'bg-amber-600 text-white' : 'bg-slate-200 text-slate-800'}`}
+              aria-pressed={autoPlay}
+              aria-label={autoPlay ? 'Auto-play enabled' : 'Enable auto-play'}
+            >
+              {autoPlay ? 'Auto-on' : 'Auto-off'}
             </button>
-            <label className="text-sm text-gray-600">
+            <label className="text-sm text-gray-600 flex items-center" htmlFor="speechRate">
               Speed
-              <select value={speechRate} onChange={e => setSpeechRate(Number(e.target.value))} className="ml-2 p-2 border rounded">
+              <select id="speechRate" value={speechRate} onChange={e => setSpeechRate(Number(e.target.value))} className="ml-2 p-2 border rounded">
                 <option value={0.8}>0.8×</option>
                 <option value={1}>1.0×</option>
                 <option value={1.2}>1.2×</option>
                 <option value={1.5}>1.5×</option>
               </select>
             </label>
-            <span className="text-sm text-gray-500">{audioStatus === 'playing' ? 'Listening now…' : audioStatus === 'paused' ? 'Paused' : audioStatus === 'stopped' ? 'Stopped' : 'Ready to read'}</span>
+            <span className="text-sm text-gray-500" aria-live="polite">{audioStatus === 'playing' ? 'Listening now…' : audioStatus === 'paused' ? 'Paused' : audioStatus === 'stopped' ? 'Stopped' : 'Ready to read'}</span>
           </div>
         </div>
 
