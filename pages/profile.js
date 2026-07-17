@@ -20,6 +20,9 @@ export default function Profile() {
   const [pushEnabled, setPushEnabled] = useState(false)
   const [pushLoading, setPushLoading] = useState(false)
   const [pushMessage, setPushMessage] = useState('')
+  const [scheduleMessage, setScheduleMessage] = useState('')
+  const [scheduleSaving, setScheduleSaving] = useState(false)
+  const [notificationSchedule, setNotificationSchedule] = useState('every_2_hours')
   const [debugInfo, setDebugInfo] = useState({
     swRegistered: false,
     swScope: '',
@@ -41,6 +44,7 @@ export default function Profile() {
           return
         }
         setUser(userData.user)
+        setNotificationSchedule(userData.user.notification_schedule || 'every_2_hours')
 
         const [questionsRes, answersRes, historyRes, favoritesRes] = await Promise.all([
           fetch('/api/questions', { credentials: 'include' }),
@@ -236,6 +240,33 @@ export default function Profile() {
     // Intentionally left blank — test notifications removed.
   }
 
+  const saveNotificationSchedule = async (value) => {
+    setNotificationSchedule(value)
+    setScheduleSaving(true)
+    setScheduleMessage('')
+
+    try {
+      const res = await fetch('/api/auth/user', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ notification_schedule: value }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to update notification schedule')
+      }
+      setUser(data.user)
+      setScheduleMessage('Notification schedule updated.')
+    } catch (err) {
+      console.error('Failed to update notification schedule:', err)
+      setScheduleMessage(err.message || 'Failed to save schedule.')
+    } finally {
+      setScheduleSaving(false)
+      setTimeout(() => setScheduleMessage(''), 3000)
+    }
+  }
+
   const refreshDebugInfo = async () => {
     setDebugLoading(true)
     try {
@@ -368,25 +399,41 @@ export default function Profile() {
                       Enable browser notifications to receive an alert when your next verse is ready.
                     </p>
                   </div>
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <span className="text-sm text-gray-500">
-                      {pushSupported
-                        ? pushPermission === 'granted'
-                          ? pushEnabled
-                            ? 'Notifications are enabled.'
-                            : 'Ready to subscribe.'
-                          : 'Permission required.'
-                        : 'Notifications are not supported in this browser.'}
-                    </span>
-                    <div className="flex flex-wrap gap-3">
-                      <button
-                        onClick={handlePushSubscription}
-                        disabled={pushLoading || !pushSupported}
-                        className="bg-[#8b1e1e] text-white px-4 py-2 rounded-2xl font-semibold disabled:opacity-50"
-                      >
-                        {pushEnabled ? 'Refresh notifications' : 'Enable notifications'}
-                      </button>
-                      {/* Test and Refresh buttons removed per user request */}
+                  <div className="flex flex-col gap-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                      <span className="text-sm text-gray-500">
+                        {pushSupported
+                          ? pushPermission === 'granted'
+                            ? pushEnabled
+                              ? 'Notifications are enabled.'
+                              : 'Ready to subscribe.'
+                            : 'Permission required.'
+                          : 'Notifications are not supported in this browser.'}
+                      </span>
+                      <div className="flex flex-wrap gap-3">
+                        <button
+                          onClick={handlePushSubscription}
+                          disabled={pushLoading || !pushSupported}
+                          className="bg-[#8b1e1e] text-white px-4 py-2 rounded-2xl font-semibold disabled:opacity-50"
+                        >
+                          {pushEnabled ? 'Refresh notifications' : 'Enable notifications'}
+                        </button>
+                      </div>
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-[1fr_auto] items-end">
+                      <div>
+                        <label className="block text-sm font-semibold text-[#4b2d23] mb-2">Reminder schedule</label>
+                        <select
+                          value={notificationSchedule}
+                          onChange={(e) => saveNotificationSchedule(e.target.value)}
+                          disabled={scheduleSaving}
+                          className="w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 text-gray-700 focus:border-[#8b1e1e] focus:ring-2 focus:ring-[#f2e3d3]"
+                        >
+                          <option value="every_2_hours">Every 2 hours</option>
+                          <option value="morning_evening">Morning + evening</option>
+                        </select>
+                      </div>
+                      <div className="text-sm text-gray-500">{scheduleSaving ? 'Saving…' : scheduleMessage || 'Choose when reminders arrive.'}</div>
                     </div>
                   </div>
                   {pushMessage && <p className="text-sm text-red-600">{pushMessage}</p>}

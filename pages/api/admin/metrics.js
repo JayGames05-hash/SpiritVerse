@@ -12,12 +12,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const [suggestionsPending, suggestionsApproved, commentsTotal, usersTotal, favoritesTotal] = await Promise.all([
+    const [suggestionsPending, suggestionsApproved, commentsTotal, usersTotal, favoritesTotal, eventsTotal] = await Promise.all([
       query('select count(*) as count from verse_suggestions where status = $1', ['pending']),
       query('select count(*) as count from verse_suggestions where status = $1', ['approved']),
       query('select count(*) as count from comments', []),
       query('select count(*) as count from accounts', []),
       query('select count(*) as count from favorites', []),
+      query('select count(*) as count from feature_events', []),
     ])
 
     return res.status(200).json({
@@ -27,6 +28,7 @@ export default async function handler(req, res) {
         commentsTotal: Number(commentsTotal.rows[0].count || 0),
         usersTotal: Number(usersTotal.rows[0].count || 0),
         favoritesTotal: Number(favoritesTotal.rows[0].count || 0),
+        featureEventsTotal: Number(eventsTotal.rows[0].count || 0),
       },
     })
   } catch (err) {

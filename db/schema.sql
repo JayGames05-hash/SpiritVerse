@@ -11,6 +11,15 @@ create table if not exists accounts (
   session_expires_at timestamptz,
   -- Store verse interval in minutes for finer granularity (default 2 hours = 120m)
   verse_interval_minutes integer default 120,
+  notification_schedule text default 'every_2_hours',
+  created_at timestamptz default now()
+);
+
+create table if not exists feature_events (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references accounts(id),
+  event_type text not null,
+  metadata jsonb,
   created_at timestamptz default now()
 );
 

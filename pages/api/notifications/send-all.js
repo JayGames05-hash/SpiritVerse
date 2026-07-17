@@ -44,8 +44,20 @@ export default async function handler(req, res) {
     setupWebPush()
 
     // Fetch all subscriptions
-    const subs = await query('select endpoint, p256dh, auth from push_subscriptions')
-    const rows = subs.rows || []
+    const subsResult = await query(
+      `select s.endpoint, s.p256dh, s.auth, a.notification_schedule
+       from push_subscriptions s
+       join accounts a on a.id = s.user_id`,
+    )
+    const rows = subsResult.rows || []
+
+    const hour = new Date().getHours()
+    const scheduleActive = (schedule) => {
+      if (schedule === 'every_2_hours') return true
+      if (schedule === 'morning_evening') return (hour >= 6 && hour < 10) || (hour >= 17 && hour < 21)
+      return true
+    }
+    const filteredRows = rows.filter((row) => scheduleActive(row.notification_schedule))
 
     const payload = JSON.stringify({
       title: reading.title || reading.scripture_ref || 'Daily Verse',
@@ -53,7 +65,7 @@ export default async function handler(req, res) {
       url: '/',
     })
 
-    const sendPromises = rows.map((row) =>
+    const sendPromises = filteredRows.map((row) =>
       webpush.sendNotification(
         {
           endpoint: row.endpoint,
@@ -68,7 +80,7 @@ export default async function handler(req, res) {
 
     await Promise.allSettled(sendPromises)
 
-    return res.status(200).json({ success: true, sent: rows.length })
+    return res.status(200).json({ success: true, sent: filteredRows.length })
   } catch (err) {
     console.error('Failed to run send-all:', err)
     return res.status(500).json({ error: 'Failed to send notifications' })

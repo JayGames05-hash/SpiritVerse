@@ -35,6 +35,14 @@ export default async function handler(req, res) {
         'insert into favorites (user_id, post_id) values ($1, $2) on conflict do nothing returning id, post_id, created_at',
         [user.id, post_id],
       )
+      try {
+        await query(
+          'insert into feature_events (user_id, event_type, metadata) values ($1, $2, $3)',
+          [user.id, 'favorite_added', JSON.stringify({ post_id })],
+        )
+      } catch (e) {
+        console.warn('Failed to log favorite event:', e)
+      }
       return res.status(200).json({ favorite: result.rows[0] || null })
     } catch (err) {
       console.error('Failed to add favorite:', err)
@@ -50,6 +58,14 @@ export default async function handler(req, res) {
 
     try {
       await query('delete from favorites where user_id = $1 and post_id = $2', [user.id, post_id])
+      try {
+        await query(
+          'insert into feature_events (user_id, event_type, metadata) values ($1, $2, $3)',
+          [user.id, 'favorite_removed', JSON.stringify({ post_id })],
+        )
+      } catch (e) {
+        console.warn('Failed to log favorite removal event:', e)
+      }
       return res.status(200).json({ ok: true })
     } catch (err) {
       console.error('Failed to remove favorite:', err)

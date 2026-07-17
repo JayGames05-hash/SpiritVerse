@@ -31,6 +31,14 @@ export default async function handler(req, res) {
         'insert into user_history (user_id, post_id) values ($1, $2) returning post_id, created_at',
         [user.id, post_id],
       )
+      try {
+        await query(
+          'insert into feature_events (user_id, event_type, metadata) values ($1, $2, $3)',
+          [user.id, 'reading_history_created', JSON.stringify({ post_id })],
+        )
+      } catch (e) {
+        console.warn('Failed to log history event:', e)
+      }
       return res.status(200).json({ entry: result.rows[0] })
     } catch (err) {
       console.error('Failed to log history:', err)

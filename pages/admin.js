@@ -247,6 +247,10 @@ export default function AdminPage() {
                   <p className="text-sm text-[#7a2b1e] uppercase font-semibold">Favorites Saved</p>
                   <p className="text-3xl font-bold text-[#4b2d23]">{metrics.favoritesTotal}</p>
                 </div>
+                <div className="rounded-3xl bg-[#eef4ea] p-5 sm:col-span-2">
+                  <p className="text-sm text-[#4b5c3c] uppercase font-semibold">Analytics Events</p>
+                  <p className="text-3xl font-bold text-[#4b2d23]">{metrics.featureEventsTotal}</p>
+                </div>
               </div>
             ) : (
               <div className="text-gray-700">Unable to display metrics.</div>

@@ -20,8 +20,12 @@ export default async function handler(req, res) {
     }
 
     const comment = existing.rows[0]
-    if (text && comment.author_id !== user.id) {
+    if (text && comment.author_id !== user.id && !user.is_admin) {
       return res.status(403).json({ error: 'You can only edit your own comments.' })
+    }
+
+    if (status && !user.is_admin) {
+      return res.status(403).json({ error: 'Admin access required to update comment status.' })
     }
 
     if (!text && !status) {
@@ -59,7 +63,7 @@ export default async function handler(req, res) {
     }
 
     const comment = existing.rows[0]
-    if (comment.author_id !== user.id) {
+    if (comment.author_id !== user.id && !user.is_admin) {
       return res.status(403).json({ error: 'You can only delete your own comments.' })
     }
 

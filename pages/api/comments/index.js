@@ -4,11 +4,19 @@ import { query } from '../../../lib/db'
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     const { post_id } = req.query
-    const sql = post_id
+    const user = await getUserFromRequest(req)
+    const isAdmin = user?.is_admin
+    if (!post_id) {
+      if (!isAdmin) {
+        return res.status(403).json({ error: 'Admin access required' })
+      }
+      const result = await query('select * from comments order by created_at desc limit 200', [])
+      return res.status(200).json({ comments: result.rows })
+    }
+    const sql = isAdmin
       ? 'select * from comments where post_id = $1 order by created_at desc'
-      : 'select * from comments order by created_at desc limit 200'
-    const values = post_id ? [post_id] : []
-    const result = await query(sql, values)
+      : "select * from comments where post_id = $1 and status = 'visible' order by created_at desc"
+    const result = await query(sql, [post_id])
     return res.status(200).json({ comments: result.rows })
   }
 
@@ -28,6 +36,15 @@ export default async function handler(req, res) {
       'insert into comments (post_id, text, author_id, author_name) values ($1, $2, $3, $4) returning *',
       [post_id, text, user.id, authorName],
     )
+
+    try {
+      await query(
+        'insert into feature_events (user_id, event_type, metadata) values ($1, $2, $3)',
+        [user.id, 'comment_posted', JSON.stringify({ post_id, comment_id: result.rows[0].id })],
+      )
+    } catch (e) {
+      console.warn('Failed to log comment event:', e)
+    }
 
     return res.status(200).json({ comment: result.rows[0] })
   }
