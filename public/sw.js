@@ -1,13 +1,19 @@
-const CACHE_NAME = 'coptic-daily-readings-v1'
+const CACHE_NAME = 'coptic-daily-readings-v2'
+const PRECACHE_URLS = [
+  '/',
+  '/manifest.json',
+  '/logo-192.png',
+  '/logo-512.png',
+  '/offline.html'
+]
 
 self.addEventListener('install', (event) => {
   console.log('[SW] Install event starting')
   event.waitUntil(
-    Promise.resolve()
-      .then(() => {
-        console.log('[SW] Install complete, skipping clients')
-        return self.skipWaiting()
-      })
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log('[SW] Caching app shell:', PRECACHE_URLS)
+      return cache.addAll(PRECACHE_URLS)
+    }).then(() => self.skipWaiting())
   )
 })
 
@@ -15,17 +21,13 @@ self.addEventListener('activate', (event) => {
   console.log('[SW] Activate event starting')
   event.waitUntil(
     caches.keys().then((keys) => {
-      console.log('[SW] Found cache keys:', keys)
       return Promise.all(
-        keys.filter(k => k !== CACHE_NAME).map(k => {
-          console.log('[SW] Deleting old cache:', k)
-          return caches.delete(k)
+        keys.filter((key) => key !== CACHE_NAME).map((key) => {
+          console.log('[SW] Deleting old cache:', key)
+          return caches.delete(key)
         })
       )
-    }).then(() => {
-      console.log('[SW] Activate complete, claiming all clients')
-      return self.clients.claim()
-    })
+    }).then(() => self.clients.claim())
   )
 })
 
@@ -71,10 +73,40 @@ self.addEventListener('notificationclick', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return
+
+  const requestUrl = new URL(event.request.url)
+  if (requestUrl.origin !== self.location.origin) {
+    return
+  }
+
+  if (event.request.destination === 'document' || event.request.headers.get('accept')?.includes('text/html')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const copy = response.clone()
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy))
+          return response
+        })
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match('/offline.html')))
+    )
+    return
+  }
+
   event.respondWith(
-    caches.match(event.request).then((cached) => cached || fetch(event.request).then((resp) => {
-      // Optionally cache new requests
-      return resp
-    })).catch(() => caches.match('/'))
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached
+      return fetch(event.request)
+        .then((response) => {
+          if (!response || response.status !== 200 || response.type !== 'basic') return response
+          const copy = response.clone()
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy))
+          return response
+        })
+        .catch(() => {
+          if (event.request.destination === 'image') {
+            return caches.match('/logo-192.png')
+          }
+        })
+    })
   )
 })
