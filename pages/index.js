@@ -194,21 +194,7 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
-
-              <Link href="/coptic-services" className="block bg-white/5 backdrop-blur-sm rounded-2xl p-4 hover:bg-white/10 transition border border-white/10">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-[#f4e5d7]">New Section</p>
-                    <h3 className="mt-1 text-white font-semibold">St. Basil Liturgy</h3>
-                    <p className="text-sm text-[#f4e5d7] mt-1">Explore the full St. Basil liturgy order and structure.</p>
-                  </div>
-                  <div>
-                    <span className="inline-flex items-center rounded-full bg-amber-100 text-amber-900 px-3 py-1 text-xs font-semibold">
-                      View Now
-                    </span>
-                  </div>
-                </div>
-              </Link>
+              
             </div>
             <div className="flex justify-center mt-8">
               <Link href="/ask" className="bg-white text-[#8b1e1e] px-6 py-2 rounded-2xl font-semibold hover:opacity-90 transition">
