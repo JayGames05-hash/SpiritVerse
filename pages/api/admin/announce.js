@@ -24,6 +24,13 @@ export default async function handler(req, res) {
   try {
     setupWebPush()
 
+    const announcementResult = await query(
+      `insert into announcements (title, body, url)
+       values ($1, $2, $3)
+       returning id, title, body, url, created_at`,
+      [title.trim(), body.trim(), url || '/'],
+    )
+
     const subs = await query('select endpoint, p256dh, auth from push_subscriptions')
     const rows = subs.rows || []
 
@@ -51,7 +58,7 @@ export default async function handler(req, res) {
 
     await Promise.allSettled(sendPromises)
 
-    return res.status(200).json({ success: true, sent: rows.length })
+    return res.status(200).json({ success: true, sent: rows.length, announcement: announcementResult.rows[0] })
   } catch (err) {
     console.error('Failed to send announcement:', err)
     return res.status(500).json({ error: 'Failed to send announcement' })

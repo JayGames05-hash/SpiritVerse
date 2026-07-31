@@ -196,9 +196,12 @@ export default function Home() {
               </Link>
               
             </div>
-            <div className="flex justify-center mt-8">
-              <Link href="/ask" className="bg-white text-[#8b1e1e] px-6 py-2 rounded-2xl font-semibold hover:opacity-90 transition">
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+              <Link href="/ask" className="bg-white text-[#8b1e1e] px-6 py-2 rounded-2xl font-semibold hover:opacity-90 transition text-center">
                 Ask a Question
+              </Link>
+              <Link href="/announcements" className="bg-[#f4e5d7] text-[#8b1e1e] px-6 py-2 rounded-2xl font-semibold hover:opacity-90 transition text-center">
+                View Announcements
               </Link>
             </div>
           </div>

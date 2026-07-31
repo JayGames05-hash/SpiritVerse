@@ -103,6 +103,14 @@ create table if not exists push_subscriptions (
   created_at timestamptz default now()
 );
 
+create table if not exists announcements (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  body text not null,
+  url text default '/',
+  created_at timestamptz default now()
+);
+
 create table if not exists user_history (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references accounts(id) on delete cascade,

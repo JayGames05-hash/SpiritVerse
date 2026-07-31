@@ -162,7 +162,7 @@ export default function AdminPage() {
           )}
           <div className="mt-8 bg-white rounded-3xl shadow-xl p-6 sm:p-8">
             <h2 className="text-2xl font-bold text-[#4b2d23] mb-4">Send Announcement</h2>
-            <p className="text-gray-600 mb-4">Create an announcement to push to all subscribers.</p>
+            <p className="text-gray-600 mb-4">Create an announcement that will be sent as a notification and also saved in the announcements page.</p>
             <div className="space-y-3">
               <input value={announcementTitle} onChange={e => setAnnouncementTitle(e.target.value)} placeholder="Title" className="w-full p-3 rounded-lg border" />
               <textarea value={announcementBody} onChange={e => setAnnouncementBody(e.target.value)} placeholder="Message body" className="w-full p-3 rounded-lg border h-32" />
