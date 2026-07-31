@@ -25,6 +25,7 @@ export default function Header() {
       {isLoggedIn && (
         <>
           <Link href="/favorites" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Favorites">Favorites</Link>
+          <Link href="/reflections" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Reflections">Reflections</Link>
           <Link href="/profile" className="block px-4 py-3 text-white font-semibold hover:text-gray-100 rounded" aria-label="Profile">Profile</Link>
         </>
       )}

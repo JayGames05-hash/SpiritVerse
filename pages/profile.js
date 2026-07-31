@@ -10,6 +10,7 @@ export default function Profile() {
   const [myAnswers, setMyAnswers] = useState([])
   const [historyEntries, setHistoryEntries] = useState([])
   const [favoriteItems, setFavoriteItems] = useState([])
+  const [reflectionItems, setReflectionItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('questions')
   const [deferredPrompt, setDeferredPrompt] = useState(null)
@@ -46,17 +47,19 @@ export default function Profile() {
         setUser(userData.user)
         setNotificationSchedule(userData.user.notification_schedule || 'every_2_hours')
 
-        const [questionsRes, answersRes, historyRes, favoritesRes] = await Promise.all([
+        const [questionsRes, answersRes, historyRes, favoritesRes, reflectionsRes] = await Promise.all([
           fetch('/api/questions', { credentials: 'include' }),
           fetch('/api/answers/user', { credentials: 'include' }),
           fetch('/api/history', { credentials: 'include' }),
           fetch('/api/favorites', { credentials: 'include' }),
+          fetch('/api/reflections', { credentials: 'include' }),
         ])
 
         const questionsData = await questionsRes.json()
         const answersData = await answersRes.json()
         const historyData = await historyRes.json()
         const favoritesData = await favoritesRes.json()
+        const reflectionsData = await reflectionsRes.json()
 
         setMyQuestions((questionsData.questions || []).filter(q => q.author_id === userData.user?.id))
         setMyAnswers(answersData.answers || [])
@@ -68,6 +71,7 @@ export default function Profile() {
         setFavoriteItems(favoritePosts)
 
         setHistoryEntries(historyData.history || [])
+        setReflectionItems(reflectionsData.reflections || [])
       } catch (err) {
         console.error('Failed to load profile data:', err)
         router.push('/signin')
@@ -513,6 +517,16 @@ export default function Profile() {
           >
             Favorites ({favoriteItems.length})
           </button>
+          <button
+            onClick={() => setActiveTab('reflections')}
+            className={`px-6 py-2 rounded-lg font-semibold transition ${
+              activeTab === 'reflections'
+                ? 'bg-white text-[#4b2d23]'
+                : 'bg-[#5a211f] text-white hover:bg-[#7a1c1c]'
+            }`}
+          >
+            Reflections ({reflectionItems.length})
+          </button>
         </div>
 
         {/* Content */}
@@ -636,6 +650,40 @@ export default function Profile() {
                     </span>
                   </div>
                 ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'reflections' && (
+          <div>
+            {reflectionItems.length === 0 ? (
+              <div className="bg-[#5a211f] rounded-3xl p-6 sm:p-8 text-white text-center">
+                <p className="mb-4">You haven't saved any reflections yet.</p>
+                <button
+                  onClick={() => router.push('/')}
+                  className="bg-white text-[#4b2d23] px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100 transition"
+                >
+                  Start Reading
+                </button>
+              </div>
+            ) : (
+              <div className="grid gap-6">
+                {reflectionItems.map((entry) => {
+                  const reading = readings.find((item) => item.id === entry.post_id)
+                  return (
+                    <div key={entry.id} className="bg-white rounded-3xl shadow-xl p-6">
+                      <div className="flex flex-col sm:flex-row sm:justify-between gap-3 mb-3">
+                        <div>
+                          <h3 className="text-xl font-bold text-[#4b2d23]">{reading?.title || entry.post_id}</h3>
+                          {reading?.scripture_ref && <p className="text-sm text-gray-500">{reading.scripture_ref}</p>}
+                        </div>
+                        <span className="text-xs text-gray-500">Private</span>
+                      </div>
+                      <p className="text-gray-700 whitespace-pre-wrap">{entry.note}</p>
+                    </div>
+                  )
+                })}
               </div>
             )}
           </div>
