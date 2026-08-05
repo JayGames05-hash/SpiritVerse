@@ -6,11 +6,11 @@ import Header from '../components/Header'
 const liturgySteps = [
   {
     icon: '🚪',
-    title: '1. The Prayer at the Doors and Opening Rites',
+    title: '1. The Prayer of Preparation',
     description:
-      'The Divine Liturgy begins in prayerful stillness. The clergy prepare the altar and the faithful gather in reverence. This opening is meant to draw the people into a posture of repentance, gratitude, and readiness to worship God with sincerity.',
+      'The Divine Liturgy begins with preparation, reverence, and the quiet gathering of the faithful. In the St. Basil service, this opening reflects the Church’s readiness to enter the sacred mystery of worship with repentance, humility, and sober expectation.',
     notice:
-      'Notice how the liturgy begins with stillness, reverence, and preparation before the main mystery of worship begins.',
+      'Notice how the liturgy begins not with spectacle, but with preparation and holy stillness before the deeper mystery unfolds.',
     subparts: [
       {
         title: 'The Vigil and Preparation',
@@ -31,11 +31,11 @@ const liturgySteps = [
   },
   {
     icon: '📖',
-    title: '2. The Psalms, Synaxarion, and Readings',
+    title: '2. The Prayer After Preparation and the Liturgy of the Word',
     description:
-      'The Church then moves into a rhythm of psalms, scriptural readings, and the day’s commemorations. These readings teach the faithful what the feast or fast means in the life of the Church and reveal Christ in the Scriptures.',
+      'After the opening preparation, the Church enters the Liturgy of the Word. This part includes psalms, the Synaxarion, the Pauline and Catholic epistles, the litany of the oblations, and the proclamation of the Gospel. It is the stage where the faithful are formed by Scripture and the life of the Church across the year.',
     notice:
-      'Notice that Scripture and psalmody shape the tone of the service long before the Eucharistic prayer begins.',
+      'Notice that the liturgy of the Word is not decorative; it teaches the faithful what the feast, saint, or fast means in the life of Christ and His Church.',
     subparts: [
       {
         title: 'The Psalms',
@@ -58,9 +58,9 @@ const liturgySteps = [
     icon: '✨',
     title: '3. The Gospel and the Sermon',
     description:
-      'The Gospel is proclaimed as the central proclamation of Christ’s life, death, and resurrection. In many services, the priest or deacon then explains the reading so the congregation can understand its spiritual meaning and apply it to daily life.',
+      'The Gospel is the heart of the Liturgy of the Word and the central proclamation of Christ’s life, death, and resurrection. In the St. Basil service, the Gospel is followed by the prayerful explanation and proclamation of the Word so the congregation can hear and receive its meaning in the life of the Church.',
     notice:
-      'Notice how the Gospel stands at the center of the service, giving the faithful the voice of Christ Himself.',
+      'Notice how the Gospel stands at the center of the service, giving the faithful the voice of Christ Himself and the teaching of the apostles.',
     subparts: [
       {
         title: 'The Gospel Procession',
@@ -81,11 +81,11 @@ const liturgySteps = [
   },
   {
     icon: '🕊️',
-    title: '4. The Creed',
+    title: '4. The Liturgy of the Faithful and the Creed',
     description:
-      'The faithful confess the Church’s faith in one God, the Father, Son, and Holy Spirit; in the incarnation, crucifixion, resurrection, and the life to come. This is the public profession of what the whole assembly believes together.',
+      'The Liturgy of the Faithful emphasizes the prayerful unity of the congregation. In this section the Church moves toward the long litanies, the public prayer of the people, and the Orthodox Creed, affirming the full faith of the apostles and the Church in one voice.',
     notice:
-      'Notice that the Creed gathers the whole congregation into one common confession of faith.',
+      'Notice that the Creed is the Church’s public statement of belief, binding the whole assembly into one worshiping body.',
     subparts: [
       {
         title: 'The Creed as Public Confession',
@@ -106,11 +106,11 @@ const liturgySteps = [
   },
   {
     icon: '🙏',
-    title: '5. The Prayer of the Faithful',
+    title: '5. The Three Long Litanies and Prayer of Reconciliation',
     description:
-      'The congregation brings before God the needs of the Church, the world, the sick, the poor, and all who are seeking mercy. This prayer shows that the liturgy is not only worship, but also intercession and compassion.',
+      'The service then moves into the long litanies for peace, the fathers, and the assemblies, followed by the Prayer of Reconciliation. These prayers show that the liturgy is not only about hearing the Gospel, but also about being made one in peace, repentance, and communion with Christ.',
     notice:
-      'Notice how worship expands from personal prayer into the shared intercession of the whole Church.',
+      'Notice that the Church’s worship is deeply communal: it is about peace, unity, and reconciliation before God and one another.',
     subparts: [
       {
         title: 'Intercession for the Church',
@@ -131,11 +131,11 @@ const liturgySteps = [
   },
   {
     icon: '🍞',
-    title: '6. The Great Entrance and Offertory',
+    title: '6. The Procession of the Lamb and the Offertory',
     description:
-      'Bread and wine are brought forward in the offertory. This act expresses the offering of the whole life of the Church to God. The faithful entrust their prayers, thanksgiving, and hopes to Christ through the sacred gifts.',
+      'The St. Basil Liturgy proceeds into the Procession of the Lamb and the oblations. The bread and wine are brought forward as the Church offers its thanksgiving, prayer, and life to God. This act is one of the clearest signs that worship is sacrificial and communal at the same time.',
     notice:
-      'Notice how the gifts are carried forward as a sign that the Church offers its life, gratitude, and prayers to God.',
+      'Notice how the procession and oblations prepare the gifts to become the holy Eucharist in the central prayer of the liturgy.',
     subparts: [
       {
         title: 'The Great Entrance',
@@ -156,11 +156,11 @@ const liturgySteps = [
   },
   {
     icon: '🔥',
-    title: '7. The Eucharistic Prayer of Saint Basil',
+    title: '7. The Anaphora and Institution Narrative',
     description:
-      'This is the heart of the service. The priest gives thanks, recalls the saving acts of Christ, and lifts up the bread and wine in the Name of the Lord. The congregation responds with “Amen,” joining in the mystery of Christ’s holy sacrifice and real presence.',
+      'This is the heart of the service. In the Anaphora, the priest gives thanks, recalls the saving acts of Christ, and lifts up the bread and wine in the Name of the Lord. The congregation answers with “Amen,” joining itself to the mystery of Christ’s holy sacrifice, presence, and kingdom.',
     notice:
-      'Notice that this is the central mystery of the liturgy, where thanksgiving, remembrance, and sacrifice meet.',
+      'Notice that this is the central mystery of the liturgy, where thanksgiving, remembrance, and sacramental action come together in the Eucharist.',
     subparts: [
       {
         title: 'Thanksgiving',
@@ -181,11 +181,11 @@ const liturgySteps = [
   },
   {
     icon: '🧎',
-    title: '8. The Lord’s Prayer',
+    title: '8. The Fractions, the Lord’s Prayer, and the Confession',
     description:
-      'The Church prays the Lord’s Prayer together, emphasizing God’s kingdom, daily bread, forgiveness, and deliverance from evil. It is the prayer of the whole assembly and the prayer that unites the faithful in one heart.',
+      'After the Anaphora, the liturgy moves into the Prayer of the Fraction, the prayers after “Our Father,” and the Confession. These prayers complete the mystery by emphasizing the faithful’s submission, absolution, and readiness to receive the communion of Christ.',
     notice:
-      'Notice how the Lord’s Prayer gathers the whole congregation into one common voice of trust and dependence on God.',
+      'Notice how the final movement before Communion is marked by humility, confession, and readiness to receive the gifts of grace.',
     subparts: [
       {
         title: 'The Kingdom of God',
@@ -206,11 +206,11 @@ const liturgySteps = [
   },
   {
     icon: '🍽️',
-    title: '9. Holy Communion',
+    title: '9. Holy Communion and Thanksgiving',
     description:
-      'The faithful who are prepared receive the Body and Blood of Christ. Communion is the living participation in the life of Christ, uniting the Church in one body and nourishing the soul for the journey of holiness.',
+      'The faithful who are prepared receive the Body and Blood of Christ. The Distribution of the Holy Mysteries is followed by psalmic praise, thanksgiving, and prayers of blessing. This section shows that Communion is not only reception, but also gratitude and living participation in the risen Christ.',
     notice:
-      'Notice that Communion is not an ending point but the living participation of the faithful in Christ Himself.',
+      'Notice that Communion is not merely a moment of receiving; it is the Church’s participation in the life of Christ and the beginning of thanksgiving after receiving Him.',
     subparts: [
       {
         title: 'Preparation and Worthiness',
@@ -231,11 +231,11 @@ const liturgySteps = [
   },
   {
     icon: '🌅',
-    title: '10. Dismissal and Benediction',
+    title: '10. The Dismissal and the Short Blessing',
     description:
-      'The service concludes with the blessing of the people and the sending forth of the congregation. The faithful are sent to live the liturgy in their homes, workplaces, and daily relationships.',
+      'The service concludes with the Dismissal and the Short Blessing. In the St. Basil liturgy, the conclusion is not a mere ending; it is the Church’s sending forth of the faithful into the world with the grace and peace of Christ, so that the liturgy continues in daily life.',
     notice:
-      'Notice how the liturgy ends with a blessing that sends the faithful back into the world to live out what they have received.',
+      'Notice how the liturgy ends with blessing and sending, teaching the faithful that worship is meant to shape life beyond the church doors.',
     subparts: [
       {
         title: 'The Blessing',
