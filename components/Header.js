@@ -54,9 +54,22 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Right: nav (desktop) + hamburger (mobile) */}
+        {/* Right: desktop dropdown + mobile hamburger */}
         <div className="flex items-center gap-3">
-          <nav className="hidden sm:flex items-center gap-3 text-sm text-white/90" role="navigation" aria-label="Main navigation">{navLinks}</nav>
+          <div className="hidden sm:block relative">
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/20"
+              aria-label="Toggle navigation menu"
+              aria-expanded={menuOpen}
+              aria-controls="desktop-menu"
+            >
+              <span>Menu</span>
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={menuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'} />
+              </svg>
+            </button>
+          </div>
 
           {/* Mobile menu button */}
           <button
@@ -73,10 +86,10 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile dropdown */}
+      {/* Desktop + mobile dropdown */}
       {menuOpen && (
-        <div id="mobile-menu" className="sm:hidden absolute left-0 right-0 top-full bg-[#0f0a09] border-t border-white/10">
-          <div className="max-w-4xl mx-auto p-4 flex flex-col gap-1">{navLinks}</div>
+        <div id="desktop-menu" className="absolute left-0 right-0 top-full bg-[#0f0a09] border-t border-white/10 shadow-2xl">
+          <div className="max-w-4xl mx-auto p-4 grid gap-1 sm:grid-cols-2 lg:grid-cols-3">{navLinks}</div>
         </div>
       )}
     </header>

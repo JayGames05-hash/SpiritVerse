@@ -162,7 +162,13 @@ export default function Home() {
       <div className="min-h-screen bg-gradient-to-br from-[#3d1212] via-[#5c1515] to-[#1b0707]">
         <Header />
         <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-          <div className="text-center text-white">Loading...</div>
+          <div className="rounded-[28px] border border-white/10 bg-white/5 p-6 sm:p-8 animate-pulse">
+            <div className="h-4 w-40 rounded bg-white/20 mb-4" />
+            <div className="h-10 w-3/4 rounded bg-white/20 mb-4" />
+            <div className="h-4 w-full rounded bg-white/10 mb-2" />
+            <div className="h-4 w-5/6 rounded bg-white/10 mb-6" />
+            <div className="h-36 rounded-2xl bg-white/10" />
+          </div>
         </main>
       </div>
     )
@@ -174,34 +180,76 @@ export default function Home() {
       <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {currentReading && (
           <div className="space-y-6">
+            <section className="rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-sm p-5 sm:p-7">
+              <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                <div className="space-y-3 max-w-2xl">
+                  <p className="text-sm uppercase tracking-[0.3em] text-[#f4d3a0]">Daily devotional • Coptic learning • Community</p>
+                  <h1 className="text-3xl sm:text-4xl font-bold text-white">Start your day with Scripture, prayer, and the rhythm of the Church.</h1>
+                  <p className="text-[#f4e5d7] text-base sm:text-lg leading-7">
+                    This app helps you stay rooted in the daily reading, grow in your understanding of the Coptic liturgy, and stay connected to church updates and community questions.
+                  </p>
+                  <div className="rounded-2xl bg-white/10 border border-white/10 p-3 text-sm text-[#f9ecd9]">
+                    <span className="font-semibold text-white">Today’s rhythm:</span>{' '}
+                    {todayLiturgical ? todayLiturgical.name : (nextLiturgical ? `Upcoming: ${nextLiturgical.name}` : 'Open the calendar')} •{' '}
+                    {todayLiturgical ? todayLiturgical.feast_date : (nextLiturgical ? nextLiturgical.feast_date : 'Explore the liturgical calendar')}
+                  </div>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[320px]">
+                  <Link href="/liturgy" className="rounded-2xl bg-[#f4e5d7] text-[#8b1e1e] p-4 font-semibold hover:opacity-95 transition">
+                    Learn the Liturgy
+                  </Link>
+                  <Link href="/announcements" className="rounded-2xl bg-white/10 text-white p-4 font-semibold hover:bg-white/15 transition border border-white/10">
+                    Community Updates
+                  </Link>
+                  <Link href="/ask" className="rounded-2xl bg-white/10 text-white p-4 font-semibold hover:bg-white/15 transition border border-white/10 sm:col-span-2">
+                    Ask a Question
+                  </Link>
+                </div>
+              </div>
+            </section>
+
             <div className="text-right text-sm text-[#f4e5d7] sm:text-base">
               Next verse in <span className="font-semibold text-white">{formatDuration(remainingSeconds)}</span>
             </div>
+
             <ReadingCard post={currentReading} />
-            {/* Calendar preview inserted between the verse and Ask button */}
-            <div className="mt-6 space-y-4">
+
+            <div className="grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
               <Link href="/calendar" className="block bg-white/5 backdrop-blur-sm rounded-2xl p-4 hover:bg-white/10 transition border border-white/10">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="text-sm text-[#f4e5d7]">Liturgical Calendar</p>
                     <h3 className="mt-1 text-white font-semibold">{todayLiturgical ? todayLiturgical.name : (nextLiturgical ? `Next: ${nextLiturgical.name}` : 'View calendar')}</h3>
                     <p className="text-sm text-[#f4e5d7] mt-1">{todayLiturgical ? todayLiturgical.feast_date : (nextLiturgical ? nextLiturgical.feast_date : '')}</p>
                   </div>
                   <div>
-                    <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ml-4 ${getBadgeClasses(todayLiturgical || nextLiturgical)}`}>
+                    <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${getBadgeClasses(todayLiturgical || nextLiturgical)}`}>
                       {getEntryType(todayLiturgical || nextLiturgical) === 'fast' ? 'Fast' : 'Feast'}
                     </span>
                   </div>
                 </div>
               </Link>
-              
-            </div>
-            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-              <Link href="/ask" className="bg-white text-[#8b1e1e] px-6 py-2 rounded-2xl font-semibold hover:opacity-90 transition text-center">
-                Ask a Question
+
+              <Link href="/coptic-services" className="block bg-white/5 backdrop-blur-sm rounded-2xl p-4 hover:bg-white/10 transition border border-white/10">
+                <p className="text-sm text-[#f4e5d7]">Learning Guide</p>
+                <h3 className="mt-1 text-white font-semibold">Explore the Divine Liturgy</h3>
+                <p className="text-sm text-[#f4e5d7] mt-1">Understand the flow of worship, prayer, Eucharist, and the Church’s spiritual rhythm.</p>
               </Link>
-              <Link href="/announcements" className="bg-[#f4e5d7] text-[#8b1e1e] px-6 py-2 rounded-2xl font-semibold hover:opacity-90 transition text-center">
-                View Announcements
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-3">
+              <Link href="/reflections" className="rounded-2xl bg-white/5 border border-white/10 p-4 text-white hover:bg-white/10 transition">
+                <p className="text-sm text-[#f4e5d7]">Personal Reflection</p>
+                <h3 className="mt-1 font-semibold">Journal your daily spiritual takeaway</h3>
+              </Link>
+              <Link href="/favorites" className="rounded-2xl bg-white/5 border border-white/10 p-4 text-white hover:bg-white/10 transition">
+                <p className="text-sm text-[#f4e5d7]">Saved Readings</p>
+                <h3 className="mt-1 font-semibold">Keep your favorite passages close</h3>
+              </Link>
+              <Link href="/search" className="rounded-2xl bg-white/5 border border-white/10 p-4 text-white hover:bg-white/10 transition">
+                <p className="text-sm text-[#f4e5d7]">Find Quickly</p>
+                <h3 className="mt-1 font-semibold">Search saints, verses, and spiritual content</h3>
               </Link>
             </div>
           </div>
