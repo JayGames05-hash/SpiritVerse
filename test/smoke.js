@@ -19,3 +19,7 @@ for (const f of required) {
 if (!ok) process.exit(2);
 console.log('smoke: ok');
 process.exit(0);
+
+  {
+    
+  }

@@ -1,7 +1,7 @@
 from pathlib import Path
 from pypdf import PdfReader
 
-path = Path(__file__).resolve().parent.parent / 'Rites_Liturgy_Full.pdf'
+path = Path(__file__).resolve().parent.parent / 'PDF_Name'
 reader = PdfReader(str(path))
 print(f'PDF path: {path}')
 print(f'Pages: {len(reader.pages)}')

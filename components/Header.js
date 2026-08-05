@@ -21,6 +21,7 @@ export default function Header() {
       <Link href="/search" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Search">Search</Link>
       <Link href="/saints" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Saints">Saints</Link>
       <Link href="/calendar" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Feast Calendar">Feast Calendar</Link>
+      <Link href="/liturgy" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Liturgy Explained">Liturgy Explained</Link>
       <Link href="/announcements" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Announcements">Announcements</Link>
       <Link href="/verse-suggestions" className="block px-4 py-3 text-white hover:text-gray-100 rounded" aria-label="Suggest a Verse">Suggest a Verse</Link>
       {isLoggedIn && (

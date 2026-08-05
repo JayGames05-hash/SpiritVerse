@@ -1,0 +1,16 @@
+{
+  "name": "spiritverse-android-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:web": "cd .. && npm run export",
+    "sync": "npx cap sync android",
+    "open": "npx cap open android",
+    "prepare": "npm run build:web && npx cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/cli": "^5.0.4",
+    "@capacitor/core": "^5.0.4",
+    "@capacitor/android": "^5.0.4"
+  }
+}

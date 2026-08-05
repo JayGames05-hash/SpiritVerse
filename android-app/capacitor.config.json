@@ -1,0 +1,10 @@
+{
+  "appId": "com.spiritverse.android",
+  "appName": "SpiritVerse",
+  "webDir": "../out",
+  "bundledWebRuntime": false,
+  "server": {
+    "cleartext": false,
+    "androidScheme": "https"
+  }
+}

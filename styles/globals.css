@@ -56,7 +56,7 @@ main {
   border-color: rgba(125, 31, 47, 0.16);
 }
 .church-title {
-  position: relative;
+  position: relative; 
 }
 .church-title::after {
   content: '';

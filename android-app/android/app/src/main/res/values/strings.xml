@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SpiritVerse</string>
+    <string name="title_activity_main">SpiritVerse</string>
+    <string name="package_name">com.spiritverse.android</string>
+    <string name="custom_url_scheme">com.spiritverse.android</string>
+</resources>
