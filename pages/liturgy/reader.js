@@ -29,6 +29,28 @@ export default function Reader() {
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
+  function renderParagraph(p, idx) {
+    const raw = p.trim()
+    // detect speaker prefix like "PRIEST:", "CONGREGATION -", "READER"
+    const m = raw.match(/^([A-Z\s]{3,30})[:.\-\s]+(.*)$/s)
+    if (m) {
+      const speaker = m[1].trim()
+      const rest = m[2].trim()
+      return (
+        <div key={idx} className="mb-4">
+          <div className="inline-flex items-center gap-2 mb-2">
+            <span className="text-xs font-semibold uppercase px-2 py-1 rounded bg-amber-100 text-amber-800">{speaker}</span>
+          </div>
+          <div className="pl-4 text-slate-700" dangerouslySetInnerHTML={{ __html: rest.replace(/\n/g, '<br/>') }} />
+        </div>
+      )
+    }
+
+    return (
+      <p key={idx} className="leading-7 text-slate-700 mb-3" dangerouslySetInnerHTML={{ __html: raw.replace(/\n/g, '<br/>') }} />
+    )
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Head>
@@ -63,9 +85,7 @@ export default function Reader() {
               <article key={s.title + i} ref={setRef} id={`section-${i}`} className="bg-white p-6 rounded-xl shadow">
                 <h3 className="text-2xl font-bold mb-2">{s.heading || s.title}</h3>
                 {s.content ? (
-                  s.content.split('\n\n').map((p, idx) => (
-                    <p key={idx} className="leading-7 text-slate-700 mb-3" dangerouslySetInnerHTML={{ __html: p.replace(/\n/g, '<br/>') }} />
-                  ))
+                  s.content.split('\n\n').map((p, idx) => renderParagraph(p, idx))
                 ) : (
                   <p className="text-slate-500 italic">(No text available for this section.)</p>
                 )}
