@@ -13,6 +13,38 @@ export default function Reader() {
     if (el) refs.current.push(el)
   }
 
+  // Merge speaker-only lines with the following paragraph.
+  function preprocessContent(content) {
+    if (!content) return []
+    const lines = content.split('\n')
+    const out = []
+    let i = 0
+    while (i < lines.length) {
+      const line = lines[i].trim()
+      if (!line) {
+        i++
+        continue
+      }
+      // short all-caps line likely a speaker header
+      const isSpeakerOnly = /^([A-Z\s]{1,40})$/.test(line) && line.split(' ').length <= 4
+      if (isSpeakerOnly && i + 1 < lines.length && lines[i + 1].trim()) {
+        out.push(`${line}: ${lines[i + 1].trim()}`)
+        i += 2
+        continue
+      }
+      // otherwise, group paragraphs separated by blank lines
+      let j = i
+      const group = []
+      while (j < lines.length && lines[j].trim() !== '') {
+        group.push(lines[j])
+        j++
+      }
+      out.push(group.join('\n'))
+      i = j + 1
+    }
+    return out
+  }
+
   useEffect(() => {
     const onScroll = () => {
       const tops = refs.current.map(r => r.getBoundingClientRect().top)
@@ -35,18 +67,29 @@ export default function Reader() {
     const keywords = [
       'PRIEST', 'PRIEST\.', 'DEACON', 'DEACON\.', 'CONGREGATION', 'CHOIR', 'CANTOR', 'READER', 'ALL', 'SERVERS', 'BISHOP', 'CELEBRANT', 'SUBDEACON', 'CHANTER', 'RESPONSORIAL', 'CHOIR:', 'PRIEST:'
     ]
+    const speakerColors = {
+      PRIEST: 'bg-red-100 text-red-800',
+      DEACON: 'bg-blue-100 text-blue-800',
+      CONGREGATION: 'bg-emerald-100 text-emerald-800',
+      CHOIR: 'bg-indigo-100 text-indigo-800',
+      CANTOR: 'bg-indigo-100 text-indigo-800',
+      READER: 'bg-purple-100 text-purple-800',
+      DEFAULT: 'bg-amber-100 text-amber-800',
+    }
 
     // try keyword match at start
     for (const kw of keywords) {
-      const re = new RegExp('^' + kw + '[\s:\\-\.]+(.*)$', 'i')
+      const re = new RegExp('^' + kw + '[\\s:\\-\\.]+(.*)$', 'i')
       const m = raw.match(re)
       if (m) {
         const speaker = kw.replace(/[:\.]/g, '').toUpperCase()
         const rest = m[1].trim()
+        const color = speakerColors[speaker] || speakerColors.DEFAULT
+        const [bg, fg] = color.split(' ')
         return (
           <div key={idx} className="mb-4">
             <div className="inline-flex items-center gap-2 mb-2">
-              <span className="text-xs font-semibold uppercase px-2 py-1 rounded bg-amber-100 text-amber-800">{speaker}</span>
+              <span className={`text-xs font-semibold uppercase px-2 py-1 rounded ${bg} ${fg}`}>{speaker}</span>
             </div>
             <div className="pl-4 text-slate-700" dangerouslySetInnerHTML={{ __html: rest.replace(/\n/g, '<br/>') }} />
           </div>
@@ -61,10 +104,12 @@ export default function Reader() {
       const rest = caps[2].trim()
       // only treat as speaker if the speaker part is short
       if (speaker.split(' ').length <= 4) {
+        const color = speakerColors[speaker.toUpperCase()] || speakerColors.DEFAULT
+        const [bg, fg] = color.split(' ')
         return (
           <div key={idx} className="mb-4">
             <div className="inline-flex items-center gap-2 mb-2">
-              <span className="text-xs font-semibold uppercase px-2 py-1 rounded bg-amber-100 text-amber-800">{speaker}</span>
+              <span className={`text-xs font-semibold uppercase px-2 py-1 rounded ${bg} ${fg}`}>{speaker}</span>
             </div>
             <div className="pl-4 text-slate-700" dangerouslySetInnerHTML={{ __html: rest.replace(/\n/g, '<br/>') }} />
           </div>
