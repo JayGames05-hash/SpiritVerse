@@ -3,7 +3,7 @@ import json
 import re
 import os
 
-PDF = 'Rites_Liturgy_Full.pdf'
+PDF = 'Liturgy.pdf'
 OUT = os.path.join('data', 'liturgy_full.json')
 
 # Major headings to split by (from the PDF table of contents)
