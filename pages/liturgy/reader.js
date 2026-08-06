@@ -31,19 +31,45 @@ export default function Reader() {
 
   function renderParagraph(p, idx) {
     const raw = p.trim()
-    // detect speaker prefix like "PRIEST:", "CONGREGATION -", "READER"
-    const m = raw.match(/^([A-Z\s]{3,30})[:.\-\s]+(.*)$/s)
-    if (m) {
-      const speaker = m[1].trim()
-      const rest = m[2].trim()
-      return (
-        <div key={idx} className="mb-4">
-          <div className="inline-flex items-center gap-2 mb-2">
-            <span className="text-xs font-semibold uppercase px-2 py-1 rounded bg-amber-100 text-amber-800">{speaker}</span>
+    // common speaker keywords
+    const keywords = [
+      'PRIEST', 'PRIEST\.', 'DEACON', 'DEACON\.', 'CONGREGATION', 'CHOIR', 'CANTOR', 'READER', 'ALL', 'SERVERS', 'BISHOP', 'CELEBRANT', 'SUBDEACON', 'CHANTER', 'RESPONSORIAL', 'CHOIR:', 'PRIEST:'
+    ]
+
+    // try keyword match at start
+    for (const kw of keywords) {
+      const re = new RegExp('^' + kw + '[\s:\\-\.]+(.*)$', 'i')
+      const m = raw.match(re)
+      if (m) {
+        const speaker = kw.replace(/[:\.]/g, '').toUpperCase()
+        const rest = m[1].trim()
+        return (
+          <div key={idx} className="mb-4">
+            <div className="inline-flex items-center gap-2 mb-2">
+              <span className="text-xs font-semibold uppercase px-2 py-1 rounded bg-amber-100 text-amber-800">{speaker}</span>
+            </div>
+            <div className="pl-4 text-slate-700" dangerouslySetInnerHTML={{ __html: rest.replace(/\n/g, '<br/>') }} />
           </div>
-          <div className="pl-4 text-slate-700" dangerouslySetInnerHTML={{ __html: rest.replace(/\n/g, '<br/>') }} />
-        </div>
-      )
+        )
+      }
+    }
+
+    // fallback: detect an ALL-CAPS short heading like "THE PRAYER OF..." or single word speaker
+    const caps = raw.match(/^([A-Z\s]{2,40})[:.\-\s]+(.*)$/s)
+    if (caps) {
+      const speaker = caps[1].trim()
+      const rest = caps[2].trim()
+      // only treat as speaker if the speaker part is short
+      if (speaker.split(' ').length <= 4) {
+        return (
+          <div key={idx} className="mb-4">
+            <div className="inline-flex items-center gap-2 mb-2">
+              <span className="text-xs font-semibold uppercase px-2 py-1 rounded bg-amber-100 text-amber-800">{speaker}</span>
+            </div>
+            <div className="pl-4 text-slate-700" dangerouslySetInnerHTML={{ __html: rest.replace(/\n/g, '<br/>') }} />
+          </div>
+        )
+      }
     }
 
     return (
